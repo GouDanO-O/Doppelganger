@@ -22,24 +22,16 @@ namespace FrameWork
 
         protected EGameState curGameState=EGameState.None;
 
-        private ResourceData resourceData;
+        private ResourcesManager resourcesManager;
 
         public IArchitecture GetArchitecture()
         {
-            throw new System.NotImplementedException();
+            return Main.Interface;
         }
 
-        private void Start()
+        private void Awake()
         {
-            resourceData=this.GetModel<ResourceData>();
-        }
-
-        /// <summary>
-        /// 加载数据完成
-        /// </summary>
-        protected void LoadDataOver()
-        {
-            EnterMenu();
+            InitComponent();
         }
 
         /// <summary>
@@ -47,10 +39,31 @@ namespace FrameWork
         /// </summary>
         protected void InitComponent()
         {
-            sceneLoader = new SceneLoader();
+            sceneLoader = GetArchitecture().GetSystem<SceneLoader>();
             sceneLoader.OnSceneLoadStart += LoadSceneStart;
             sceneLoader.OnSceneLoading += LoadingScene;
             sceneLoader.OnSceneLoadComplete += LoadSceneComplete;
+
+            resourcesManager = GetArchitecture().GetSystem<ResourcesManager>();
+            resourcesManager.onFirstLoadComplete += LoadComplete;
+        }
+
+        private void Start()
+        {
+            LoadData();
+        }
+
+        /// <summary>
+        /// 加载数据
+        /// </summary>
+        private void LoadData()
+        {
+            resourcesManager.LoadData();
+        }
+
+        private void LoadComplete()
+        {
+            EnterMenu();
         }
 
         /// <summary>
@@ -77,6 +90,7 @@ namespace FrameWork
             sceneLoader.OnSceneLoadStart -= LoadSceneStart;
             sceneLoader.OnSceneLoading -= LoadingScene;
             sceneLoader.OnSceneLoadComplete -= LoadSceneComplete;
+            resourcesManager.onFirstLoadComplete -= LoadComplete;
         }
 
         /// <summary>
@@ -125,8 +139,6 @@ namespace FrameWork
         {
             return curGameState == EGameState.Gaming;
         }
-
-
     }
 }
 

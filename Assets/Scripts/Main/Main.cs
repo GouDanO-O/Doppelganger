@@ -16,9 +16,10 @@ namespace FrameWork
         /// </summary>
         protected override void Init()
         {
-            RegiestSystem();
-            RegistModel();
-            RegistEvent();
+            Regiest_System();
+            Regiest_Model();
+            Regiest_Utility();
+            Regiest_Event();
 
             UIRoot.Instance.OnSingletonInit();
         }
@@ -27,23 +28,32 @@ namespace FrameWork
         /// <summary>
         /// 注册System
         /// </summary>
-        protected void RegiestSystem()
+        protected void Regiest_System()
         {
-            
+            this.RegisterSystem(new ResourcesManager());
+            this.RegisterSystem(new SceneLoader());
         }
 
         /// <summary>
         /// 注册model
         /// </summary>
-        protected void RegistModel()
+        protected void Regiest_Model()
         {
+            this.RegisterModel(new ResourceData());
+        }
 
+        /// <summary>
+        /// 注册model
+        /// </summary>
+        protected void Regiest_Utility()
+        {
+            this.RegisterUtility(new ResoucesUtility());
         }
 
         /// <summary>
         /// 注册事件
         /// </summary>
-        protected void RegistEvent()
+        protected void Regiest_Event()
         {
             
         }
@@ -51,7 +61,7 @@ namespace FrameWork
         /// <summary>
         /// 注销事件
         /// </summary>
-        protected void UnRegistEvent()
+        protected void UnRegiest_Event()
         {
 
         }

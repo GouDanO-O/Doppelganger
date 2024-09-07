@@ -25,7 +25,7 @@ namespace FrameWork
         /// </summary>
         /// <param name="name"></param>
         /// <param name="action"></param>
-        private void LoadSpriteAtlasAsync(string name, Action<SpriteAtlas> action)
+        public void LoadSpriteAtlasAsync(string name, Action<SpriteAtlas> action)
         {
             resLoader.Add2Load(name, (succeed, res) => {
                 if (succeed)
@@ -41,7 +41,7 @@ namespace FrameWork
         /// </summary>
         /// <param name="name"></param>
         /// <param name="action"></param>
-        private void LoadSpritesAsync(string name, Action<Sprite> action)
+        public void LoadSpritesAsync(string name, Action<Sprite> action)
         {
             resLoader.Add2Load(name, (succeed, res) => {
                 if (succeed)
@@ -57,7 +57,7 @@ namespace FrameWork
         /// </summary>
         /// <param name="name"></param>
         /// <param name="action"></param>
-        private void LoadAudioAsync(string name, Action<AudioClip> action)
+        public void LoadAudioAsync(string name, Action<AudioClip> action)
         {
             resLoader.Add2Load(name, (succeed, res) => {
                 if (succeed)
@@ -73,7 +73,7 @@ namespace FrameWork
         /// </summary>
         /// <param name="name"></param>
         /// <param name="action"></param>
-        private void LoadPrefabAsync(string name, Action<GameObject> action)
+        public void LoadPrefabAsync(string name, Action<GameObject> action)
         {
             resLoader.Add2Load(name, (succeed, res) => {
                 if (succeed)
@@ -89,7 +89,7 @@ namespace FrameWork
         /// </summary>
         /// <param name="name"></param>
         /// <param name="action"></param>
-        private void LoadScriptObjAsync<T>(string name, Action<T> action) where T : ScriptableObject
+        public void LoadScriptObjAsync<T>(string name, Action<T> action) where T : ScriptableObject
         {
             resLoader.Add2Load(name, (succeed, res) => {
                 if (succeed)
@@ -119,7 +119,7 @@ namespace FrameWork
         /// </summary>
         /// <param name="name"></param>
         /// <param name="action"></param>
-        private void LoadJsonAsync(string name, Action<TextAsset> action)
+        public void LoadJsonAsync(string name, Action<TextAsset> action)
         {
             resLoader.Add2Load(name, (succeed, res) => {
                 if (succeed)

@@ -1,3 +1,4 @@
+using QFramework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace FrameWork
         GameScene=2
     }
 
-    public class SceneLoader
+    public class SceneLoader : AbstractSystem
     {
         public UnityAction<ESceneName> onLoadScene;
 
@@ -27,8 +28,7 @@ namespace FrameWork
 
         public UnityAction<ESceneName> OnSceneLoadComplete;
 
-
-        public SceneLoader()
+        protected override void OnInit()
         {
             onLoadScene += LoadSceneAsync;
         }

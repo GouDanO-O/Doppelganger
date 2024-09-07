@@ -14,22 +14,6 @@ namespace QAssetBundle
     public class Configs
     {
         public const string BundleName = "configs";
-        public const string CharacterDataConfig = "CharacterDataConfig";
-        public const string MapData = "MapData";
-    }
-    public class Ui_game_inspector_prefab
-    {
-        public const string BundleName = "ui_game_inspector_prefab";
-        public const string UI_Game_Inspector = "UI_Game_Inspector";
-    }
-    public class Ui_loading_prefab
-    {
-        public const string BundleName = "ui_loading_prefab";
-        public const string UI_Loading = "UI_Loading";
-    }
-    public class Ui_menu_prefab
-    {
-        public const string BundleName = "ui_menu_prefab";
-        public const string UI_Menu = "UI_Menu";
+        public const string GameSettingConfig = "GameSettingConfig";
     }
 }
