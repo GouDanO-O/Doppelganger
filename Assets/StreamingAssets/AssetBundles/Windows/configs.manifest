@@ -1,0 +1,34 @@
+ManifestFileVersion: 0
+CRC: 1568764511
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ae2d67873bbcb96f01356780374f1a41
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: d83f3bbe7ba2fae5c160e1088a6f24ba
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: ae2d67873bbcb96f01356780374f1a41
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6f7fad3018aa09844b8dc1db3c7858a1, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Assembly-CSharp
+  ClassName: RimWorld.SMapRenderData
+- AssemblyName: Assembly-CSharp
+  ClassName: RimWorld.SVector2Int
+Assets:
+- Assets/Res/Configs/MapData.asset
+Dependencies: []

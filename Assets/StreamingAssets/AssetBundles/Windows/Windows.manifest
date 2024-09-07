@@ -1,0 +1,16 @@
+ManifestFileVersion: 0
+CRC: 767165987
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: ui_menu_prefab
+      Dependencies: {}
+    Info_1:
+      Name: ui_loading_prefab
+      Dependencies: {}
+    Info_2:
+      Name: ui_game_inspector_prefab
+      Dependencies: {}
+    Info_3:
+      Name: configs
+      Dependencies: {}
