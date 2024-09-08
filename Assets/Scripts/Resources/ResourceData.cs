@@ -1,10 +1,10 @@
-using Game.Config;
+using GameFrame.Config;
 using QFramework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FrameWork
+namespace GameFrame
 {
     public interface IResourcesModel: IModel
     {

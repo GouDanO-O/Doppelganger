@@ -1,4 +1,4 @@
-using Game.Config;
+using GameFrame.Config;
 using QFramework;
 using System;
 using System.Collections;
@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.U2D;
 
-namespace FrameWork
+namespace GameFrame
 {
 
     public class ResourcesManager : AbstractSystem

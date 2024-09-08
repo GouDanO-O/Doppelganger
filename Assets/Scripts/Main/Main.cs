@@ -1,9 +1,10 @@
+using GameFrame.UI;
 using QFramework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FrameWork
+namespace GameFrame
 {
 
     /// <summary>
@@ -32,10 +33,11 @@ namespace FrameWork
         {
             this.RegisterSystem(new ResourcesManager());
             this.RegisterSystem(new SceneLoader());
+            this.RegisterSystem(new UISupervisor());
         }
 
         /// <summary>
-        /// 注册model
+        /// 注册Model
         /// </summary>
         protected void Regiest_Model()
         {
@@ -43,7 +45,7 @@ namespace FrameWork
         }
 
         /// <summary>
-        /// 注册model
+        /// 注册Utility
         /// </summary>
         protected void Regiest_Utility()
         {

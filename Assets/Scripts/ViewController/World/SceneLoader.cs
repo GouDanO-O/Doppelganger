@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-namespace FrameWork
+namespace GameFrame
 {
     /// <summary>
     /// 场景名称
@@ -33,13 +33,19 @@ namespace FrameWork
             onLoadScene += LoadSceneAsync;
         }
 
+        protected override void OnDeinit()
+        {
+            base.OnDeinit();
+            onLoadScene -= LoadSceneAsync;
+        }
+
         /// <summary>
         /// 异步加载场景
         /// </summary>
         /// <param name="sceneName"></param>
         public void LoadSceneAsync(ESceneName sceneName)
         {
-            ToolLists.Instance.StartCoroutine(LoadSceneCoroutine(sceneName));
+            ToolsUtility.Instance.StartCoroutine(LoadSceneCoroutine(sceneName));
         }
 
         private IEnumerator LoadSceneCoroutine(ESceneName sceneName)

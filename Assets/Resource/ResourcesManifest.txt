@@ -1,5 +1,0 @@
-Res	Path
-type	String
-note
-default	资源相对路径
-resourcesmanifest	resourcesmanifest

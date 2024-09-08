@@ -5,7 +5,7 @@ using UnityEngine;
 using System;
 using UnityEngine.U2D;
 
-namespace FrameWork
+namespace GameFrame
 {
     public class ResoucesUtility : IUtility
     {
