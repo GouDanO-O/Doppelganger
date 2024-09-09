@@ -1,4 +1,3 @@
-/LubanTools
 /obj
 /Temp
 /UserSettings
@@ -19,7 +18,6 @@
 /.idea
 /.plastic
 /.vs
-/DesignerConfigs
 /Library
 /Logs
 /Assembly-CSharp-firstpass.csproj
