@@ -1,6 +1,8 @@
 using QFramework;
 using System.Collections;
 using System.Collections.Generic;
+using GameFrame.Multilingual;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,6 +18,9 @@ namespace GameFrame
         Gaming,
     }
 
+    /// <summary>
+    /// 游戏全局管理
+    /// </summary>
     public class GameManager : MonoSingleton<GameManager>,IController
     {
         protected SceneLoader sceneLoader;
@@ -53,16 +58,25 @@ namespace GameFrame
             LoadData();
         }
 
+        private void OnDestroy()
+        {
+            UnRegistEvent();
+        }
+        
         /// <summary>
         /// 加载数据
         /// </summary>
         private void LoadData()
         {
-            resourcesManager.LoadData();
+            resourcesManager.InitialLoad();
         }
 
+        /// <summary>
+        /// 初始数据加载完成
+        /// </summary>
         private void LoadComplete()
         {
+            GetArchitecture().GetSystem<MultilingualManager>().InitLanguage();
             EnterMenu();
         }
 

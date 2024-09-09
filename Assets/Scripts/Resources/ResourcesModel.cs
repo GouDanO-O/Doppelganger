@@ -12,7 +12,7 @@ namespace GameFrame
     }
 
 
-    public class ResourceData : AbstractModel, IResourcesModel
+    public class ResourcesModel : AbstractModel, IResourcesModel
     {
 
         public GameSettingConfig SettingConfig { get; set; }

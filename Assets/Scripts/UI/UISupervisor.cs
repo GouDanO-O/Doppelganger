@@ -11,13 +11,28 @@ namespace GameFrame.UI
     /// </summary>
     public class UISupervisor : AbstractSystem
     {
-
         protected override void OnInit()
         {
             
         }
 
+        
+        
+        /// <summary>
+        /// 进入菜单
+        /// </summary>
+        public void EnterMenu()
+        {
+            UIKit.OpenPanelAsync<UI_MenuPanel>();
+        }
 
+        /// <summary>
+        /// 进入游戏
+        /// </summary>
+        public void EnterGame()
+        {
+            
+        }
     }
 }
 

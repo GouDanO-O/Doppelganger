@@ -2,6 +2,7 @@ using GameFrame.UI;
 using QFramework;
 using System.Collections;
 using System.Collections.Generic;
+using GameFrame.Multilingual;
 using UnityEngine;
 
 namespace GameFrame
@@ -34,6 +35,7 @@ namespace GameFrame
             this.RegisterSystem(new ResourcesManager());
             this.RegisterSystem(new SceneLoader());
             this.RegisterSystem(new UISupervisor());
+            this.RegisterSystem(new MultilingualManager());
         }
 
         /// <summary>
@@ -41,7 +43,7 @@ namespace GameFrame
         /// </summary>
         protected void Regiest_Model()
         {
-            this.RegisterModel(new ResourceData());
+            this.RegisterModel(new ResourcesModel());
         }
 
         /// <summary>

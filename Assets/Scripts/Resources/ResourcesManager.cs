@@ -13,43 +13,37 @@ namespace GameFrame
     public class ResourcesManager : AbstractSystem
     {
         public UnityAction onFirstLoadComplete;
-
-        public bool Initialized { get; set; }
-
         public int loadedCount { get; private set; }
 
         private int maxLoadCount = 1;
 
         ResoucesUtility loader;
 
-        ResourceData resourceData;
+        ResourcesModel resourcesModel;
 
         protected override void OnInit()
         {
             loader = this.GetUtility<ResoucesUtility>();
             loader.InitLoader();
-            resourceData=this.GetModel<ResourceData>();
+            resourcesModel=this.GetModel<ResourcesModel>();
         }
 
-        /// <summary>
-        /// 加载资源
-        /// </summary>
-        public void LoadData()
+        public void InitialLoad()
         {
-            if (loader != null && resourceData!=null)
+            if (loader != null && resourcesModel!=null)
             {
                 loader.LoadScriptObjAsync<GameSettingConfig>(QAssetBundle.Configs.GameSettingConfig, (data) =>
                 {
-                    resourceData.SettingConfig = data;
-                    LoadCheck();
+                    resourcesModel.SettingConfig = data;
+                    InitialLoadCheck();
                 });
             }
         }
-
+        
         /// <summary>
         /// 每加载一个就进行检测
         /// </summary>
-        private void LoadCheck()
+        private void InitialLoadCheck()
         {
             loadedCount++;
             if (loadedCount == maxLoadCount)
