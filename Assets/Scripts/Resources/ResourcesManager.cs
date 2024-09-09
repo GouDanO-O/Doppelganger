@@ -15,7 +15,7 @@ namespace GameFrame
         public UnityAction onFirstLoadComplete;
         public int loadedCount { get; private set; }
 
-        private int maxLoadCount = 1;
+        private int maxLoadCount = 2;
 
         ResoucesUtility loader;
 

@@ -3,6 +3,7 @@ using GameFrame;
 using QFramework;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Jobs;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -11,69 +12,43 @@ namespace GameFrame.Net
     /// <summary>
     /// 网络管理类
     /// </summary>
-    public class NetManager : MonoSingleton<NetManager>,IController
+    public class NetManager : MonoSingleton<NetManager>,IJob,IController
     {
-        private NetworkManager m_NetManager;
-        
-        private NetworkTransport m_NetTransport;
-        
         public bool isLogin { get; private set; }
-
-        private int curTicker=0;
-
-        private int shortTickTimeDeep
-        {
-            get
-            {
-                return GetArchitecture().GetModel<ResourcesModel>().NetDataConfig.ShortTickTimeDeep;
-            }
-        }
-
-        private int normalTickTimeDeep        
-        {
-            get
-            {
-                return GetArchitecture().GetModel<ResourcesModel>().NetDataConfig.NormalTickTimeDeep;
-            }
-        }
         
-        private int longTickTimeDeep        
-        {
-            get
-            {
-                return GetArchitecture().GetModel<ResourcesModel>().NetDataConfig.LongTickTimeDeep;
-            }
-        }
+        public bool isConnecting { get; private set; }
+
+        private int curTickerCount=0;
         
+        private float curTickerTime=0;
+
+        private int curHeartDisconnectCount=0;
+
+        protected float TickTimer;
+
+        protected int shortTickTimeDeep;
+
+        protected int normalTickTimeDeep;
+
+        protected int longTickTimeDeep;
+
+        protected int heartDisconnectCount;
+
         public IArchitecture GetArchitecture()
         {
             return Main.Interface;
         }
 
-        private void Awake()
+        public void InitComponents()
         {
-            InitComponents();   
-        }
-
-        private void InitComponents()
-        {
-            m_NetManager = GetComponent<NetworkManager>();
-            m_NetTransport = GetComponent<NetworkTransport>();
-        }
-
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
-        private void FixedUpdate()
-        {
-            
-        }
-
-        // Update is called once per frame
-        void Update()
+            ResourcesModel resourcesModel = GetArchitecture().GetModel<ResourcesModel>();
+            TickTimer=resourcesModel.NetDataConfig.TickTime;
+            shortTickTimeDeep=resourcesModel.NetDataConfig.ShortTickTimeDeep;
+            normalTickTimeDeep=resourcesModel.NetDataConfig.NormalTickTimeDeep;
+            longTickTimeDeep=resourcesModel.NetDataConfig.LongTickTimeDeep;
+            heartDisconnectCount=resourcesModel.NetDataConfig.HeartDisconnectCount;
+        }        
+        public void Execute()
         {
             TickCheck();
         }
@@ -83,9 +58,9 @@ namespace GameFrame.Net
         /// </summary>
         private void TickCheck()
         {
-            if (isLogin)
+            if (isLogin&&isConnecting)
             {
-                curTicker++;
+                curTickerCount++;
                 ShortTickCheck();
                 NormalTickCheck();
                 LongTickCheck();
@@ -97,7 +72,7 @@ namespace GameFrame.Net
         /// </summary>
         private void ShortTickCheck()
         {
-            if (curTicker == shortTickTimeDeep)
+            if (curTickerCount == shortTickTimeDeep)
             {
                 
             }
@@ -108,9 +83,9 @@ namespace GameFrame.Net
         /// </summary>
         private void NormalTickCheck()
         {
-            if (curTicker == normalTickTimeDeep)
+            if (curTickerCount == normalTickTimeDeep)
             {
-                
+                HeartCheck();
             }
         }
         
@@ -119,9 +94,20 @@ namespace GameFrame.Net
         /// </summary>
         private void LongTickCheck()
         {
-            if (curTicker == longTickTimeDeep)
+            if (curTickerCount == longTickTimeDeep)
             {
-                curTicker = 0;
+                curTickerCount = 0;
+            }
+        }
+
+        /// <summary>
+        /// 心跳检测
+        /// </summary>
+        private void HeartCheck()
+        {
+            if (curHeartDisconnectCount >= heartDisconnectCount)
+            {
+                isConnecting = false;
             }
         }
     }

@@ -2,6 +2,7 @@ using QFramework;
 using System.Collections;
 using System.Collections.Generic;
 using GameFrame.Multilingual;
+using GameFrame.Net;
 using GameFrame.UI;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -77,8 +78,10 @@ namespace GameFrame
         /// </summary>
         private void LoadComplete()
         {
+            NetManager.Instance.InitComponents();
             GetArchitecture().GetSystem<MultilingualManager>().InitLanguage();
             EnterMenu();
+            
         }
 
         /// <summary>
