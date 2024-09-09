@@ -53,6 +53,7 @@ namespace GameFrame
 
             resourcesManager = GetArchitecture().GetSystem<ResourcesManager>();
             resourcesManager.onFirstLoadComplete += LoadComplete;
+            DontDestroyOnLoad(gameObject);
         }
 
         private void Start()

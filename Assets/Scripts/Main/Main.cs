@@ -52,6 +52,7 @@ namespace GameFrame
         protected void Regiest_Utility()
         {
             this.RegisterUtility(new ResoucesUtility());
+            
         }
 
         /// <summary>
