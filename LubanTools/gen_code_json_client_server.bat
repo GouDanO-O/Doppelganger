@@ -6,7 +6,7 @@ set CONF_ROOT=%WORKSPACE%\DesignerConfigs
 %GEN_CLIENT% -j cfg --^
  -d %CONF_ROOT%\Defines\__root__.xml ^
  --input_data_dir %CONF_ROOT%\Datas ^
- --output_data_dir ..\Assets\SDK\LubanTables\json ^
+ --output_data_dir ..\Assets\Res\Data\Jsons ^
  --gen_types data_json ^
  --s all
 

@@ -17,6 +17,8 @@ namespace GameFrame
 
         public GameSettingConfig SettingConfig { get; set; }
 
+        public NetDataConfig NetDataConfig { get; set; }
+        
         protected override void OnInit()
         {
             

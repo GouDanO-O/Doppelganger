@@ -15,5 +15,11 @@ namespace QAssetBundle
     {
         public const string BundleName = "configs";
         public const string GameSettingConfig = "GameSettingConfig";
+        public const string NetDataConfig = "NetDataConfig";
+    }
+    public class Ui_menupanel_prefab
+    {
+        public const string BundleName = "ui_menupanel_prefab";
+        public const string UI_MenuPanel = "UI_MenuPanel";
     }
 }

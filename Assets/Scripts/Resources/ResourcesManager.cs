@@ -37,6 +37,11 @@ namespace GameFrame
                     resourcesModel.SettingConfig = data;
                     InitialLoadCheck();
                 });
+                loader.LoadScriptObjAsync<NetDataConfig>(QAssetBundle.Configs.NetDataConfig, (data) =>
+                {
+                    resourcesModel.NetDataConfig = data;
+                    InitialLoadCheck();
+                });
             }
         }
         
