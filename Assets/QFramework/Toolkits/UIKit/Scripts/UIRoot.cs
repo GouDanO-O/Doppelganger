@@ -133,7 +133,7 @@ namespace QFramework
 
         public void OnSingletonInit()
         {
-            
+            DontDestroyOnLoad(gameObject);
         }
     }
 }

@@ -43,29 +43,30 @@ namespace GameFrame
         /// 异步加载场景
         /// </summary>
         /// <param name="sceneName"></param>
-        public void LoadSceneAsync(ESceneName sceneName)
+        private void LoadSceneAsync(ESceneName sceneName)
         {
             ToolsUtility.Instance.StartCoroutine(LoadSceneCoroutine(sceneName));
         }
 
         private IEnumerator LoadSceneCoroutine(ESceneName sceneName)
         {
-            // 触发开始加载事件
             OnSceneLoadStart?.Invoke();
-
             AsyncOperation asyncOperation = SceneManager.LoadSceneAsync((int)sceneName);
 
-            // 场景异步加载的过程中，我们可以通过 asyncOperation.progress 获取进度
-            while (!asyncOperation.isDone)
+            while (asyncOperation.progress < 0.9f)  // 进度小于0.9时
             {
-                // 触发加载中事件，并传递当前进度
                 OnSceneLoading?.Invoke(asyncOperation.progress);
                 yield return null;
             }
-
-            // 场景加载完毕
+            
+            while (!asyncOperation.isDone)  // 场景最终激活完成
+            {
+                yield return null;
+            }
+            
             OnSceneLoadComplete?.Invoke(sceneName);
         }
+
     }
 }
 

@@ -2,6 +2,7 @@ using QFramework;
 using System.Collections;
 using System.Collections.Generic;
 using GameFrame.Multilingual;
+using GameFrame.UI;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -85,7 +86,7 @@ namespace GameFrame
         /// </summary>
         protected void EnterMenu()
         {
-            sceneLoader.LoadSceneAsync(ESceneName.Menu);
+            sceneLoader.onLoadScene.Invoke(ESceneName.Menu);
         }
 
         /// <summary>
@@ -93,7 +94,7 @@ namespace GameFrame
         /// </summary>
         public void StartGame()
         {
-            sceneLoader.LoadSceneAsync(ESceneName.GameScene);
+            sceneLoader.onLoadScene.Invoke(ESceneName.GameScene);
         }
 
         /// <summary>
@@ -135,6 +136,8 @@ namespace GameFrame
             if (sceneName == ESceneName.Menu)
             {
                 curGameState = EGameState.Menu;
+                GetArchitecture().GetSystem<UISupervisor>().EnterMenu();
+                Debug.Log(111);
             }
             else if(sceneName == ESceneName.GameScene)
             {

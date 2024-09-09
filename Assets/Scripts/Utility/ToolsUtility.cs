@@ -3,24 +3,25 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace GameFrame
 {
     public class ToolsUtility : MonoSingleton<ToolsUtility>
     {
-
+        
         /// <summary>
         /// 异步生成UI
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="level"></param>
-        public void SpawnUI_Async<T>(UILevel level, Action complete) where T : UIPanel
+        public void SpawnUI_Async<T>(UILevel level=UILevel.Common, Action complete = null) where T : UIPanel
         {
             StartCoroutine(IemSpawnUI_Async<T>(level, complete));
         }
 
-        protected IEnumerator IemSpawnUI_Async<T>(UILevel level, Action complete) where T : UIPanel
+        protected IEnumerator IemSpawnUI_Async<T>(UILevel level=UILevel.Common, Action complete=null) where T : UIPanel
         {
             yield return UIKit.OpenPanelAsync<T>(level);
             complete?.Invoke();
@@ -31,7 +32,7 @@ namespace GameFrame
         /// </summary>
         /// <param name="totalSeconds"></param>
         /// <returns></returns>
-        public string ConvertToTimeFormat(float totalSeconds)
+        public string ConvertToTimeFormat(float totalSeconds=0)
         {
             int hours = Mathf.FloorToInt(totalSeconds / 3600);
             int minutes = Mathf.FloorToInt((totalSeconds % 3600) / 60);

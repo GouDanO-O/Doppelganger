@@ -15,15 +15,13 @@ namespace GameFrame.UI
         {
             
         }
-
-        
         
         /// <summary>
         /// 进入菜单
         /// </summary>
         public void EnterMenu()
         {
-            UIKit.OpenPanelAsync<UI_MenuPanel>();
+             ToolsUtility.Instance.SpawnUI_Async<UI_MenuPanel>();
         }
 
         /// <summary>
