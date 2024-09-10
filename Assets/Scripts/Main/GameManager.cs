@@ -1,3 +1,4 @@
+using System;
 using QFramework;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ namespace GameFrame
     /// </summary>
     public class GameManager : MonoSingleton<GameManager>,IController
     {
+        public Font customFont; // 自定义字体
+        
         protected SceneLoader sceneLoader;
 
         protected EGameState curGameState=EGameState.None;
@@ -159,6 +162,15 @@ namespace GameFrame
         public bool IsGaming()
         {
             return curGameState == EGameState.Gaming;
+        }
+
+        private void OnGUI()
+        {
+            // 设置自定义字体
+            if (customFont != null)
+            {
+                GUI.skin.font = customFont;
+            }
         }
     }
 }
