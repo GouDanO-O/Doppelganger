@@ -3,15 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using QFramework;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace GameFrame
 {
-    public class LogUtility : MonoBehaviour, IUtility
+    public class LogUtility : BasicToolUtility,IPointerDownHandler
     {
-        public bool willShowLog = true;
-        
-
-        
         private List<LogMessage> logs = new List<LogMessage>(); // 存储所有日志
         
         private List<LogMessage> collapsedLogs = new List<LogMessage>(); // 存储累计后的日志
@@ -29,8 +26,6 @@ namespace GameFrame
         private bool autoScroll = true; // 自动滚动
         
         private bool showConsole = true; // 是否显示日志系统
-        
-
 
         // 日志结构体
         private class LogMessage
@@ -53,30 +48,19 @@ namespace GameFrame
             }
         }
 
-        private void Awake()
+        protected override void Start()
         {
-            if (!willShowLog)
-            {
-                gameObject.Hide();
-            }
-            else
-            {
-                Main.Interface.RegisterUtility(this);
-            }
-        }
-
-        void Start()
-        {
+            base.Start();   
             Application.logMessageReceived += HandleLog;
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             Application.logMessageReceived -= HandleLog;
         }
 
         // 处理日志
-        void HandleLog(string logString, string stackTrace, LogType type)
+        private void HandleLog(string logString, string stackTrace, LogType type)
         {
             // 创建新日志
             LogMessage newLog = new LogMessage(logString, stackTrace, type);
@@ -113,7 +97,7 @@ namespace GameFrame
             autoScroll = true; // 每次添加新日志后，自动滚动
         }
 
-        void OnGUI()
+        protected override void OnGUI()
         {
             // 添加控制日志系统显示/隐藏的按钮
             if (GUILayout.Button(showConsole ? "隐藏控制台" : "显示控制台"))
@@ -224,7 +208,7 @@ namespace GameFrame
         }
 
         // 更新累计日志列表
-        void UpdateCollapsedLogs()
+        private void UpdateCollapsedLogs()
         {
             collapsedLogs.Clear();
             if (collapse)
@@ -256,29 +240,9 @@ namespace GameFrame
             }
         }
 
-        // 检测用户是否手动滚动
-        void Update()
+        public void OnPointerDown(PointerEventData eventData)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                autoScroll = false; // 如果用户点击鼠标，则停止自动滚动
-            }
-
-            // 示例：添加一些日志
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Debug.Log("按下了空格键");
-            }
-
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                Debug.LogWarning("这是一个警告日志");
-            }
-
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                Debug.LogError("这是一个错误日志");
-            }
+            autoScroll = false;
         }
     }
 }

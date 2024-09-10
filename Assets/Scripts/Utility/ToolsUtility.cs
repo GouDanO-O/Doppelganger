@@ -8,9 +8,32 @@ using UnityEngine;
 
 namespace GameFrame
 {
-    public class ToolsUtility : MonoSingleton<ToolsUtility>
+    public class ToolsUtility : MonoSingleton<ToolsUtility>,IUtility
     {
+        public bool willShowCheatWindow = false;
         
+        public bool willShowLogWindow = true;
+
+        private void Awake()
+        {
+            Main.Interface.RegisterUtility(this);
+        }
+
+        private void Start()
+        {
+            if (willShowLogWindow)
+            {
+                gameObject.AddComponent<LogUtility>();
+            }
+
+            if (willShowCheatWindow)
+            {
+                gameObject.AddComponent<CheatUtility>();
+            }
+            
+        }
+
+
         /// <summary>
         /// 异步生成UI
         /// </summary>

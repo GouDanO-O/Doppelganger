@@ -18,9 +18,11 @@ namespace GameFrame
         /// </summary>
         protected override void Init()
         {
-            Regiest_System();
-            Regiest_Model();
             Regiest_Utility();
+            Regiest_Model();
+            Regiest_System();
+
+
             Regiest_Event();
 
             UIRoot.Instance.OnSingletonInit();
@@ -52,7 +54,6 @@ namespace GameFrame
         protected void Regiest_Utility()
         {
             this.RegisterUtility(new ResoucesUtility());
-            
         }
 
         /// <summary>
