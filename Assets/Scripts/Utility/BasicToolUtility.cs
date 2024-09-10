@@ -8,11 +8,17 @@ namespace GameFrame
 {
     public class BasicToolUtility : MonoBehaviour,IUtility
     {
+        public bool isShowing;
         
         // Start is called before the first frame update
-        protected virtual void Start()
+        private void Start()
         {
             InitUtility();
+        }
+
+        private void OnDestroy()
+        {
+            DeInitUtility();
         }
 
         protected virtual void InitUtility()
@@ -20,7 +26,22 @@ namespace GameFrame
             Main.Interface.RegisterUtility(this);
         }
 
-        protected virtual void OnGUI()
+        private void OnGUI()
+        {
+            DrawGUI();
+        }
+
+        protected virtual void DrawGUI()
+        {
+            
+        }
+
+        public virtual void CheckButtonWillShow()
+        {
+            isShowing = !isShowing;
+        }
+        
+        protected virtual void DeInitUtility()
         {
             
         }

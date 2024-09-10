@@ -13,7 +13,11 @@ namespace GameFrame
         public bool willShowCheatWindow = false;
         
         public bool willShowLogWindow = true;
-
+        
+        private CheatUtility cheatUtility;
+        
+        private LogUtility logUtility;
+        
         private void Awake()
         {
             Main.Interface.RegisterUtility(this);
@@ -23,16 +27,52 @@ namespace GameFrame
         {
             if (willShowLogWindow)
             {
-                gameObject.AddComponent<LogUtility>();
+                logUtility = gameObject.AddComponent<LogUtility>();
+            
             }
 
             if (willShowCheatWindow)
             {
-                gameObject.AddComponent<CheatUtility>();
+                cheatUtility = gameObject.AddComponent<CheatUtility>();
             }
-            
         }
 
+        private void OnGUI()
+        {
+            int showCount = -1;
+            if (willShowLogWindow)
+            {
+                showCount++;
+                if (GUI.Button(new Rect(20+showCount*150,0,120,30),logUtility.isShowing ? "关闭日志系统" : "打开日志系统"))
+                {
+                    logUtility.CheckButtonWillShow();
+                    if (logUtility.isShowing && cheatUtility)
+                    {
+                        if (cheatUtility.isShowing)
+                        {
+                            cheatUtility.CheckButtonWillShow();
+                        }
+                    }
+                }
+            }
+
+            if (willShowCheatWindow)
+            {
+                showCount++;
+                if (GUI.Button(new Rect(20+showCount*150,0,120,30),cheatUtility.isShowing ? "关闭作弊系统" : "打开作弊系统"))
+                {
+                    cheatUtility.CheckButtonWillShow();
+                    if (cheatUtility.isShowing && logUtility)
+                    {
+                        if (logUtility.isShowing)
+                        {
+                            logUtility.CheckButtonWillShow();
+                        }
+                    }
+                } 
+            }
+
+        }
 
         /// <summary>
         /// 异步生成UI

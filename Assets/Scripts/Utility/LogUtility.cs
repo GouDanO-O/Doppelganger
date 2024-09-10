@@ -24,8 +24,6 @@ namespace GameFrame
         private bool collapse = false; // 是否合并相同日志
         
         private bool autoScroll = true; // 自动滚动
-        
-        private bool showConsole = true; // 是否显示日志系统
 
         // 日志结构体
         private class LogMessage
@@ -48,14 +46,15 @@ namespace GameFrame
             }
         }
 
-        protected override void Start()
+        protected override void InitUtility()
         {
-            base.Start();   
+            base.InitUtility();
             Application.logMessageReceived += HandleLog;
         }
 
-        private void OnDestroy()
+        protected override void DeInitUtility()
         {
+            base.DeInitUtility();
             Application.logMessageReceived -= HandleLog;
         }
 
@@ -96,17 +95,13 @@ namespace GameFrame
 
             autoScroll = true; // 每次添加新日志后，自动滚动
         }
+        
+         
 
-        protected override void OnGUI()
+        protected override void DrawGUI()
         {
-            // 添加控制日志系统显示/隐藏的按钮
-            if (GUILayout.Button(showConsole ? "隐藏控制台" : "显示控制台"))
-            {
-                showConsole = !showConsole; // 切换日志系统的显示状态
-            }
-
             // 如果日志系统不显示，直接返回
-            if (!showConsole)
+            if (!isShowing)
             {
                 return;
             }
@@ -121,12 +116,12 @@ namespace GameFrame
                 showLog = !showLog;
             }
 
-            if (GUILayout.Button(showWarning ? "隐藏Warnings" : "Show Warnings"))
+            if (GUILayout.Button(showWarning ? "隐藏Warnings" : "显示Warnings"))
             {
                 showWarning = !showWarning;
             }
 
-            if (GUILayout.Button(showError ? "隐藏Errors" : "Show Errors"))
+            if (GUILayout.Button(showError ? "隐藏Errors" : "显示Errors"))
             {
                 showError = !showError;
             }
@@ -175,10 +170,10 @@ namespace GameFrame
                 }
 
                 // 显示日志信息及时间
-                string logText = $"{log.time} - {log.message}";
+                string logText = $"{log.time} ---------- {log.message}";
                 if (log.count > 1)
                 {
-                    logText += $" (x{log.count})"; // 如果日志重复，显示重复次数
+                    logText += $" -----(x{log.count})"; // 如果日志重复，显示重复次数
                 }
 
                 // 点击日志信息展开/收起堆栈信息
