@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace  GameFrame.Net
 {
-    public class NetObj : NetworkBehaviour,IController
+    public partial class NetObj : NetworkBehaviour,IController
     {
         public IArchitecture GetArchitecture()
         {

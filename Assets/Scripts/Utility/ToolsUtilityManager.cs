@@ -10,9 +10,9 @@ namespace GameFrame
 {
     public class ToolsUtilityManager : MonoBehaviour,IController
     {
-        public bool willShowCheatWindow = false;
+        [SerializeField] private bool willShowCheatWindow = false;
         
-        public bool willShowLogWindow = true;
+        [SerializeField] private bool willShowLogWindow = false;
         
         private bool canShowGUI = false;
         
@@ -21,6 +21,8 @@ namespace GameFrame
         private LogUtility logUtility;
         
         private CoroutineUtility coroutineUtility;
+
+        private TimeUtility timeUtility;
         
         public IArchitecture GetArchitecture()
         {
@@ -47,6 +49,9 @@ namespace GameFrame
             }
             
             coroutineUtility = gameObject.AddComponent<CoroutineUtility>();
+            
+            timeUtility = new TimeUtility();
+            GetArchitecture().RegisterUtility(timeUtility);
         }
 
         private void OnGUI()
@@ -91,7 +96,6 @@ namespace GameFrame
                 } 
             }
         }
-        
     }
 }
 

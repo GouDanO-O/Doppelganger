@@ -5,9 +5,14 @@ using UnityEngine;
 
 namespace GameFrame
 {
-    public class BasicToolUtility : IUtility
+    public abstract class BasicToolUtility : IUtility
     {
+        public abstract void InitUtility();
 
+        public virtual void DeInitUtility()
+        {
+            
+        }
     }
 }
 

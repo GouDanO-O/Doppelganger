@@ -7,7 +7,12 @@ namespace GameFrame
 {
     public class TimeUtility : BasicToolUtility
     {
-
+        public override void InitUtility()
+        {
+            
+        }
+        
+        
         /// <summary>
         /// 将秒转换成时分秒
         /// </summary>
@@ -21,6 +26,8 @@ namespace GameFrame
 
             return string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
         }
+
+
     } 
 }
 

@@ -55,6 +55,7 @@ namespace GameFrame
         {
             this.RegisterUtility(new ResoucesUtility());
         }
+        
 
         /// <summary>
         /// 注册事件
