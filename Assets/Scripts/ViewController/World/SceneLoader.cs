@@ -45,7 +45,7 @@ namespace GameFrame
         /// <param name="sceneName"></param>
         private void LoadSceneAsync(ESceneName sceneName)
         {
-            ToolsUtilityManager.Instance.StartCoroutine(LoadSceneCoroutine(sceneName));
+            Main.Interface.GetUtility<CoroutineUtility>().StartCoroutine(LoadSceneCoroutine(sceneName));
         }
 
         private IEnumerator LoadSceneCoroutine(ESceneName sceneName)

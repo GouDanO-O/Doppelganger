@@ -26,7 +26,7 @@ namespace GameFrame
     
     public class CheatModel : AbstractModel
     {
-        public List<CheaterData> cheatModules = new List<CheaterData>();
+        public Dictionary<string,CheaterData> cheatModules = new Dictionary<string,CheaterData>();
         
         protected override void OnInit()
         {
@@ -35,10 +35,21 @@ namespace GameFrame
         
         public void AddCheatModule(string name="", System.Action action=null)
         {
-            cheatModules.Add(new CheaterData(name, action));
+            if (!cheatModules.ContainsKey(name))
+            {
+                cheatModules.Add(name,new CheaterData(name, action));
+            }
         }
 
-        public List<CheaterData> GetCheaterDatas()
+        public void RemoveCheatModule(string name)
+        {
+            if (cheatModules.ContainsKey(name))
+            {
+                cheatModules.Remove(name);  
+            }
+        }
+        
+        public Dictionary<string,CheaterData> GetCheaterDatas()
         {
             return cheatModules;
         }

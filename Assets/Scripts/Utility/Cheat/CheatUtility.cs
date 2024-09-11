@@ -6,13 +6,13 @@ using UnityEngine;
 
 namespace GameFrame
 {
-    public class CheatCommand : AbstractCommand
+    public class AddCheatCommand : AbstractCommand
     {
         protected string Name;
 
         protected Action CheatAction;
 
-        public CheatCommand(string name, Action action)
+        public AddCheatCommand(string name, Action action)
         {
             Name = name;
             CheatAction = action;
@@ -23,8 +23,23 @@ namespace GameFrame
             this.GetModel<CheatModel>().AddCheatModule(Name,CheatAction);
         }
     }
+
+    public class RemoveCheatCommand : AbstractCommand
+    {
+        protected string Name;
+
+        public RemoveCheatCommand(string name)
+        {
+            Name = name;
+        }
+        
+        protected override void OnExecute()
+        {
+            this.GetModel<CheatModel>().RemoveCheatModule(Name);
+        }
+    }
     
-    public class CheatUtility : BasicToolUtility
+    public class CheatUtility : BasicToolUtility_Mono
     {
         private CheatModel cheatModel;
 
@@ -33,7 +48,7 @@ namespace GameFrame
 
         protected override void InitUtility()
         {
-            base.InitUtility();
+            Main.Interface.RegisterUtility(this);
             cheatModel = new CheatModel();
             Main.Interface.RegisterModel(cheatModel);
         }
@@ -48,18 +63,18 @@ namespace GameFrame
 
             scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Height(300));
 
-            List<CheaterData> cheaters = cheatModel.GetCheaterDatas();
+            Dictionary<string,CheaterData> cheaters = cheatModel.GetCheaterDatas();
             foreach (var cheat in cheaters)
             {
                 GUILayout.BeginHorizontal();
 
                 // 显示作弊功能的名称和描述
-                GUILayout.Label(cheat.Name, GUILayout.Width(200));
+                GUILayout.Label(cheat.Value.Name, GUILayout.Width(200));
                     
                 // 按钮执行作弊功能
                 if (GUILayout.Button("激活"))
                 {
-                    cheat.Execute();
+                    cheat.Value.Execute();
                 }
 
                 GUILayout.EndHorizontal();

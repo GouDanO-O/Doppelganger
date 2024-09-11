@@ -21,7 +21,7 @@ namespace GameFrame.UI
         /// </summary>
         public void EnterMenu()
         {
-            ToolsUtilityManager.Instance.SpawnUI_Async<UI_MenuPanel>();
+            Main.Interface.GetUtility<CoroutineUtility>().SpawnUI_Async<UI_MenuPanel>();
         }
 
         /// <summary>
