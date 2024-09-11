@@ -26,13 +26,13 @@ namespace GameFrame
     /// </summary>
     public class GameManager : MonoSingleton<GameManager>,IController
     {
-        public Font customFont; // 自定义字体
-        
         protected SceneLoader sceneLoader;
 
         protected EGameState curGameState=EGameState.None;
 
         private ResourcesManager resourcesManager;
+        
+        protected Font customFont;
 
         public IArchitecture GetArchitecture()
         {
@@ -82,6 +82,7 @@ namespace GameFrame
         /// </summary>
         private void LoadComplete()
         {
+            customFont = GetArchitecture().GetModel<ResourcesModel>().SettingConfig.customFont;
             NetManager.Instance.InitComponents();
             GetArchitecture().GetSystem<MultilingualManager>().InitLanguage();
             EnterMenu();
@@ -170,6 +171,10 @@ namespace GameFrame
             if (customFont != null)
             {
                 GUI.skin.font = customFont;
+            }
+            else
+            {
+                GUI.skin.font = default;
             }
         }
     }

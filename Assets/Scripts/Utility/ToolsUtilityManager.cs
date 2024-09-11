@@ -8,19 +8,21 @@ using UnityEngine;
 
 namespace GameFrame
 {
-    public class ToolsUtility : MonoSingleton<ToolsUtility>,IUtility
+    public class ToolsUtilityManager : MonoSingleton<ToolsUtilityManager>,IController
     {
         public bool willShowCheatWindow = false;
         
         public bool willShowLogWindow = true;
         
+        private bool canShowGUI = false;
+        
         private CheatUtility cheatUtility;
         
         private LogUtility logUtility;
         
-        private void Awake()
+        public IArchitecture GetArchitecture()
         {
-            Main.Interface.RegisterUtility(this);
+            return Main.Interface;
         }
 
         private void Start()
@@ -28,17 +30,21 @@ namespace GameFrame
             if (willShowLogWindow)
             {
                 logUtility = gameObject.AddComponent<LogUtility>();
-            
+                canShowGUI = true;
             }
 
+            
             if (willShowCheatWindow)
             {
                 cheatUtility = gameObject.AddComponent<CheatUtility>();
+                canShowGUI = true;
             }
         }
 
         private void OnGUI()
         {
+            if(!canShowGUI)
+                return;            
             int showCount = -1;
             if (willShowLogWindow)
             {
@@ -168,6 +174,8 @@ namespace GameFrame
         {
             StopAllCoroutines();
         }
+
+
     }
 }
 

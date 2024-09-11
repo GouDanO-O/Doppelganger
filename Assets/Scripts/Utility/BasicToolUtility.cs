@@ -11,7 +11,7 @@ namespace GameFrame
         public bool isShowing;
         
         // Start is called before the first frame update
-        private void Start()
+        private void Awake()
         {
             InitUtility();
         }

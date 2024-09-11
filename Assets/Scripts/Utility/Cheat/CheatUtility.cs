@@ -6,39 +6,38 @@ using UnityEngine;
 
 namespace GameFrame
 {
-    public class CheatModule
+    public class CheatCommand : AbstractCommand
     {
-        public string Name { get; set; } 
-        public Action CheatAction { get; set; }  
+        protected string Name;
 
-        public CheatModule(string name, System.Action action)
+        protected Action CheatAction;
+
+        public CheatCommand(string name, Action action)
         {
             Name = name;
             CheatAction = action;
         }
-
         
-        public void Execute()
+        protected override void OnExecute()
         {
-            CheatAction?.Invoke();
+            this.GetModel<CheatModel>().AddCheatModule(Name,CheatAction);
         }
     }
     
     public class CheatUtility : BasicToolUtility
     {
-        
-        private bool isShowingCheatWindow = false;
-
-        private List<CheatModule> cheatModules = new List<CheatModule>();
+        private CheatModel cheatModel;
 
         // GUI布局滚动条
         private Vector2 scrollPosition;
 
-        public void AddCheatModule(string name="", System.Action action=null)
+        protected override void InitUtility()
         {
-            cheatModules.Add(new CheatModule(name, action));
+            base.InitUtility();
+            cheatModel = new CheatModel();
+            Main.Interface.RegisterModel(cheatModel);
         }
-        
+
         protected override void DrawGUI()
         {
             if(!isShowing)
@@ -49,7 +48,8 @@ namespace GameFrame
 
             scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Height(300));
 
-            foreach (var cheat in cheatModules)
+            List<CheaterData> cheaters = cheatModel.GetCheaterDatas();
+            foreach (var cheat in cheaters)
             {
                 GUILayout.BeginHorizontal();
 
