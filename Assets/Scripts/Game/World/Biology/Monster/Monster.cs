@@ -8,7 +8,7 @@ namespace GameFrame.World
     /// <summary>
     /// 怪物主类
     /// </summary>
-    public partial class Monster : WorldObj
+    public class Monster : Biology
     {
         
     }
