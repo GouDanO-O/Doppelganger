@@ -15,6 +15,8 @@ namespace GameFrame.Config
         public SkillTree skillTree;
     }
 
+    
+    
     /// <summary>
     /// 攻击数据配置
     /// </summary>
@@ -32,11 +34,12 @@ namespace GameFrame.Config
         public float attackDistance;
     }
 
+    
     public enum EAttackType
     {
-        None = -1,
+        None = 0,
         CloseAttack,
-        RemoteAttack
+        RemoteAttack,
     }
 }
 

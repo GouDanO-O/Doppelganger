@@ -35,8 +35,20 @@ namespace GameFrame.World
         public void Crouch();
     }
     
-    public abstract class MoveController :IBiology_Move,IBiology_Jump,IBiology_Crouch
+    public class MoveController :IBiology_Move,IBiology_Jump,IBiology_Crouch
     {
+        protected Biology owner;
+        
+        protected bool canJump = true;
+        
+        protected bool canDoubleJump = true;
+        
+        protected bool canCrouch = true;
+        
+        protected bool grounded = false;
+
+        protected Transform transfrom;
+        
         public float temSpeed { get; set; }
         
         public float walkSpeed { get; set; }
@@ -50,18 +62,11 @@ namespace GameFrame.World
         public float inAirMoveSpeed { get; set; }
         
         public float crouchSpeed { get; set; }
-        
-        protected bool canJump = true;
-        
-        protected bool canDoubleJump = true;
-        
-        protected bool canCrouch = true;
-        
-        protected bool grounded = false;
 
-        public void InitMovement()
+        public void InitMovement(Biology owner)
         {
-            
+            this.owner = owner;
+            this.transfrom = owner.transform;
         }
         
         public virtual void MoveControll()
