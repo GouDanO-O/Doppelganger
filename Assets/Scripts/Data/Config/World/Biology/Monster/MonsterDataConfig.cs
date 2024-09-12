@@ -12,7 +12,7 @@ namespace GameFrame.Config
 
         public SAttackData attackData;
         
-        
+        public SkillTree skillTree;
     }
 
     /// <summary>

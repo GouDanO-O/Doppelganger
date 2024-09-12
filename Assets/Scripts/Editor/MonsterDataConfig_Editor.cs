@@ -18,8 +18,6 @@ namespace GameFrame.Editors
             config.attackable = EditorGUILayout.Toggle("能否进行攻击", config.attackable);
             if (config.attackable)
             {
-         
-                
                 EditorGUILayout.LabelField("攻击设置", EditorStyles.boldLabel);
                 
                 config.attackData.attackType = (EAttackType)EditorGUILayout.EnumPopup("攻击类型", config.attackData.attackType);
@@ -42,6 +40,12 @@ namespace GameFrame.Editors
                         config.attackData.attackDistance = EditorGUILayout.FloatField("攻击距离", config.attackData.attackDistance);
                         break;
                 }
+            }
+            EditorGUILayout.Space(10);
+            config.skillTree = (SkillTree)EditorGUILayout.ObjectField("技能树配置", config.skillTree, typeof(SkillTree), false);
+            if (GUI.changed)
+            {
+                EditorUtility.SetDirty(config);
             }
         }
     }
