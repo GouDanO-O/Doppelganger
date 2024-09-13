@@ -8,6 +8,14 @@ namespace GameFrame.Config
     [CreateAssetMenu(fileName = "BiologyDataConfig", menuName = "配置/世界/基础生物配置")]
     public class BiologyDataConfig : WorldObjDataConfig
     {
+        public bool moveable;
+        
+        public SMoveData moveData;
+
+        public bool healthyable;
+        
+        public SHealthyData healthyData;
+        
         public bool dashable;
         
         public SDashData dashData;
@@ -19,6 +27,30 @@ namespace GameFrame.Config
         public bool crouchable;
         
         public SCrouchData crouchData;
+    }
+    
+    /// <summary>
+    /// 移动数据配置
+    /// </summary>
+    [Serializable]
+    public struct SMoveData
+    {
+        public float walkSpeed;
+        
+        public float runSpeed;
+    }
+
+    /// <summary>
+    /// 生命数据配置
+    /// </summary>
+    [Serializable]
+    public struct SHealthyData
+    {
+        public float maxHealth;
+        
+        public float maxArmor;
+
+        public float damageReductionRatio;
     }
     
     /// <summary>
