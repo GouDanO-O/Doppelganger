@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameFrame.Config;
 using UnityEngine;
 
 namespace GameFrame.World
@@ -37,7 +38,7 @@ namespace GameFrame.World
     
     public class MoveController :IBiology_Move,IBiology_Jump,IBiology_Crouch
     {
-        protected Biology owner;
+        protected WorldObj owner;
         
         protected bool canJump = true;
         
@@ -63,7 +64,7 @@ namespace GameFrame.World
         
         public float crouchSpeed { get; set; }
 
-        public void InitMovement(Biology owner)
+        public void InitMovement(WorldObj owner,SMoveData moveData)
         {
             this.owner = owner;
             this.transfrom = owner.transform;

@@ -14,8 +14,6 @@ namespace GameFrame.Config
         
         public SkillTree skillTree;
     }
-
-    
     
     /// <summary>
     /// 攻击数据配置

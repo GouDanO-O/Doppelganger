@@ -26,8 +26,6 @@ namespace GameFrame
 
             return string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
         }
-
-
     } 
 }
 

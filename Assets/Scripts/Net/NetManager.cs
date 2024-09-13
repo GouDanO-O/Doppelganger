@@ -34,6 +34,8 @@ namespace GameFrame.Net
 
         protected int heartDisconnectCount;
 
+        protected NetSpawner _netSpawner;
+
         public IArchitecture GetArchitecture()
         {
             return Main.Interface;
@@ -47,7 +49,23 @@ namespace GameFrame.Net
             normalTickTimeDeep=resourcesModel.NetDataConfig.NormalTickTimeDeep;
             longTickTimeDeep=resourcesModel.NetDataConfig.LongTickTimeDeep;
             heartDisconnectCount=resourcesModel.NetDataConfig.HeartDisconnectCount;
-        }        
+        }
+
+        public void StartHost()
+        {
+            
+        }
+
+        public void StartLocal()
+        {
+            
+        }
+
+        public void TryConnectHost()
+        {
+            
+        }
+        
         public void Execute()
         {
             TickCheck();

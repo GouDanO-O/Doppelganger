@@ -41,7 +41,7 @@ namespace GameFrame
                 stackTrace = stack;
                 type = logType;
                 count = 1; // 初始计数为1
-                time = DateTime.Now.ToString("HH:mm:ss"); // 记录日志生成的时间
+                time = DateTime.Now.ToString("HH:mm:ss"); // 记F录日志生成的时间
                 isExpanded = false; // 默认不展开
             }
         }
@@ -57,7 +57,8 @@ namespace GameFrame
             base.DeInitUtility();
             Application.logMessageReceived -= HandleLog;
         }
-
+        
+        
         // 处理日志
         private void HandleLog(string logString, string stackTrace, LogType type)
         {
