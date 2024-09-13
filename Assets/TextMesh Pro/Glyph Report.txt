@@ -1,0 +1,13 @@
+Font: SimHei  Style: Regular
+Point Size: 34   Padding: 0   SP/PD Ratio: 0.0%
+
+Characters included: 3958/3959
+Missing characters: 1
+Excluded characters: 0
+
+Characters missing from font file:
+----------------------------------------
+ID: 9	Hex: 9	Char [	]
+
+Characters excluded from packing:
+----------------------------------------
