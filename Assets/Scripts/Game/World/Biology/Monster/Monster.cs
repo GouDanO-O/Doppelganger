@@ -17,6 +17,7 @@ namespace GameFrame.World
         private void Awake()
         {
             InitData();
+            DontDestroyOnLoad(gameObject);
         }
 
         public override void InitData()
@@ -32,20 +33,59 @@ namespace GameFrame.World
                     Debug.Log("转换失败");
                     return;
                 }
-
-                InitComponents();
             }
             else
             {
-                Debug.LogError("MonsterDataConfig is not set!");
+                Debug.LogError("MonsterDataConfig没有设置");
             }
+            InitComponents();
         }
 
         protected override void InitComponents()
         {
+            if (monsterDataConfig)
+            {
+                InitMovement();
+                InitJump();
+                InitCrouch();
+                InitDash();
+            }
+        }
+
+        protected override void InitMovement()
+        {
             if (monsterDataConfig.moveable)
             {
-                
+                moveController = new MoveController();
+                moveController.InitMovement(this,monsterDataConfig.moveData);
+                this.RegisterEvent<SInputEvent_Move>(moveData =>
+                {
+                    moveController.Move(moveData);
+                });
+            }
+        }
+
+        protected override void InitJump()
+        {
+            if (monsterDataConfig.jumpable)
+            {
+                moveController.CanJump(monsterDataConfig.jumpData);
+            }
+        }
+
+        protected override void InitCrouch()
+        {
+            if (monsterDataConfig.crouchable)
+            {
+                moveController.CanCrouch(monsterDataConfig.crouchData);
+            }
+        }
+
+        protected override void InitDash()
+        {
+            if (monsterDataConfig.dashable)
+            {
+                moveController.CanDash(monsterDataConfig.dashData);
             }
         }
     }

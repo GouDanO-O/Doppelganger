@@ -16,6 +16,17 @@ namespace QAssetBundle
         public const string BundleName = "configs";
         public const string GameSettingConfig = "GameSettingConfig";
         public const string NetDataConfig = "NetDataConfig";
+        public const string SkillTree_01 = "SkillTree_01";
+        public const string SkillTree_02 = "SkillTree_02";
+        public const string Monster_Test = "Monster_Test";
+        public const string Scientist = "Scientist";
+        public const string Security = "Security";
+        public const string TestObj = "TestObj";
+    }
+    public class Player_inputactions
+    {
+        public const string BundleName = "player_inputactions";
+        public const string Player = "Player";
     }
     public class Ui_menupanel_prefab
     {

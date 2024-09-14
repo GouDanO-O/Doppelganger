@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem;
 using UnityEngine.U2D;
 
 namespace GameFrame
@@ -113,6 +114,26 @@ namespace GameFrame
             resLoader.LoadAsync();
         }
 
+        public void LoadInputActionAsset(string name, Action<InputActionAsset> action)
+        {
+            resLoader.Add2Load(name, (succeed, res) => {
+                if (succeed)
+                {
+                    InputActionAsset loadedObject = res.Asset as InputActionAsset;
+                    if (loadedObject != null)
+                    {
+                        action?.Invoke(loadedObject);
+                    }
+                }
+                else
+                {
+                    Debug.LogError($"加载错误:{name}");
+                }
+            });
+
+            resLoader.LoadAsync();
+        }
+        
 
         /// <summary>
         /// 加载Json

@@ -15,7 +15,7 @@ namespace GameFrame
         public UnityAction onFirstLoadComplete;
         public int loadedCount { get; private set; }
 
-        private int maxLoadCount = 2;
+        private int maxLoadCount = 3;
 
         ResoucesUtility loader;
 
@@ -40,6 +40,11 @@ namespace GameFrame
                 loader.LoadScriptObjAsync<NetDataConfig>(QAssetBundle.Configs.NetDataConfig, (data) =>
                 {
                     resourcesModel.NetDataConfig = data;
+                    InitialLoadCheck();
+                });
+                loader.LoadInputActionAsset(QAssetBundle.Player_inputactions.Player, (data) =>
+                {
+                    resourcesModel.InputActionAsset = data;
                     InitialLoadCheck();
                 });
             }

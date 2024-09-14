@@ -85,8 +85,8 @@ namespace GameFrame
             customFont = GetArchitecture().GetModel<ResourcesModel>().SettingConfig.customFont;
             NetManager.Instance.InitComponents();
             GetArchitecture().GetSystem<MultilingualManager>().InitLanguage();
+            GetArchitecture().GetSystem<InputManager>().InitActionAsset();
             EnterMenu();
-            
         }
 
         /// <summary>

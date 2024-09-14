@@ -38,6 +38,7 @@ namespace GameFrame
             this.RegisterSystem(new SceneLoader());
             this.RegisterSystem(new UISupervisor());
             this.RegisterSystem(new MultilingualManager());
+            this.RegisterSystem(new InputManager());
         }
 
         /// <summary>

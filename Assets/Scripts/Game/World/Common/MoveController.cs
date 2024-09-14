@@ -11,9 +11,9 @@ namespace GameFrame.World
         
         public float walkSpeed { get; set; }
         
-        public float sprintSpeed { get; set; }
+        public float runSpeed { get; set; }
 
-        public void Move();
+        public void Move(SInputEvent_Move inputEvent_Move);
     }
     
     public interface IBiology_Jump
@@ -23,6 +23,12 @@ namespace GameFrame.World
         public float jumpHeight { get; set; }
         
         public float inAirMoveSpeed { get; set; }
+        
+        public bool canDoubleJump { get; set; }
+        
+        public float doubleJumpDeepTime { get; set; }
+        
+        public float doubleJumpHeight { get; set; }
 
         public void Jump();
 
@@ -40,11 +46,9 @@ namespace GameFrame.World
     {
         protected WorldObj owner;
         
-        protected bool canJump = true;
+        protected bool canJump = false;
         
-        protected bool canDoubleJump = true;
-        
-        protected bool canCrouch = true;
+        protected bool canCrouch = false;
         
         protected bool grounded = false;
 
@@ -54,33 +58,59 @@ namespace GameFrame.World
         
         public float walkSpeed { get; set; }
         
-        public float sprintSpeed { get; set; }
+        public float runSpeed { get; set; }
         
         public float gravity { get; set; }
         
         public float jumpHeight { get; set; }
         
         public float inAirMoveSpeed { get; set; }
+         
+        public bool canDoubleJump { get; set; }
         
+        public float doubleJumpDeepTime { get; set; }
+        
+        public float doubleJumpHeight { get; set; }
+
         public float crouchSpeed { get; set; }
 
         public void InitMovement(WorldObj owner,SMoveData moveData)
         {
             this.owner = owner;
             this.transfrom = owner.transform;
+            this.walkSpeed = moveData.walkSpeed;
+            this.runSpeed = moveData.runSpeed;
+        }
+
+        public void CanJump(SJumpData jumpData)
+        {
+            this.canJump=true;
+            this.canDoubleJump=jumpData.canDoubleJump;
+            this.inAirMoveSpeed = jumpData.inAirMoveSpeed;
+            this.doubleJumpHeight= jumpData.doubleJumpHeight;
+            this.doubleJumpDeepTime = jumpData.doubleJumpDeepTime;  
+        }
+
+        public void CanCrouch(SCrouchData crouchData)
+        {
+            
+        }
+
+        public void CanDash(SDashData dashData)
+        {
+            
         }
         
         public virtual void MoveControll()
         {
-            Move();
             Jump();
             Crouch();
             GroundCheck();
         }
         
-        public virtual void Move()
+        public virtual void Move(SInputEvent_Move inputEvent_Move)
         {
-            
+            Debug.Log(inputEvent_Move.movement);
         }
         
         public virtual void Jump()
@@ -92,6 +122,11 @@ namespace GameFrame.World
                     
                 }
             }
+        }
+
+        protected virtual void DoubleJump()
+        {
+            
         }
 
         public virtual void GroundCheck()

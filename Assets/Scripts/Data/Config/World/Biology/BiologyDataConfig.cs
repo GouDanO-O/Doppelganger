@@ -73,7 +73,13 @@ namespace GameFrame.Config
     {
         public float jumpHeight;
         
+        public float inAirMoveSpeed;
+        
         public bool canDoubleJump;
+
+        public float doubleJumpDeepTime;
+
+        public float doubleJumpHeight;
     }
 
     /// <summary>
