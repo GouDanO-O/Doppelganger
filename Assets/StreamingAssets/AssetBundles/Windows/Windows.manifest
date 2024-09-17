@@ -1,16 +1,14 @@
 ManifestFileVersion: 0
-CRC: 767165987
+UnityVersion: 2023.2.20f1
+CRC: 2653555311
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: ui_menu_prefab
+      Name: configs
       Dependencies: {}
     Info_1:
-      Name: ui_loading_prefab
+      Name: ui_menupanel_prefab
       Dependencies: {}
     Info_2:
-      Name: ui_game_inspector_prefab
-      Dependencies: {}
-    Info_3:
-      Name: configs
+      Name: player_inputactions
       Dependencies: {}

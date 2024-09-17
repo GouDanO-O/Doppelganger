@@ -38,6 +38,11 @@ namespace GameFrame.Config
         public float walkSpeed;
         
         public float runSpeed;
+
+        public float rotateSpeed;
+
+
+        public Vector2 maxPitchAngle;
     }
 
     /// <summary>

@@ -1,34 +1,58 @@
 ManifestFileVersion: 0
-CRC: 1568764511
+UnityVersion: 2023.2.20f1
+CRC: 3098715343
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ae2d67873bbcb96f01356780374f1a41
+    Hash: 4597163ad8a96c5c5336277ac61b73fa
   TypeTreeHash:
     serializedVersion: 2
-    Hash: d83f3bbe7ba2fae5c160e1088a6f24ba
+    Hash: c19651a5cb522f5009e9790a4d5e2088
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: ae2d67873bbcb96f01356780374f1a41
+    Hash: 23cb98fa6741beb6eac24747906dda7f
 HashAppended: 0
 ClassTypes:
 - Class: 21
   Script: {instanceID: 0}
 - Class: 28
   Script: {instanceID: 0}
-- Class: 43
-  Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
 - Class: 114
-  Script: {fileID: 11500000, guid: 6f7fad3018aa09844b8dc1db3c7858a1, type: 3}
+  Script: {fileID: 11500000, guid: c09b7b433e0cde44e80e6ec14df35ee3, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8e14ff9e00feb80449b973f479864fd7, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3d04b29144c7d9245beec01b48dbd28e, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d73f0f4b7dec02344896f3c868f3532d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3ce770e190a621342887622f2b7234b1, type: 3}
 - Class: 115
+  Script: {instanceID: 0}
+- Class: 128
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers:
 - AssemblyName: Assembly-CSharp
-  ClassName: RimWorld.SMapRenderData
+  ClassName: GameFrame.Config.SAttackData
 - AssemblyName: Assembly-CSharp
-  ClassName: RimWorld.SVector2Int
+  ClassName: GameFrame.Config.SCrouchData
+- AssemblyName: Assembly-CSharp
+  ClassName: GameFrame.Config.SDashData
+- AssemblyName: Assembly-CSharp
+  ClassName: GameFrame.Config.SHealthyData
+- AssemblyName: Assembly-CSharp
+  ClassName: GameFrame.Config.SJumpData
+- AssemblyName: Assembly-CSharp
+  ClassName: GameFrame.Config.SMoveData
 Assets:
-- Assets/Res/Configs/MapData.asset
+- Assets/Res/Data/Configs/GameSettingConfig.asset
+- Assets/Res/Data/Configs/World/TestObj.asset
+- Assets/Res/Data/Configs/World/Biology/Security/Security.asset
+- Assets/Res/Data/Configs/Skill/SkillTree_02.asset
+- Assets/Res/Data/Configs/World/Biology/Scientist/Scientist.asset
+- Assets/Res/Data/Configs/Skill/SkillTree_01.asset
+- Assets/Res/Data/Configs/NetDataConfig.asset
+- Assets/Res/Data/Configs/World/Biology/Monster/Monster_Test.asset
 Dependencies: []

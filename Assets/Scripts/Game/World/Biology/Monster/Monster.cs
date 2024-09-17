@@ -14,12 +14,6 @@ namespace GameFrame.World
     {
         private MonsterDataConfig monsterDataConfig;
         
-        private void Awake()
-        {
-            InitData();
-            DontDestroyOnLoad(gameObject);
-        }
-
         public override void InitData()
         {
             if (thisDataConfig is MonsterDataConfig)
@@ -43,6 +37,7 @@ namespace GameFrame.World
 
         protected override void InitComponents()
         {
+            base.InitComponents();
             if (monsterDataConfig)
             {
                 InitMovement();
@@ -62,6 +57,10 @@ namespace GameFrame.World
                 {
                     moveController.Move(moveData);
                 });
+                this.RegisterEvent<SInputEvent_MouseDrag>(mouseData =>
+                {
+                    moveController.MouseRotate(mouseData);
+                });
             }
         }
 
@@ -70,6 +69,10 @@ namespace GameFrame.World
             if (monsterDataConfig.jumpable)
             {
                 moveController.CanJump(monsterDataConfig.jumpData);
+                this.RegisterEvent<SInputEvent_Jump>(moveData =>
+                {
+                    moveController.Jump();
+                });
             }
         }
 
@@ -78,6 +81,10 @@ namespace GameFrame.World
             if (monsterDataConfig.crouchable)
             {
                 moveController.CanCrouch(monsterDataConfig.crouchData);
+                this.RegisterEvent<SInputEvent_Crouch>(moveData =>
+                {
+                    moveController.Crouch();
+                });
             }
         }
 
@@ -86,6 +93,10 @@ namespace GameFrame.World
             if (monsterDataConfig.dashable)
             {
                 moveController.CanDash(monsterDataConfig.dashData);
+                this.RegisterEvent<SInputEvent_Dash>(moveData =>
+                {
+                    moveController.Dash();
+                });
             }
         }
     }

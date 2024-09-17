@@ -13,28 +13,33 @@ MonoBehaviour:
   m_Name: Monster_Test
   m_EditorClassIdentifier: 
   gravity: 0
+  thisPrefab: {fileID: 0}
   moveable: 1
   moveData:
-    walkSpeed: 0
-    runSpeed: 0
+    walkSpeed: 3
+    runSpeed: 5
+    rotateSpeed: 0.1
+    maxPitchAngle: {x: 40, y: 60}
   healthyable: 1
   healthyData:
-    maxHealth: 0
+    maxHealth: 100
     maxArmor: 0
     damageReductionRatio: 0
-  thisPrefab: {fileID: 0}
   dashable: 1
   dashData:
-    dashSpeed: 0
-    dashCD: 0
+    dashSpeed: 5
+    dashCD: 5
   jumpable: 1
   jumpData:
-    jumpHeight: 0
+    jumpHeight: 3
+    inAirMoveSpeed: 0
     canDoubleJump: 0
+    doubleJumpDeepTime: 0
+    doubleJumpHeight: 0
   crouchable: 1
   crouchData:
-    crouchSpeed: 0
-    crouchReduceRatio: 0
+    crouchSpeed: 2
+    crouchReduceRatio: 0.45
   attackable: 1
   attackData:
     basicDamage: 0

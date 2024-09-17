@@ -16,10 +16,15 @@ namespace GameFrame.World
     {
         public WorldObjDataConfig thisDataConfig;
         
-        protected MoveController moveController;
+        public MoveController moveController { get; set;}
         
-        protected NetworkRigidbody rigidbody;
-        
+        public Rigidbody rigidbody { get; set; }
+
+        private void Awake()
+        {
+            InitData();
+        }
+
         public IArchitecture GetArchitecture()
         {
             return Main.Interface;
@@ -33,13 +38,13 @@ namespace GameFrame.World
             }
             else
             {
-                Debug.LogError("MonsterDataConfig is not set!");
+                Debug.LogError("WorldObjDataConfig is not set!");
             }
         }
 
         protected virtual void InitComponents()
         {
-            
+            rigidbody = GetComponent<Rigidbody>();
         }
 
         protected virtual void InitMovement()

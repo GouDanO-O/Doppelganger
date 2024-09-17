@@ -145,11 +145,11 @@ namespace GameFrame
             {
                 curGameState = EGameState.Menu;
                 GetArchitecture().GetSystem<UISupervisor>().EnterMenu();
-                Debug.Log(111);
             }
             else if(sceneName == ESceneName.GameScene)
             {
                 curGameState = EGameState.Gaming;
+                GetArchitecture().GetSystem<UISupervisor>().EnterGame();
             }
             Debug.Log("加载场景结束");
         }

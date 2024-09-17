@@ -22,6 +22,8 @@ namespace GameFrame.Editors
                 EditorGUILayout.LabelField("移动设置", EditorStyles.boldLabel);
                 config.moveData.walkSpeed = EditorGUILayout.FloatField("行走速度", config.moveData.walkSpeed);
                 config.moveData.runSpeed = EditorGUILayout.FloatField("奔跑速度", config.moveData.runSpeed);
+                config.moveData.rotateSpeed = EditorGUILayout.FloatField("旋转速度", config.moveData.rotateSpeed);
+                config.moveData.maxPitchAngle = EditorGUILayout.Vector2Field("上下Pitch角", config.moveData.maxPitchAngle);
             }
 
             EditorGUILayout.Space(15);

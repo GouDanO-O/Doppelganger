@@ -29,7 +29,7 @@ namespace GameFrame.UI
         /// </summary>
         public void EnterGame()
         {
-            
+            UIKit.ClosePanel<UI_MenuPanel>();
         }
     }
 }

@@ -37,6 +37,7 @@ namespace GameFrame.World
 
         protected override void InitComponents()
         {
+            base.InitComponents();
             if (biologyDataConfig)
             {
                 InitMovement();
