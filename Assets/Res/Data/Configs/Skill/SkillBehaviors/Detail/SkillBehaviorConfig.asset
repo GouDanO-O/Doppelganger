@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: SkillBehaviorConfig
   m_EditorClassIdentifier: 
   damage: 2
+  description: "\u7ACB\u5373\u9020\u6210\u4F24\u5BB3"

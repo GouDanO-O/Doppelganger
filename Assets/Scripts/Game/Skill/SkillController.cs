@@ -99,14 +99,19 @@ namespace GameFrame.World
         protected List<SkillNodeDataConfig> Skill_Outside = new List<SkillNodeDataConfig>();
 
         /// <summary>
-        /// 可变变量--当发生改变时会自动调用订阅的事件
+        /// 当前玩家等级(可变变量--当发生改变时会自动调用订阅的事件
         /// </summary>
         public BindableProperty<int> curLevel { get; protected set; } = new BindableProperty<int>();
         
+        /// <summary>
+        /// 当前拥有的技能点数
+        /// </summary>
         public BindableProperty<int> curOwnedSkillPoint { get;protected set; } = new BindableProperty<int>();
         
+        /// <summary>
+        /// 当前拥有的技能
+        /// </summary>
         public BindableList<SOwnedSkill> curOwnedSkillNodes { get;protected set; } = new BindableList<SOwnedSkill>();
-        
         
         public IArchitecture GetArchitecture()
         {
@@ -133,8 +138,8 @@ namespace GameFrame.World
             for (int i = 0; i < Skill_Outside.Count; i++)
             {
                 if (Skill_Outside[i])
-                {
-                    SetSkill(Skill_Outside[i]);
+                {   
+                    GetSkill(Skill_Outside[i]);
                 }
             }
         }
@@ -144,7 +149,17 @@ namespace GameFrame.World
         /// </summary>
         protected void LevelUp()
         {
-            
+            curLevel.Value++;
+            AddSkillPoint(1);
+        }
+
+        /// <summary>
+        /// 增加技能点
+        /// </summary>
+        /// <param name="addCount"></param>
+        public void AddSkillPoint(int addCount)
+        {
+            this.curOwnedSkillPoint.Value += addCount;
         }
 
         /// <summary>
@@ -169,11 +184,12 @@ namespace GameFrame.World
         /// </summary>
         public void GetSkill(SkillNodeDataConfig skillNode)
         {
-            for (int i = 0; i < curOwnedSkillNodes.Count; i++)
+            int skillIndex = CheckHasSkill(skillNode);
+            if (skillIndex!=-1)
             {
-                if (curOwnedSkillNodes[i].CheckSkill(skillNode))
+                if (curOwnedSkillNodes[skillIndex].CheckSkill(skillNode))
                 {
-                    curOwnedSkillNodes[i].LevelUp();
+                    curOwnedSkillNodes[skillIndex].LevelUp();
                 }
                 else
                 {
@@ -183,14 +199,49 @@ namespace GameFrame.World
         }
         
         /// <summary>
-        /// 设置技能
+        /// 检查是否含有当前技能
         /// </summary>
         /// <param name="skillNode"></param>
-        protected void SetSkill(SkillNodeDataConfig skillNode)
+        /// <returns></returns>
+        protected int CheckHasSkill(SkillNodeDataConfig skillNode)
         {
-            if (skillNode.CompositeSkillBehaviorConfig)
+            int skills = -1;
+            for (int i = 0; i < curOwnedSkillNodes.Count; i++)
             {
-                skillNode.CompositeSkillBehaviorConfig.ExecuteSkill(this.gameObject,null,0);
+                if (curOwnedSkillNodes[i].CheckSkill(skillNode))
+                {
+                    skills=i;
+                    break;
+                }
+            }
+
+            return skills;
+        }
+        
+        /// <summary>
+        /// 检查是否满足技能的施法条件
+        /// </summary>
+        /// <returns></returns>
+        protected bool CheckIsSatisfySkill(SOwnedSkill skill)
+        {
+            if(CheckHasSkill(skill.skillNodeDataConfig)!=-1)
+                return true;
+            
+            
+            
+            
+            return false;
+        }   
+        
+        /// <summary>
+        /// 使用技能
+        /// </summary>
+        /// <param name="skillNode"></param>
+        protected void UseSkill(SOwnedSkill skill)
+        {
+            if (CheckIsSatisfySkill(skill))
+            {
+                skill.TriggerSkill(gameObject);
             }
         }
     }

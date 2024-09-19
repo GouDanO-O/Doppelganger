@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: SkillTree_01
   m_EditorClassIdentifier: 
   Skill_Inside: []
-  Skill_Outside: []
+  Skill_Outside:
+  - {fileID: 11400000, guid: 3800a6fdcad1c334bb82213f2c72c593, type: 2}

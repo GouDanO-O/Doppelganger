@@ -12,10 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97e64fa305f83434681a3520e4210b79, type: 3}
   m_Name: BasicSkill
   m_EditorClassIdentifier: 
+  SkillNodeType: 0
+  TriggerType: 0
   SkillID: 0
   SkillName: 
   SkillDescription: 
-  PrerequisiteSkills: []
   RequiredLevel: 0
   SkillPointsCost: 0
-  CompositeSkillBehaviorConfig: {fileID: 0}
+  PrerequisiteSkills: []
+  CompositeSkillBehaviorConfig: {fileID: 11400000, guid: 21419f770852fb8428b2481ee20745f6, type: 2}
+  SkillCooldown: 0
+  MaxLevel: 0
