@@ -6,7 +6,7 @@ namespace GameFrame.Config
 {
     public abstract class SkillBehaviorConfig : ScriptableObject
     {
-        public abstract void ExecuteSkill(GameObject user=null, GameObject target=null);
+        public abstract void ExecuteSkill(GameObject user=null, GameObject target=null,int triggerLevel=0);
     } 
 }
 

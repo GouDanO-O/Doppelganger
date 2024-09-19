@@ -6,11 +6,13 @@ using UnityEngine;
 namespace GameFrame.Skill
 {
     [CreateAssetMenu(fileName = "SkillBehaviorConfig", menuName = "配置/技能/行为/直接造成伤害")]
-    public class DamageSkillBehaviorConfig : SkillBehaviorConfig
+    public class DamageSkillBehaviorConfig_Strike : SkillBehaviorConfig
     {
         public int damage;
         
-        public override void ExecuteSkill(GameObject user, GameObject target)
+        public string description;
+        
+        public override void ExecuteSkill(GameObject user, GameObject target, int triggerLevel)
         {
             
         }

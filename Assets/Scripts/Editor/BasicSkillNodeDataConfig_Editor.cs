@@ -52,38 +52,40 @@
 //                 }
 //             };
 //         }
+//         
+//         
 //         public override void OnInspectorGUI()
 //         {
-//             // serializedObject.Update();
-//             // // 获取目标对象
-//             // BasicSkillNodeDataConfig config = (BasicSkillNodeDataConfig)target;
-//             //
-//             // // 显示技能ID
-//             // config.SkillID = EditorGUILayout.IntField("技能ID", config.SkillID);
-//             //
-//             // // 显示技能名称
-//             // config.SkillName = EditorGUILayout.TextField("技能名称", config.SkillName);
-//             //
-//             // // 显示技能描述
-//             // config.SkillDescription = EditorGUILayout.TextField("技能描述", config.SkillDescription);
-//             //
-//             // // 显示技能所需等级
-//             // config.RequiredLevel = EditorGUILayout.IntField("所需等级", config.RequiredLevel);
-//             //
-//             // // 显示解锁该技能所需的技能点数
-//             // config.SkillPointsCost = EditorGUILayout.IntField("所需技能点数", config.SkillPointsCost);
-//             //
-//             // foldout = EditorGUILayout.Foldout(foldout, "前置技能列表");
-//             // if (foldout)
-//             // {
-//             //     prerequisiteSkillList.DoLayoutList();
-//             // }
-//             //
-//             // if (GUI.changed)
-//             // {
-//             //     EditorUtility.SetDirty(config);
-//             // }
-//             // serializedObject.ApplyModifiedProperties();
+//             serializedObject.Update();
+//             // 获取目标对象
+//             BasicSkillNodeDataConfig config = (BasicSkillNodeDataConfig)target;
+//             
+//             // 显示技能ID
+//             config.SkillID = EditorGUILayout.IntField("技能ID", config.SkillID);
+//             
+//             // 显示技能名称
+//             config.SkillName = EditorGUILayout.TextField("技能名称", config.SkillName);
+//             
+//             // 显示技能描述
+//             config.SkillDescription = EditorGUILayout.TextField("技能描述", config.SkillDescription);
+//             
+//             // 显示技能所需等级
+//             config.RequiredLevel = EditorGUILayout.IntField("所需等级", config.RequiredLevel);
+//             
+//             // 显示解锁该技能所需的技能点数
+//             config.SkillPointsCost = EditorGUILayout.IntField("所需技能点数", config.SkillPointsCost);
+//             
+//             foldout = EditorGUILayout.Foldout(foldout, "前置技能列表");
+//             if (foldout)
+//             {
+//                 prerequisiteSkillList.DoLayoutList();
+//             }
+//             config.CompositeSkillBehaviorConfig = (CompositeSkillBehaviorConfig)EditorGUILayout.ObjectField("技能行为配置", config.CompositeSkillBehaviorConfig, typeof(CompositeSkillBehaviorConfig), false);
+//             if (GUI.changed)
+//             {
+//                 EditorUtility.SetDirty(config);
+//             }
+//             serializedObject.ApplyModifiedProperties();
 //         }
 //     }
 // }

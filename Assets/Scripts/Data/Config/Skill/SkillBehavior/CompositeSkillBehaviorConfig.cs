@@ -10,7 +10,7 @@ namespace GameFrame.Config
     {
         public List<SkillBehaviorConfig> SkillBehaviors;
         
-        public override void ExecuteSkill(GameObject user, GameObject target)
+        public override void ExecuteSkill(GameObject user, GameObject target, int triggerLevel)
         {
             foreach (var skillBehavior  in SkillBehaviors)
             {

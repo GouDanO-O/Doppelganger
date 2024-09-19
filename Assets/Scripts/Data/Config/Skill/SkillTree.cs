@@ -8,10 +8,10 @@ namespace GameFrame.Config
     public class SkillTree : ScriptableObject
     {
         [Header("局内技能树")]
-        public List<BasicSkillNodeDataConfig> Skill_Inside = new List<BasicSkillNodeDataConfig>();
+        public List<SkillNodeDataConfig> Skill_Inside = new List<SkillNodeDataConfig>();
         
         [Header("局外技能树")]
-        public List<BasicSkillNodeDataConfig> Skill_Outside = new List<BasicSkillNodeDataConfig>();
+        public List<SkillNodeDataConfig> Skill_Outside = new List<SkillNodeDataConfig>();
     }
 }
 

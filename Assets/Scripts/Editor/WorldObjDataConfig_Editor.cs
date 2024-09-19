@@ -11,6 +11,8 @@ namespace GameFrame.Editors
         {
             WorldObjDataConfig config = (WorldObjDataConfig)target;
 
+            config.thisPrefab = (GameObject)EditorGUILayout.ObjectField("预制体", config.thisPrefab, typeof(GameObject), false);
+            
             config.gravity = EditorGUILayout.FloatField("重力", config.gravity);
             
             EditorGUILayout.Space(15);
