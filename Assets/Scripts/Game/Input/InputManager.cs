@@ -9,7 +9,7 @@ namespace GameFrame
     public enum EInputType
     {
         Start,
-        Processing,
+        Performed,
         Cancel
     }
 
@@ -21,7 +21,7 @@ namespace GameFrame
 
     public struct SInputEvent_Run
     {
-        public EInputType runType;
+        
     }
 
     public struct SInputEvent_Jump
@@ -68,18 +68,16 @@ namespace GameFrame
     public struct SInputEvent_MouseDrag
     {
         public Vector2 mousePos;
-
-        public EInputType mouseDragType;
     }
 
     public struct SInputEvent_MouseLeftClick
     {
-        public EInputType mouseClcikType;
+        
     }
 
     public struct SInputEvent_MouseRightClick
     {
-        public EInputType mouseClcikType;
+        
     }
     #endregion
     public class InputManager : AbstractSystem
@@ -212,73 +210,66 @@ namespace GameFrame
         {
             if (moveAction != null)
             {
-                moveAction.performed += HandleMove;
+                moveAction.performed += HandleMove_Performed;
+                moveAction.canceled += HandleMove_Cancel;
             }
-
+            
             if (jumpAction != null)
             {
-                jumpAction.started += HandleJump;
+                jumpAction.performed += HandleJump;
             }
 
             if (crouchAction != null)
             {
-                crouchAction.started += HandleCrouch_Start;
-                crouchAction.performed += HandleCrouch_Processing;
+                crouchAction.performed += HandleCrouch_Performed;
                 crouchAction.canceled += HandleCrouch_Cancel;
             }
 
             if(dashAction != null)
             {
-                dashAction.started += HandleDash;
+                dashAction.performed += HandleDash;
             }
 
             if(runAction!= null)
             {
-                runAction.started += HandleRun_Start;
-                runAction.performed += HandleRun_Processing;
+                runAction.performed += HandleRun_Performed;
                 runAction.canceled += HandleRun_Cancel;
             }
 
 
             if(interactAction != null)
             {
-                interactAction.started += HandleInteract;
+                interactAction.performed += HandleInteract;
             }
 
             if (mapAction != null)
             {
-                mapAction.started += HandleMap;
+                mapAction.performed += HandleMap;
             }
 
             if (cancelAction != null)
             {
-                cancelAction.started += HandleCancel;
+                cancelAction.performed += HandleCancel;
             }
 
             if (packageAction != null)
             {
-                packageAction.started += HandlePackage;
+                packageAction.performed += HandlePackage;
             }
 
             if (mouseDrag != null)
             {
-                mouseDrag.started += HandleMouseDrag_Start;
-                mouseDrag.performed += HandleMouseDrag_Processing;
-                mouseDrag.canceled += HandleMouseDrag_Cancel;
+                mouseDrag.performed += HandleMouseDrag;
             }
 
             if (mouseLeftClick != null)
             {
-                mouseLeftClick.started += HandleMouseLeftClick_Start;
-                mouseLeftClick.performed += HandleMouseLeftClick_Processing;
-                mouseLeftClick.canceled += HandleMouseLeftClick_Cancel;
+                mouseLeftClick.performed += HandleMouseLeftClick;
             }
 
             if (mouseRightClick != null)
             {
-                mouseRightClick.started += HandleMouseRightClick_Start;
-                mouseRightClick.performed += HandleMouseRightClick_Processing;
-                mouseRightClick.canceled += HandleMouseRightClick_Cancel;
+                mouseRightClick.performed += HandleMouseRightClick;
             }
         }
         
@@ -289,82 +280,95 @@ namespace GameFrame
         {
             if (moveAction != null)
             {
-                moveAction.performed -= HandleMove;
+                moveAction.performed -= HandleMove_Performed;
+                moveAction.canceled -= HandleMove_Cancel;
             }
-
+            
             if (jumpAction != null)
             {
-                jumpAction.started -= HandleJump;
+                jumpAction.performed -= HandleJump;
             }
 
             if (crouchAction != null)
             {
-                crouchAction.started -= HandleCrouch_Start;
-                crouchAction.performed -= HandleCrouch_Processing;
+                crouchAction.performed -= HandleCrouch_Performed;
                 crouchAction.canceled -= HandleCrouch_Cancel;
             }
 
-            if (dashAction != null)
+            if(dashAction != null)
             {
-                dashAction.started -= HandleDash;
+                dashAction.performed -= HandleDash;
             }
 
-            if (runAction != null)
+            if(runAction!= null)
             {
-                runAction.started -= HandleRun_Start;
-                runAction.performed -= HandleRun_Processing;
+                runAction.performed -= HandleRun_Performed;
                 runAction.canceled -= HandleRun_Cancel;
             }
-            
-            if (interactAction != null)
+
+
+            if(interactAction != null)
             {
-                interactAction.started -= HandleInteract;
+                interactAction.performed -= HandleInteract;
             }
 
             if (mapAction != null)
             {
-                mapAction.started -= HandleMap;
+                mapAction.performed -= HandleMap;
             }
 
             if (cancelAction != null)
             {
-                cancelAction.started -= HandleCancel;
+                cancelAction.performed -= HandleCancel;
             }
 
             if (packageAction != null)
             {
-                packageAction.started -= HandlePackage;
+                packageAction.performed -= HandlePackage;
             }
 
             if (mouseDrag != null)
             {
-                mouseDrag.started -= HandleMouseDrag_Start;
-                mouseDrag.performed -= HandleMouseDrag_Processing;
-                mouseDrag.canceled -= HandleMouseDrag_Cancel;
+                mouseDrag.performed -= HandleMouseDrag;
             }
 
             if (mouseLeftClick != null)
             {
-                mouseLeftClick.started -= HandleMouseLeftClick_Start;
-                mouseLeftClick.performed -= HandleMouseLeftClick_Processing;
-                mouseLeftClick.canceled -= HandleMouseLeftClick_Cancel;
+                mouseLeftClick.performed -= HandleMouseLeftClick;
             }
 
             if (mouseRightClick != null)
             {
-                mouseRightClick.started -= HandleMouseRightClick_Start;
-                mouseRightClick.performed -= HandleMouseRightClick_Processing;
-                mouseRightClick.canceled -= HandleMouseRightClick_Cancel;
+                mouseRightClick.performed -= HandleMouseRightClick;
             }
         }
 
         #region Move
+
+        private Vector2 curMovement;
+        
+        public void MovementCheck()
+        {
+            if (curMovement != Vector2.zero)
+            {
+                this.SendEvent(new SInputEvent_Move { movement = curMovement });
+            }
+        }
+        
         /// <summary>
         /// 处理输入--移动
         /// </summary>
-        private void HandleMove(InputAction.CallbackContext context)
+        private void HandleMove_Performed(InputAction.CallbackContext context)
         {
-            this.SendEvent(new SInputEvent_Move { movement = context.ReadValue<Vector2>() });
+            curMovement = context.ReadValue<Vector2>();
+        }
+        
+        /// <summary>
+        /// 处理输入--移动
+        /// </summary>
+        private void HandleMove_Cancel(InputAction.CallbackContext context)
+        {
+            curMovement = Vector2.zero;
         }
 
         /// <summary>
@@ -374,21 +378,15 @@ namespace GameFrame
         {
             this.SendEvent<SInputEvent_Jump>();
         }
-
-        /// <summary>
-        /// 处理输入--下蹲--开始
-        /// </summary>
-        private void HandleCrouch_Start(InputAction.CallbackContext context)
-        {
-            this.SendEvent<SInputEvent_Crouch>(new SInputEvent_Crouch { crouchType= EInputType.Start});
-        }
+        
         /// <summary>
         /// 处理输入--下蹲--持续
         /// </summary>
-        private void HandleCrouch_Processing(InputAction.CallbackContext context)
+        private void HandleCrouch_Performed(InputAction.CallbackContext context)
         {
-            this.SendEvent<SInputEvent_Crouch>(new SInputEvent_Crouch { crouchType = EInputType.Processing });
+            this.SendEvent<SInputEvent_Crouch>(new SInputEvent_Crouch { crouchType = EInputType.Performed });
         }
+        
         /// <summary>
         /// 处理输入--下蹲--结束
         /// </summary>
@@ -407,30 +405,21 @@ namespace GameFrame
         }
 
         /// <summary>
-        /// 处理输入--奔跑--开始
-        /// </summary>
-        /// <param name="context"></param>
-        private void HandleRun_Start(InputAction.CallbackContext context)
-        {
-            this.SendEvent<SInputEvent_Run>(new SInputEvent_Run { runType=EInputType.Start});
-        }
-
-        /// <summary>
         /// 处理输入--奔跑--持续
         /// </summary>
         /// <param name="context"></param>
-        private void HandleRun_Processing(InputAction.CallbackContext context)
+        private void HandleRun_Performed(InputAction.CallbackContext context)
         {
-            this.SendEvent<SInputEvent_Run>(new SInputEvent_Run { runType = EInputType.Processing });
+            this.SendEvent<SInputEvent_Run>();
         }
-
+        
         /// <summary>
-        /// 处理输入--奔跑--结束
+        /// 处理输入--奔跑--取消
         /// </summary>
         /// <param name="context"></param>
         private void HandleRun_Cancel(InputAction.CallbackContext context)
         {
-            this.SendEvent<SInputEvent_Run>(new SInputEvent_Run { runType = EInputType.Cancel });
+            this.SendEvent<SInputEvent_Run>(); 
         }
 #endregion
 
@@ -486,76 +475,31 @@ namespace GameFrame
         {
 
         }
-        /// <summary>
-        /// 处理输入--鼠标移动--开始
-        /// </summary>
-        private void HandleMouseDrag_Start(InputAction.CallbackContext context)
-        {
-            this.SendEvent<SInputEvent_MouseDrag>(new SInputEvent_MouseDrag { mousePos=context.ReadValue<Vector2>(), mouseDragType=EInputType.Start});
-        }
+  
 
         /// <summary>
         /// 处理输入--鼠标移动--持续
         /// </summary>
-        private void HandleMouseDrag_Processing(InputAction.CallbackContext context)
+        private void HandleMouseDrag(InputAction.CallbackContext context)
         {
-            this.SendEvent<SInputEvent_MouseDrag>(new SInputEvent_MouseDrag { mousePos = context.ReadValue<Vector2>(), mouseDragType = EInputType.Processing });
+            this.SendEvent<SInputEvent_MouseDrag>(new SInputEvent_MouseDrag(){ mousePos = context.ReadValue<Vector2>()});
+        }
+        
+
+        /// <summary>
+        /// 处理输入--鼠标左键
+        /// </summary>
+        private void HandleMouseLeftClick(InputAction.CallbackContext context)
+        {
+            this.SendEvent<SInputEvent_MouseLeftClick>();
         }
 
         /// <summary>
-        /// 处理输入--鼠标移动--结束
+        /// 处理输入--鼠标右键
         /// </summary>
-        private void HandleMouseDrag_Cancel(InputAction.CallbackContext context)
+        private void HandleMouseRightClick(InputAction.CallbackContext context)
         {
-            this.SendEvent<SInputEvent_MouseDrag>(new SInputEvent_MouseDrag { mousePos = context.ReadValue<Vector2>(), mouseDragType = EInputType.Cancel });
-        }
-
-        /// <summary>
-        /// 处理输入--鼠标左键--开始
-        /// </summary>
-        private void HandleMouseLeftClick_Start(InputAction.CallbackContext context)
-        {
-            this.SendEvent<SInputEvent_MouseLeftClick>(new SInputEvent_MouseLeftClick { mouseClcikType = EInputType.Start });
-        }
-
-        /// <summary>
-        /// 处理输入--鼠标左键--持续
-        /// </summary>
-        private void HandleMouseLeftClick_Processing(InputAction.CallbackContext context)
-        {
-            this.SendEvent<SInputEvent_MouseLeftClick>(new SInputEvent_MouseLeftClick { mouseClcikType = EInputType.Processing });
-        }
-
-        /// <summary>
-        /// 处理输入--鼠标左键--结束
-        /// </summary>
-        private void HandleMouseLeftClick_Cancel(InputAction.CallbackContext context)
-        {
-            this.SendEvent<SInputEvent_MouseLeftClick>(new SInputEvent_MouseLeftClick { mouseClcikType = EInputType.Cancel });
-        }
-
-        /// <summary>
-        /// 处理输入--鼠标右键--开始
-        /// </summary>
-        private void HandleMouseRightClick_Start(InputAction.CallbackContext context)
-        {
-            this.SendEvent<SInputEvent_MouseRightClick>(new SInputEvent_MouseRightClick { mouseClcikType = EInputType.Start });
-        }
-
-        /// <summary>
-        /// 处理输入--鼠标右键--持续
-        /// </summary>
-        private void HandleMouseRightClick_Processing(InputAction.CallbackContext context)
-        {
-            this.SendEvent<SInputEvent_MouseRightClick>(new SInputEvent_MouseRightClick { mouseClcikType = EInputType.Processing });
-        }
-
-        /// <summary>
-        /// 处理输入--鼠标右键--结束
-        /// </summary>
-        private void HandleMouseRightClick_Cancel(InputAction.CallbackContext context)
-        {
-            this.SendEvent<SInputEvent_MouseRightClick>(new SInputEvent_MouseRightClick { mouseClcikType = EInputType.Cancel });
+            this.SendEvent<SInputEvent_MouseRightClick>();
         }
 
         #endregion

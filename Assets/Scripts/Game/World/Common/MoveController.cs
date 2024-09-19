@@ -160,25 +160,22 @@ namespace GameFrame.World
         public virtual void Move(SInputEvent_Move inputEvent_Move)
         {
             Vector3 input = new Vector3(inputEvent_Move.movement.x, 0, inputEvent_Move.movement.y);
-            Vector3 movement = cameraTransform.right * input.x + cameraTransform.forward * input.z;
+            Vector3 movement = transfrom.right * input.x + transfrom.forward * input.z;
             movement.y = 0;
             
-            Vector3 newPosition = rigidbody.position + movement.normalized * temSpeed * tickTime;
+            Vector3 newPosition = rigidbody.position + movement * (temSpeed * tickTime);
             rigidbody.MovePosition(newPosition);
         }
 
         public virtual void MouseRotate(SInputEvent_MouseDrag inputEvent_Mouse)
         {
-            if (inputEvent_Mouse.mouseDragType == EInputType.Processing)
-            {
-                Vector2 input = inputEvent_Mouse.mousePos;
-                float mouseX = input.x * mouseSensitivity * tickTime;
-                float mouseY = input.y * mouseSensitivity * tickTime;
-                transfrom.Rotate(Vector3.up * mouseX);
-                xRotation -= mouseY;
-                xRotation = Mathf.Clamp(xRotation, maxPitchAngle.x, maxPitchAngle.y);
-                headCameraRootTransfrom.DOLocalRotate(xRotation*Vector3.right, 0.5f);
-            }
+            Vector2 input = inputEvent_Mouse.mousePos;
+            float mouseX = input.x * mouseSensitivity * tickTime;
+            float mouseY = input.y * mouseSensitivity; 
+            rigidbody.DORotate(Vector3.up * mouseX,0.5f);
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, maxPitchAngle.x, maxPitchAngle.y);
+            headCameraRootTransfrom.DOLocalRotate(xRotation*Vector3.right, 0.5f);
         }
 
         /// <summary>

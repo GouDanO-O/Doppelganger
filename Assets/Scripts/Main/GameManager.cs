@@ -31,6 +31,8 @@ namespace GameFrame
         protected EGameState curGameState=EGameState.None;
 
         private ResourcesManager resourcesManager;
+
+        private InputManager inputManager;
         
         protected Font customFont;
 
@@ -56,6 +58,8 @@ namespace GameFrame
 
             resourcesManager = GetArchitecture().GetSystem<ResourcesManager>();
             resourcesManager.onFirstLoadComplete += LoadComplete;
+
+            inputManager = GetArchitecture().GetSystem<InputManager>();
             DontDestroyOnLoad(gameObject);
         }
 
@@ -87,6 +91,15 @@ namespace GameFrame
             GetArchitecture().GetSystem<MultilingualManager>().InitLanguage();
             GetArchitecture().GetSystem<InputManager>().InitActionAsset();
             EnterMenu();
+        }
+
+        private void FixedUpdate()
+        {
+            if (IsGaming())
+            {
+                inputManager.MovementCheck();
+            }
+
         }
 
         /// <summary>

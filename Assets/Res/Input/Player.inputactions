@@ -258,7 +258,7 @@
             "actions": [
                 {
                     "name": "MouseDrag",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "4144b938-8279-484f-9ccd-dce413a9d30a",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -288,7 +288,7 @@
                 {
                     "name": "",
                     "id": "688ba476-ee03-4f40-bf8e-a0831af1c026",
-                    "path": "<Mouse>/position",
+                    "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
