@@ -3,6 +3,7 @@ using GameFrame;
 using QFramework;
 using System.Collections;
 using System.Collections.Generic;
+using GameFrame.Config;
 using Unity.Jobs;
 using Unity.Netcode;
 using UnityEngine;
@@ -12,11 +13,15 @@ namespace GameFrame.Net
     /// <summary>
     /// 网络管理类
     /// </summary>
-    public class NetManager : MonoSingleton<NetManager>,IJob,IController
+    public class NetManager : MonoSingleton<NetManager>,IJob,IController,IUnRegisterList
     {
         public bool isLogin { get; private set; }
         
+        public bool isLocalGameMode { get; private set; }
+        
         public bool isConnecting { get; private set; }
+
+        public List<IUnRegister> UnregisterList { get; } = new List<IUnRegister>();
 
         private int curTickerCount=0;
         
@@ -43,29 +48,49 @@ namespace GameFrame.Net
 
         public void InitComponents()
         {
-            ResourcesModel resourcesModel = GetArchitecture().GetModel<ResourcesModel>();
-            TickTimer=resourcesModel.NetDataConfig.TickTime;
-            shortTickTimeDeep=resourcesModel.NetDataConfig.ShortTickTimeDeep;
-            normalTickTimeDeep=resourcesModel.NetDataConfig.NormalTickTimeDeep;
-            longTickTimeDeep=resourcesModel.NetDataConfig.LongTickTimeDeep;
-            heartDisconnectCount=resourcesModel.NetDataConfig.HeartDisconnectCount;
+            NetDataConfig netDataConfig = GetArchitecture().GetModel<ResourcesModel>().NetDataConfig;
+            TickTimer = netDataConfig.TickTime;
+            shortTickTimeDeep = netDataConfig.ShortTickTimeDeep;
+            normalTickTimeDeep = netDataConfig.NormalTickTimeDeep;
+            longTickTimeDeep = netDataConfig.LongTickTimeDeep;
+            heartDisconnectCount = netDataConfig.HeartDisconnectCount;
         }
 
+        /// <summary>
+        /// 开启主机模式
+        /// </summary>
         public void StartHost()
         {
-            
+            isLocalGameMode = false;
         }
 
+        /// <summary>
+        /// 开启客户端模式
+        /// </summary>
+        public void StartClient()
+        {
+            TryConnectHost();
+        }
+
+        /// <summary>
+        /// 开启本地模式
+        /// </summary>
         public void StartLocal()
         {
-            
+            isLocalGameMode = true;
         }
 
+        /// <summary>
+        /// 尝试链接主机
+        /// </summary>
         public void TryConnectHost()
         {
             
         }
         
+        /// <summary>
+        /// 处理Tick逻辑
+        /// </summary>
         public void Execute()
         {
             TickCheck();

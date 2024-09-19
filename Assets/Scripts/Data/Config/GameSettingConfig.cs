@@ -9,7 +9,9 @@ namespace GameFrame.Config
     public class GameSettingConfig : ScriptableObject
     {
         [Header("默认字体")]
-        public Font customFont; 
+        public Font CustomFont; 
+        
+        public float MouseSensitivity;
     }
 }
 

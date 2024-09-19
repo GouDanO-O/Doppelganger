@@ -18,8 +18,7 @@ MonoBehaviour:
   moveData:
     walkSpeed: 3
     runSpeed: 5
-    rotateSpeed: 0.1
-    maxPitchAngle: {x: 40, y: 60}
+    maxPitchAngle: {x: -40, y: 60}
   healthyable: 1
   healthyData:
     maxHealth: 100

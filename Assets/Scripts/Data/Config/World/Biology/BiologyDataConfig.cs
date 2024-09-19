@@ -11,10 +11,6 @@ namespace GameFrame.Config
         public bool moveable;
         
         public SMoveData moveData;
-
-        public bool healthyable;
-        
-        public SHealthyData healthyData;
         
         public bool dashable;
         
@@ -27,6 +23,7 @@ namespace GameFrame.Config
         public bool crouchable;
         
         public SCrouchData crouchData;
+        
     }
     
     /// <summary>
@@ -39,23 +36,7 @@ namespace GameFrame.Config
         
         public float runSpeed;
 
-        public float rotateSpeed;
-
-
         public Vector2 maxPitchAngle;
-    }
-
-    /// <summary>
-    /// 生命数据配置
-    /// </summary>
-    [Serializable]
-    public struct SHealthyData
-    {
-        public float maxHealth;
-        
-        public float maxArmor;
-
-        public float damageReductionRatio;
     }
     
     /// <summary>

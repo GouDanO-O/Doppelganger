@@ -162,11 +162,47 @@ namespace GameFrame
             this.mouseDrag = actionAsset.FindAction("MouseDrag");
             this.mouseLeftClick = actionAsset.FindAction("MouseLeftClick");
             this.mouseRightClick = actionAsset.FindAction("MouseRightClick");
-
-            PlayerMovementMap.Enable();
-            PlayerInteractMap.Enable();
-            PlayerMouseMap.Enable();
+            
+            CheckMoveMap(true);
+            CheckInteractMap(true);
+            CheckMouseMap(true);
             RegisterInputCallbacks();
+        }
+
+        public void CheckMoveMap(bool enable)
+        {
+            if (enable)
+            {
+                PlayerMovementMap.Enable();;
+            }
+            else
+            {
+                PlayerMovementMap.Disable();
+            }
+        }
+
+        public void CheckInteractMap(bool enable)
+        {
+            if (enable)
+            {
+                PlayerInteractMap.Enable();;
+            }
+            else
+            {
+                PlayerInteractMap.Disable();
+            }
+        }
+
+        public void CheckMouseMap(bool enable)
+        {
+            if (enable)
+            {
+                PlayerMouseMap.Enable();;
+            }
+            else
+            {
+                PlayerMouseMap.Disable();
+            }
         }
 
         /// <summary>
@@ -279,8 +315,7 @@ namespace GameFrame
                 runAction.performed -= HandleRun_Processing;
                 runAction.canceled -= HandleRun_Cancel;
             }
-
-
+            
             if (interactAction != null)
             {
                 interactAction.started -= HandleInteract;

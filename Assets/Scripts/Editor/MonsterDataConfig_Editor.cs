@@ -42,7 +42,7 @@ namespace GameFrame.Editors
                 }
             }
             EditorGUILayout.Space(10);
-            config.skillTree = (SkillTree)EditorGUILayout.ObjectField("技能树配置", config.skillTree, typeof(SkillTree), false);
+
             if (GUI.changed)
             {
                 EditorUtility.SetDirty(config);

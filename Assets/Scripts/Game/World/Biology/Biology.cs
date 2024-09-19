@@ -7,15 +7,13 @@ using UnityEngine;
 
 namespace GameFrame.World
 {
-    
-    
     public abstract class Biology : WorldObj
     {
-        protected HealthyController healthyController;
-        
         private BiologyDataConfig biologyDataConfig;
-
-        public override void InitData()
+        
+        public MoveController moveController { get; set;}
+        
+        public override void Init()
         {
             if (thisDataConfig is BiologyDataConfig)
             {
@@ -35,51 +33,40 @@ namespace GameFrame.World
             InitComponents();
         }
 
-        protected override void InitComponents()
+        protected override void InitConfig()
         {
-            base.InitComponents();
             if (biologyDataConfig)
             {
-                InitMovement();
-                InitJump();
-                InitCrouch();
-                InitDash();
+                InitHealthy();
+                InitSkill();
+            }
+        }
+        
+        protected override void InitHealthy()
+        {
+            if (biologyDataConfig.healthyable)
+            {
+                healthyController = new HealthyController();
+                healthyController.InitHealthyer(biologyDataConfig.healthyData);
+            }
+        }
+        
+        protected override void InitSkill()
+        {
+            if (biologyDataConfig.skillTree)
+            {
+                skillController=gameObject.AddComponent<SkillController>();
+                skillController.Init(biologyDataConfig.skillTree);
             }
         }
 
-        protected override void InitMovement()
-        {
-            if (biologyDataConfig.moveable)
-            {
-                moveController = new MoveController();
-                moveController.InitMovement(this,biologyDataConfig.moveData);
-            }
-            
-        }
+        protected abstract void InitMovement();
 
-        protected override void InitJump()
-        {
-            if (biologyDataConfig.jumpable)
-            {
-                moveController.CanJump(biologyDataConfig.jumpData);
-            }
-        }
+        protected abstract void InitJump();
 
-        protected override void InitCrouch()
-        {
-            if (biologyDataConfig.crouchable)
-            {
-                moveController.CanCrouch(biologyDataConfig.crouchData);
-            }
-        }
+        protected abstract void InitCrouch();
 
-        protected override void InitDash()
-        {
-            if (biologyDataConfig.dashable)
-            {
-                moveController.CanDash(biologyDataConfig.dashData);
-            }
-        }
+        protected abstract void InitDash();
     }
 }
 

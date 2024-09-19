@@ -18,6 +18,8 @@ namespace GameFrame.Config
         public int RequiredLevel;
 
         public int SkillPointsCost;
+        
+        public CompositeSkillBehaviorConfig CompositeSkillBehaviorConfig;
     }
 }
 

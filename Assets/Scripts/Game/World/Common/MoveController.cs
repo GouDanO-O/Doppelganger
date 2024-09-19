@@ -16,7 +16,7 @@ namespace GameFrame.World
         
         public float runSpeed { get; set; }
 
-        public float rotateSpeed { get; set; }
+        public float mouseSensitivity { get; set; }
 
         public Vector2 maxPitchAngle { get; set; }
 
@@ -60,7 +60,11 @@ namespace GameFrame.World
         protected bool grounded = false;
 
         protected Transform transfrom;
+        
+        protected Transform cameraTransform;
 
+        protected Transform headCameraRootTransfrom;
+        
         protected Rigidbody rigidbody;
         
         public float temSpeed { get; set; }
@@ -69,7 +73,7 @@ namespace GameFrame.World
         
         public float runSpeed { get; set; }
 
-        public float rotateSpeed { get; set; }
+        public float mouseSensitivity { get; set; }
 
         public Vector2 maxPitchAngle { get; set; }
 
@@ -90,22 +94,38 @@ namespace GameFrame.World
         public float tickTime { get; set; }
 
         protected float xRotation;
+        
+        protected int curJumpCount = 0;
 
+        protected float curDoubleJumpDeepTime = 0;
+
+        /// <summary>
+        /// 初始化移动
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <param name="moveData"></param>
         public void InitMovement(WorldObj owner,SMoveData moveData)
         {
             this.owner = owner;
             this.transfrom = owner.transform;
+            this.headCameraRootTransfrom = owner.headCameraRootTransfrom;
             this.walkSpeed = moveData.walkSpeed;
             this.runSpeed = moveData.runSpeed;
-            this.rotateSpeed=moveData.rotateSpeed;
+     
             this.maxPitchAngle = moveData.maxPitchAngle;
 
             this.temSpeed = this.walkSpeed;
-           
+            this.cameraTransform=Camera.main.transform;
             this.rigidbody = owner.rigidbody;
-            this.tickTime=owner.GetModel<ResourcesModel>().NetDataConfig.TickTime;
+            ResourcesModel resModel = owner.GetModel<ResourcesModel>();
+            this.mouseSensitivity = resModel.SettingConfig.MouseSensitivity;
+            this.tickTime = resModel.NetDataConfig.TickTime;
         }
 
+        /// <summary>
+        /// 跳跃初始化
+        /// </summary>
+        /// <param name="jumpData"></param>
         public void CanJump(SJumpData jumpData)
         {
             this.canJump=true;
@@ -115,30 +135,36 @@ namespace GameFrame.World
             this.doubleJumpDeepTime = jumpData.doubleJumpDeepTime;  
         }
 
+        /// <summary>
+        /// 蹲伏初始化
+        /// </summary>
+        /// <param name="crouchData"></param>
         public void CanCrouch(SCrouchData crouchData)
         {
             
         }
 
+        /// <summary>
+        /// 闪烁初始化
+        /// </summary>
+        /// <param name="dashData"></param>
         public void CanDash(SDashData dashData)
         {
             
         }
         
-        public virtual void MoveControll()
-        {
-            Jump();
-            Crouch();
-            GroundCheck();
-        }
-        
+        /// <summary>
+        /// 移动
+        /// </summary>
+        /// <param name="inputEvent_Move"></param>
         public virtual void Move(SInputEvent_Move inputEvent_Move)
         {
             Vector3 input = new Vector3(inputEvent_Move.movement.x, 0, inputEvent_Move.movement.y);
-
-            Vector3 movement = transfrom.right * input.x + transfrom.forward * input.z;
-
-            rigidbody.DOMove(movement, temSpeed * tickTime);
+            Vector3 movement = cameraTransform.right * input.x + cameraTransform.forward * input.z;
+            movement.y = 0;
+            
+            Vector3 newPosition = rigidbody.position + movement.normalized * temSpeed * tickTime;
+            rigidbody.MovePosition(newPosition);
         }
 
         public virtual void MouseRotate(SInputEvent_MouseDrag inputEvent_Mouse)
@@ -146,36 +172,66 @@ namespace GameFrame.World
             if (inputEvent_Mouse.mouseDragType == EInputType.Processing)
             {
                 Vector2 input = inputEvent_Mouse.mousePos;
-                float mouseX = input.x * rotateSpeed * tickTime;
-                float mouseY = input.y * tickTime;
+                float mouseX = input.x * mouseSensitivity * tickTime;
+                float mouseY = input.y * mouseSensitivity * tickTime;
                 transfrom.Rotate(Vector3.up * mouseX);
-
                 xRotation -= mouseY;
                 xRotation = Mathf.Clamp(xRotation, maxPitchAngle.x, maxPitchAngle.y);
+                headCameraRootTransfrom.DOLocalRotate(xRotation*Vector3.right, 0.5f);
             }
         }
 
-        public virtual void Jump()
+        /// <summary>
+        /// 跳跃检测
+        /// </summary>
+        public virtual void JumpCheck()
         {
             if (canJump)
             {
-                if (grounded)
+                if (curJumpCount<2)
                 {
-                    
+                    if (canDoubleJump && curJumpCount==1 && curDoubleJumpDeepTime>=doubleJumpDeepTime)
+                    {
+                        Jump();
+                    }
+                    else
+                    {
+                        Jump();
+                        curJumpCount++;
+                        Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(DoubleJumpTimeCheck());
+                    }
                 }
             }
         }
 
-        protected virtual void DoubleJump()
+        IEnumerator DoubleJumpTimeCheck()
+        {
+            curDoubleJumpDeepTime = 0;
+            yield return new WaitForSeconds(doubleJumpDeepTime);
+            curDoubleJumpDeepTime = doubleJumpDeepTime;
+        }
+        
+        /// <summary>
+        /// 跳跃
+        /// </summary>
+        public virtual void Jump()
         {
             
         }
 
+        /// <summary>
+        /// 着地检测
+        /// </summary>
         public virtual void GroundCheck()
         {
             grounded = true;
+            curJumpCount = 0;
+            curDoubleJumpDeepTime = 0;
         }
         
+        /// <summary>
+        /// 蹲伏
+        /// </summary>
         public virtual void Crouch()
         {
             if (canCrouch)
@@ -184,6 +240,9 @@ namespace GameFrame.World
             }
         }
 
+        /// <summary>
+        /// 闪烁
+        /// </summary>
         public virtual void Dash()
         {
 

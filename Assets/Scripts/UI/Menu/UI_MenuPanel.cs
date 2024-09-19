@@ -1,3 +1,4 @@
+using GameFrame.Net;
 using UnityEngine;
 using UnityEngine.UI;
 using QFramework;
@@ -47,6 +48,7 @@ namespace GameFrame.UI
 		protected void TryStartGame()
 		{
 			GameManager.Instance.StartGame();
+			NetManager.Instance.StartLocal();
 		}
 	}
 }

@@ -6,8 +6,10 @@ using UnityEngine;
 
 namespace GameFrame.World
 {
-    public class CameraController : MonoBehaviour, IController
+    public class CameraController : MonoBehaviour, IController,IUnRegisterList
     {
+        public List<IUnRegister> UnregisterList { get; } = new List<IUnRegister>();
+
         public IArchitecture GetArchitecture()
         {
             return Main.Interface;
@@ -17,19 +19,34 @@ namespace GameFrame.World
 
         private void Start()
         {
-            virtualCamera=GetComponent<CinemachineVirtualCamera>();
+            Init();
+        }
+
+        public void Init()
+        {
+            virtualCamera = GetComponent<CinemachineVirtualCamera>();
             this.RegisterEvent<SInputEvent_MouseDrag>(mouseData =>
             {
                 MouseDrag(mouseData);
-            });
+            }).AddToUnregisterList(this);
             this.RegisterEvent<SInputEvent_MouseLeftClick>(mouseData =>
             {
                 LeftMouseClick(mouseData);
-            });
+            }).AddToUnregisterList(this);
             this.RegisterEvent<SInputEvent_MouseRightClick>(mouseData =>
             {
                 RightMouseClick(mouseData);
-            });
+            }).AddToUnregisterList(this);
+        }
+
+        private void OnDestroy()
+        {
+            DeInit();
+        }
+
+        public void DeInit()
+        {
+            this.UnRegisterAll(); 
         }
 
         private void MouseDrag(SInputEvent_MouseDrag dragData)
@@ -46,6 +63,8 @@ namespace GameFrame.World
         {
 
         }
+
+
     }
 }
 

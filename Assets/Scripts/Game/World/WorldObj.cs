@@ -12,17 +12,23 @@ using Unity.Netcode.Components;
 namespace GameFrame.World
 {
     
-    public partial class WorldObj : NetworkBehaviour,IController
+    public abstract class WorldObj : NetworkBehaviour,IController,IUnRegisterList
     {
         public WorldObjDataConfig thisDataConfig;
         
-        public MoveController moveController { get; set;}
+        public HealthyController healthyController { get;protected set; }
         
         public Rigidbody rigidbody { get; set; }
+        
+        public Transform headCameraRootTransfrom { get; set; }
 
+        public List<IUnRegister> UnregisterList { get; } = new List<IUnRegister>();
+        
+        public SkillController skillController { get;protected set; }
+        
         private void Awake()
         {
-            InitData();
+            Init();
         }
 
         public IArchitecture GetArchitecture()
@@ -30,7 +36,10 @@ namespace GameFrame.World
             return Main.Interface;
         }
 
-        public virtual void InitData()
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        public virtual void Init()
         {
             if (thisDataConfig is WorldObjDataConfig)
             {
@@ -42,32 +51,60 @@ namespace GameFrame.World
             }
         }
 
+        /// <summary>
+        /// 注销
+        /// </summary>
+        public virtual void DeInit()
+        {
+            this.UnRegisterAll();
+        }
+
+        /// <summary>
+        /// 初始化组件
+        /// </summary>
         protected virtual void InitComponents()
         {
             rigidbody = GetComponent<Rigidbody>();
+            headCameraRootTransfrom = transform.Find("CameraRoot/HeadRoot");
+            InitConfig();
         }
 
-        protected virtual void InitMovement()
+        /// <summary>
+        /// 初始化配置
+        /// </summary>
+        protected virtual void InitConfig()
         {
-
+            if (thisDataConfig)
+            {
+                InitHealthy();
+                InitSkill();
+            }
         }
 
-        protected virtual void InitJump()
+        /// <summary>
+        /// 初始化生命
+        /// </summary>
+        protected virtual void InitHealthy()
         {
-            
+            if (thisDataConfig.healthyable)
+            {
+                healthyController = new HealthyController();
+                healthyController.InitHealthyer(thisDataConfig.healthyData);
+            }
         }
 
-        protected virtual void InitCrouch()
+        /// <summary>
+        /// 初始化技能
+        /// </summary>
+        protected virtual void InitSkill()
         {
-            
+            if (thisDataConfig.skillTree)
+            {
+                skillController=gameObject.AddComponent<SkillController>();
+                skillController.Init(thisDataConfig.skillTree);
+            }
         }
-
-        protected virtual void InitDash()
-        {
-            
-        }
-
-
+        
         protected virtual void CollisionEnter(Collision other)
         {
             
@@ -83,22 +120,20 @@ namespace GameFrame.World
             
         }
         
-        private void OnCollisionEnter(Collision other)
+        protected void OnCollisionEnter(Collision other)
         {
             CollisionEnter(other);
         }
 
-        private void OnCollisionStay(Collision other)
+        protected void OnCollisionStay(Collision other)
         {
             CollisionStay(other);
         }
         
-        private void OnCollisionExit(Collision other)
+        protected void OnCollisionExit(Collision other)
         {
             CollisionExit(other);
         }
-
-
     }
 }
 

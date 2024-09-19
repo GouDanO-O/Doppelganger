@@ -469,6 +469,14 @@ namespace QFramework
         public static void AddToUnregisterList(this IUnRegister self, IUnRegisterList unRegisterList) =>
             unRegisterList.UnregisterList.Add(self);
 
+        public static void UnRegister(this IUnRegister unRegister, IUnRegisterList unRegisterList)
+        {
+            if (unRegisterList.UnregisterList.Contains(unRegister))
+            {
+                unRegisterList.UnregisterList.Remove(unRegister);
+            }
+        }
+        
         public static void UnRegisterAll(this IUnRegisterList self)
         {
             foreach (var unRegister in self.UnregisterList)

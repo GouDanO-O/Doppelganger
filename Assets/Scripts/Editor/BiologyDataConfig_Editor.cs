@@ -22,19 +22,11 @@ namespace GameFrame.Editors
                 EditorGUILayout.LabelField("移动设置", EditorStyles.boldLabel);
                 config.moveData.walkSpeed = EditorGUILayout.FloatField("行走速度", config.moveData.walkSpeed);
                 config.moveData.runSpeed = EditorGUILayout.FloatField("奔跑速度", config.moveData.runSpeed);
-                config.moveData.rotateSpeed = EditorGUILayout.FloatField("旋转速度", config.moveData.rotateSpeed);
                 config.moveData.maxPitchAngle = EditorGUILayout.Vector2Field("上下Pitch角", config.moveData.maxPitchAngle);
             }
 
             EditorGUILayout.Space(15);
-            config.healthyable = EditorGUILayout.Toggle("是否有生命值", config.healthyable);
-            if (config.healthyable)
-            {
-                EditorGUILayout.LabelField("生命设置", EditorStyles.boldLabel);
-                config.healthyData.maxHealth = EditorGUILayout.FloatField("最大生命值", config.healthyData.maxHealth);
-                config.healthyData.maxArmor = EditorGUILayout.FloatField("最大护甲值", config.healthyData.maxArmor);
-                config.healthyData.damageReductionRatio = EditorGUILayout.FloatField("伤害减免比例", config.healthyData.damageReductionRatio);
-            }
+
             
             config.dashable = EditorGUILayout.Toggle("是否可冲刺", config.dashable);
             if (config.dashable)
@@ -64,6 +56,8 @@ namespace GameFrame.Editors
                 config.crouchData.crouchReduceRatio = EditorGUILayout.FloatField("身高缩减比例", config.crouchData.crouchReduceRatio);
             }
             
+            EditorGUILayout.Space(15);
+            config.skillTree = (SkillTree)EditorGUILayout.ObjectField("技能树配置", config.skillTree, typeof(SkillTree), false);
             // 保存更改
             if (GUI.changed)
             {

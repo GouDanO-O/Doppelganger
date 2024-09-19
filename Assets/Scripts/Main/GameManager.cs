@@ -82,7 +82,7 @@ namespace GameFrame
         /// </summary>
         private void LoadComplete()
         {
-            customFont = GetArchitecture().GetModel<ResourcesModel>().SettingConfig.customFont;
+            customFont = GetArchitecture().GetModel<ResourcesModel>().SettingConfig.CustomFont;
             NetManager.Instance.InitComponents();
             GetArchitecture().GetSystem<MultilingualManager>().InitLanguage();
             GetArchitecture().GetSystem<InputManager>().InitActionAsset();

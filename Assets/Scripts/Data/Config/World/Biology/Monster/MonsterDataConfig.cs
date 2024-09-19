@@ -11,8 +11,6 @@ namespace GameFrame.Config
         public bool attackable;
 
         public SAttackData attackData;
-        
-        public SkillTree skillTree;
     }
     
     /// <summary>

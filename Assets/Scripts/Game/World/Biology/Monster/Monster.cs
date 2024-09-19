@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using GameFrame.Config;
+using GameFrame.Net;
 using QFramework;
 using UnityEngine;
 
@@ -13,8 +14,8 @@ namespace GameFrame.World
     public class Monster : Biology
     {
         private MonsterDataConfig monsterDataConfig;
-        
-        public override void InitData()
+
+        public override void Init()
         {
             if (thisDataConfig is MonsterDataConfig)
             {
@@ -35,18 +36,31 @@ namespace GameFrame.World
             InitComponents();
         }
 
-        protected override void InitComponents()
+        protected override void InitConfig()
         {
-            base.InitComponents();
             if (monsterDataConfig)
             {
-                InitMovement();
-                InitJump();
-                InitCrouch();
-                InitDash();
+                if (this.IsOwner || NetManager.Instance.isLocalGameMode)
+                {
+                    InitMovement();
+                    InitJump();
+                    InitCrouch();
+                    InitDash();
+                }
+                InitHealthy();
+                InitSkill();
             }
         }
 
+        protected override void InitHealthy()
+        {
+            if (monsterDataConfig.healthyable)
+            {
+                healthyController = new HealthyController();
+                healthyController.InitHealthyer(monsterDataConfig.healthyData);
+            }
+        }
+        
         protected override void InitMovement()
         {
             if (monsterDataConfig.moveable)
@@ -56,11 +70,11 @@ namespace GameFrame.World
                 this.RegisterEvent<SInputEvent_Move>(moveData =>
                 {
                     moveController.Move(moveData);
-                });
+                }).AddToUnregisterList(this);
                 this.RegisterEvent<SInputEvent_MouseDrag>(mouseData =>
                 {
                     moveController.MouseRotate(mouseData);
-                });
+                }).AddToUnregisterList(this);
             }
         }
 
@@ -71,8 +85,8 @@ namespace GameFrame.World
                 moveController.CanJump(monsterDataConfig.jumpData);
                 this.RegisterEvent<SInputEvent_Jump>(moveData =>
                 {
-                    moveController.Jump();
-                });
+                    moveController.JumpCheck();
+                }).AddToUnregisterList(this);
             }
         }
 
@@ -84,7 +98,7 @@ namespace GameFrame.World
                 this.RegisterEvent<SInputEvent_Crouch>(moveData =>
                 {
                     moveController.Crouch();
-                });
+                }).AddToUnregisterList(this);
             }
         }
 
@@ -96,7 +110,16 @@ namespace GameFrame.World
                 this.RegisterEvent<SInputEvent_Dash>(moveData =>
                 {
                     moveController.Dash();
-                });
+                }).AddToUnregisterList(this);
+            }
+        }
+
+        protected override void InitSkill()
+        {
+            if (monsterDataConfig.skillTree)
+            {
+                skillController=gameObject.AddComponent<SkillController>();
+                skillController.Init(monsterDataConfig.skillTree);
             }
         }
     }
