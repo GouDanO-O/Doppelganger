@@ -75,6 +75,10 @@ namespace GameFrame.World
                 {
                     moveController.MouseRotate(mouseData);
                 }).AddToUnregisterList(this);
+                this.RegisterEvent<SInputEvent_Run>(moveData =>
+                {
+                    moveController.Running(moveData);
+                });
             }
         }
 
@@ -82,7 +86,7 @@ namespace GameFrame.World
         {
             if (monsterDataConfig.jumpable)
             {
-                moveController.CanJump(monsterDataConfig.jumpData);
+                moveController.InitJump(monsterDataConfig.jumpData);
                 this.RegisterEvent<SInputEvent_Jump>(moveData =>
                 {
                     moveController.JumpCheck();
@@ -94,10 +98,10 @@ namespace GameFrame.World
         {
             if (monsterDataConfig.crouchable)
             {
-                moveController.CanCrouch(monsterDataConfig.crouchData);
+                moveController.InitCrouch(monsterDataConfig.crouchData);
                 this.RegisterEvent<SInputEvent_Crouch>(moveData =>
                 {
-                    moveController.Crouch();
+                    moveController.CrouchCheck(moveData);
                 }).AddToUnregisterList(this);
             }
         }
@@ -106,10 +110,10 @@ namespace GameFrame.World
         {
             if (monsterDataConfig.dashable)
             {
-                moveController.CanDash(monsterDataConfig.dashData);
+                moveController.InitDash(monsterDataConfig.dashData);
                 this.RegisterEvent<SInputEvent_Dash>(moveData =>
                 {
-                    moveController.Dash();
+                    moveController.DashCheck();
                 }).AddToUnregisterList(this);
             }
         }

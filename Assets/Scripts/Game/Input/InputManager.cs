@@ -8,7 +8,6 @@ namespace GameFrame
 {
     public enum EInputType
     {
-        Start,
         Performed,
         Cancel
     }
@@ -21,7 +20,7 @@ namespace GameFrame
 
     public struct SInputEvent_Run
     {
-        
+        public EInputType runType;
     }
 
     public struct SInputEvent_Jump
