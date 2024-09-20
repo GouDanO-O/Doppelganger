@@ -100,8 +100,8 @@ namespace GameFrame.World
         {
             if (thisDataConfig.skillTree)
             {
-                skillController=gameObject.AddComponent<SkillController>();
-                skillController.Init(thisDataConfig.skillTree);
+                skillController=new SkillController();
+                skillController.Init(thisDataConfig.skillTree,this);
             }
         }
         

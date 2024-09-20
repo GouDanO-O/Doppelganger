@@ -55,8 +55,8 @@ namespace GameFrame.World
         {
             if (biologyDataConfig.skillTree)
             {
-                skillController=gameObject.AddComponent<SkillController>();
-                skillController.Init(biologyDataConfig.skillTree);
+                skillController = new SkillController();
+                skillController.Init(biologyDataConfig.skillTree,this);
             }
         }
 

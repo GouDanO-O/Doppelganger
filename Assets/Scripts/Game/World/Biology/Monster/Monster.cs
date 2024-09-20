@@ -118,8 +118,8 @@ namespace GameFrame.World
         {
             if (monsterDataConfig.skillTree)
             {
-                skillController=gameObject.AddComponent<SkillController>();
-                skillController.Init(monsterDataConfig.skillTree);
+                skillController = new SkillController();
+                skillController.Init(monsterDataConfig.skillTree,this);
             }
         }
     }

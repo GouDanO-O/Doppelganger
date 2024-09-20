@@ -38,11 +38,10 @@ namespace GameFrame.World
         /// <summary>
         /// 触发技能
         /// </summary>
-        public void TriggerSkill(GameObject owner=null,GameObject target=null)
+        public void TriggerSkill(WorldObj owner=null,WorldObj target=null)
         {
             if (IsSkillReady())
             {
-                this.skillNodeDataConfig.CompositeSkillBehaviorConfig.ExecuteSkill(owner,target,curLevel);
                 lastSkillUseTime = Time.time;
                 willEndTime = lastSkillUseTime + skillCooldown;
             }
@@ -71,11 +70,10 @@ namespace GameFrame.World
             {
                 curLevel = maxLevel;
             }
-            skillNodeDataConfig.LevelUp(curLevel);
         }   
         
         /// <summary>
-        /// 升级
+        /// 检测是否是相同技能
         /// </summary>
         /// <param name="skillNodeDataConfig"></param>
         /// <returns></returns>
@@ -92,8 +90,10 @@ namespace GameFrame.World
         }
     }
     
-    public class SkillController : MonoBehaviour,IController
+    public class SkillController : IController
     {
+        public WorldObj owner;
+        
         protected List<SkillNodeDataConfig> Skill_Inside = new List<SkillNodeDataConfig>();
         
         protected List<SkillNodeDataConfig> Skill_Outside = new List<SkillNodeDataConfig>();
@@ -113,6 +113,16 @@ namespace GameFrame.World
         /// </summary>
         public BindableList<SOwnedSkill> curOwnedSkillNodes { get;protected set; } = new BindableList<SOwnedSkill>();
         
+        /// <summary>
+        /// 主动技能
+        /// </summary>
+        public BindableDictionary<int, SOwnedSkill> curOwnedSkills_Initiative { get;protected set; } = new BindableDictionary<int, SOwnedSkill>();
+        
+        /// <summary>
+        /// 被动技能
+        /// </summary>
+        public BindableList<SOwnedSkill> curOwnedSkills_Passive { get;protected set; } = new BindableList<SOwnedSkill>();
+        
         public IArchitecture GetArchitecture()
         {
             return Main.Interface;
@@ -122,8 +132,9 @@ namespace GameFrame.World
         /// 初始化
         /// </summary>
         /// <param name="skillTree"></param>
-        public void Init(SkillTree skillTree)
+        public void Init(SkillTree skillTree,WorldObj owner)
         {
+            this.owner = owner; 
             Skill_Inside.AddRange(skillTree.Skill_Inside);
             Skill_Outside.AddRange(skillTree.Skill_Outside);
 
@@ -241,7 +252,7 @@ namespace GameFrame.World
         {
             if (CheckIsSatisfySkill(skill))
             {
-                skill.TriggerSkill(gameObject);
+                skill.TriggerSkill(owner);
             }
         }
     }

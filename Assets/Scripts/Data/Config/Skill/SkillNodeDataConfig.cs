@@ -52,22 +52,12 @@ namespace GameFrame.Config
         
         [Header("前置技能列表")]
         public List<SkillNodeDataConfig> PrerequisiteSkills;
-        
-        [Header("行为配置")]
-        public CompositeSkillBehaviorConfig CompositeSkillBehaviorConfig;
 
         [Header("CD")]
         public float SkillCooldown;
 
+        [Header("最大等级")]
         public int MaxLevel;
-        
-        /// <summary>
-        /// 升级
-        /// </summary>
-        public void LevelUp(int curLevel)
-        {
-            
-        }
     }
 }
 
