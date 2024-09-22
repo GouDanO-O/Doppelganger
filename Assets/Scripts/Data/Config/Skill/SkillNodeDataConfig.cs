@@ -25,6 +25,29 @@ namespace GameFrame.Config
         /// </summary>
         Passive
     }
+
+    /// <summary>
+    /// 触发目标
+    /// </summary>
+    public enum ETriggerTarget
+    {
+        /// <summary>
+        /// 使用者
+        /// </summary>
+        User,
+        /// <summary>
+        /// 技能目标
+        /// </summary>
+        Target,
+        /// <summary>
+        /// 技能持有者(可以是自己也可以是其他对象)
+        /// </summary>
+        SkillOwner,
+        /// <summary>
+        /// 其他
+        /// </summary>
+        Other
+    }
     
     [CreateAssetMenu(fileName = "BasicSkill",menuName = "配置/技能/基础技能配置")]
     public class SkillNodeDataConfig : ScriptableObject
