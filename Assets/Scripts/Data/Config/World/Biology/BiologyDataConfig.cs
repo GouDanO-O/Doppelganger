@@ -96,7 +96,7 @@ namespace GameFrame.Config
         [LabelText("蹲伏速度")]
         public float crouchSpeed;
         
-        [LabelText("蹲伏高度变化率")]
+        [LabelText("蹲伏高度变化率"),Range(0,1)]
         public float crouchReduceRatio;
     }
 }

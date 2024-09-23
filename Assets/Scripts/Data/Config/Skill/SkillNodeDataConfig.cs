@@ -32,7 +32,7 @@ namespace GameFrame.Config
         
         [LabelText("前置技能列表")]
         public List<SkillNodeDataConfig> PrerequisiteSkills;
-
+        
         [LabelText("CD")]
         public float SkillCooldown;
 

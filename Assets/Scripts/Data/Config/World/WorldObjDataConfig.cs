@@ -6,13 +6,13 @@ using UnityEngine;
 
 namespace GameFrame.Config
 {
-    [CreateAssetMenu(menuName = "配置/世界/基础物体配置")]
+    [CreateAssetMenu(fileName = "",menuName = "配置/世界/基础物体配置")]
     public class WorldObjDataConfig : SerializedScriptableObject
     {
         [Required(InfoMessageType.Error),LabelText("预制体")]
         public GameObject thisPrefab;
         
-        [LabelText("重力")]
+        [LabelText("重力"),Range(0,20)]
         public float gravity;
         
         [LabelText("是否具有生命")]

@@ -12,38 +12,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e14ff9e00feb80449b973f479864fd7, type: 3}
   m_Name: Monster_Test
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  thisPrefab: {fileID: 8326906939082000971, guid: 988331e464615e440be0992a60fb49ba, type: 3}
   gravity: 0
-  thisPrefab: {fileID: 0}
-  moveable: 1
-  moveData:
-    walkSpeed: 3
-    runSpeed: 5
-    maxPitchAngle: {x: -40, y: 60}
   healthyable: 1
   healthyData:
     maxHealth: 100
     maxArmor: 0
     damageReductionRatio: 0
-  dashable: 1
+  skillTree: {fileID: 11400000, guid: eafa574460d4de945b17b5faf60a2ce6, type: 2}
+  moveable: 0
+  moveData:
+    walkSpeed: 3
+    runSpeed: 5
+    maxPitchAngle: {x: -40, y: 60}
+  dashable: 0
   dashData:
     dashSpeed: 5
     dashCD: 5
-  jumpable: 1
+  jumpable: 0
   jumpData:
     jumpHeight: 3
     inAirMoveSpeed: 0
     canDoubleJump: 0
     doubleJumpDeepTime: 0
     doubleJumpHeight: 0
-  crouchable: 1
+  crouchable: 0
   crouchData:
     crouchSpeed: 2
     crouchReduceRatio: 0.45
-  attackable: 1
+  attackable: 0
   attackData:
     basicDamage: 0
     criticalRate: 0
     criticalDamage: 0
-    attackType: 0
     attackDistance: 0
-  skillTree: {fileID: 11400000, guid: eafa574460d4de945b17b5faf60a2ce6, type: 2}
