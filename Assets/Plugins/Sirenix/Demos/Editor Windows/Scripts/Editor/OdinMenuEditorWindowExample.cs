@@ -1,3 +1,5 @@
+using System;
+
 #if UNITY_EDITOR
 namespace Sirenix.OdinInspector.Demos
 {
@@ -24,6 +26,11 @@ namespace Sirenix.OdinInspector.Demos
 
         [SerializeField]
         private SomeData someData = new SomeData(); // Take a look at SomeData.cs to see how serialization works in Editor Windows.
+
+        private void Update()
+        {
+            
+        }
 
         protected override OdinMenuTree BuildMenuTree()
         {

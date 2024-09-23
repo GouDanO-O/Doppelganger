@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "com.peterxiang.xmlib.am": "https://github.com/PxGame/XMLib.AM.git",
+    "com.peterxiang.xmlib.common": "https://github.com/PxGame/XMLib.Common.git",
+    "com.peterxiang.xmlib.thirdparty": "https://github.com/PxGame/XMLib.ThirdParty.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.cinemachine": "2.10.1",
     "com.unity.feature.development": "1.0.2",
@@ -40,7 +43,6 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0",
-    "com.unity.collab-proxy": "2.1.0"
+    "com.unity.modules.xr": "1.0.0"
   }
 }
