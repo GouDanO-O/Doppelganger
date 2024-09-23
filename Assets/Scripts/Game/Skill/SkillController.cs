@@ -132,7 +132,7 @@ namespace GameFrame.World
         /// 初始化
         /// </summary>
         /// <param name="skillTree"></param>
-        public void Init(SkillTree skillTree,WorldObj owner)
+        public void Init(SkillTreeConfig skillTree,WorldObj owner)
         {
             this.owner = owner; 
             Skill_Inside.AddRange(skillTree.Skill_Inside);

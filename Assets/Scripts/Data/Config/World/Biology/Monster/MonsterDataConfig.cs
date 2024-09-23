@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace GameFrame.Config
@@ -8,8 +9,10 @@ namespace GameFrame.Config
     [CreateAssetMenu(fileName = "MonsterDataConfig", menuName = "配置/世界/怪物配置")]
     public class MonsterDataConfig : BiologyDataConfig
     {
+        [LabelText("能否进行攻击")]
         public bool attackable;
-
+        
+        [ShowIf("attackable"),LabelText("能否进行攻击")]
         public SAttackData attackData;
     }
     
@@ -19,23 +22,18 @@ namespace GameFrame.Config
     [Serializable]
     public struct SAttackData
     {
+        [LabelText("基础伤害")]
         public float basicDamage;
         
+        [LabelText("暴击率"),Range(0,100)]
         public float criticalRate;
         
+        [LabelText("暴击伤害")]
         public float criticalDamage;
-
-        public EAttackType attackType;
         
+        [LabelText("攻击距离")]
         public float attackDistance;
     }
-
     
-    public enum EAttackType
-    {
-        None = 0,
-        CloseAttack,
-        RemoteAttack,
-    }
 }
 
