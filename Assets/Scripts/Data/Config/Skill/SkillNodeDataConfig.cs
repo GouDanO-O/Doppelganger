@@ -19,7 +19,7 @@ namespace GameFrame.Config
         public string SkillDescription;
         
         [LabelText("技能所属节点类型")]
-        public ESkillNodeType SkillNodeType;
+        public ESkillNodeTreeType SkillNodeType;
         
         [LabelText("技能触发类型\n主动--会添加到主动技能列表中(当玩家互动且满足使用条件时会释放)\n被动--当满足使用条件时会自动释放",true)]
         public ESkillSpellType skillSpellType;

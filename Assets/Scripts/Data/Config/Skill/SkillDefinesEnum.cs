@@ -9,7 +9,7 @@ namespace GameFrame.Config
     /// 技能所属节点树类别
     /// </summary>
     [LabelText("技能所属节点树类别")]
-    public enum ESkillNodeType
+    public enum ESkillNodeTreeType
     {
         [LabelText("生存类")]
         Live,
@@ -38,29 +38,6 @@ namespace GameFrame.Config
     }
     
     /// <summary>
-    /// 技能目标阵营
-    /// </summary>
-    [LabelText("技能目标阵营")]
-    public enum ESkillAffectTargetType
-    {
-        /// <summary>
-        /// 自身
-        /// </summary>
-        [LabelText("自身")]
-        Self = 0,
-        /// <summary>
-        /// 己方
-        /// </summary>
-        [LabelText("己方")]
-        SelfTeam = 1,
-        /// <summary>
-        /// 敌方
-        /// </summary>
-        [LabelText("敌方")]
-        EnemyTeam = 2,
-    }
-
-    /// <summary>
     /// 作用目标对象类型
     /// </summary>
     [LabelText("作用目标对象类型")]
@@ -87,6 +64,31 @@ namespace GameFrame.Config
         [LabelText("其他")]
         Other
     }
+    
+    /// <summary>
+    /// 技能目标阵营
+    /// </summary>
+    [LabelText("技能目标阵营")]
+    public enum ESkillAffectTargetCampsType
+    {
+        /// <summary>
+        /// 自身
+        /// </summary>
+        [LabelText("自身")]
+        Self = 0,
+        /// <summary>
+        /// 己方
+        /// </summary>
+        [LabelText("己方")]
+        SelfTeam = 1,
+        /// <summary>
+        /// 敌方
+        /// </summary>
+        [LabelText("敌方")]
+        EnemyTeam = 2,
+    }
+
+
     
     /// <summary>
     /// 目标类型
@@ -125,7 +127,7 @@ namespace GameFrame.Config
         /// 组合
         /// </summary>
         [LabelText("组合")]
-        Compose = 3,E
+        Compose = 3
     }
     
     /// <summary>
@@ -155,7 +157,7 @@ namespace GameFrame.Config
     /// 效果类型
     /// </summary>
     [LabelText("效果类型")]
-    public enum ESkillEffectType
+    public enum ESkillTypeOfEffect
     {
         /// <summary>
         /// 无
@@ -204,7 +206,7 @@ namespace GameFrame.Config
     /// </summary>
     [Flags]
     [LabelText("行为禁制")]
-    public enum EActionControlType
+    public enum EProhibitionOfConductType
     {
         /// <summary>
         /// 无
@@ -255,7 +257,7 @@ namespace GameFrame.Config
     /// 触发类型
     /// </summary>
     [LabelText("触发类型")]
-    public enum EEffectTriggerType
+    public enum ETriggerType
     {
         /// <summary>
         /// 主动触发
@@ -273,7 +275,7 @@ namespace GameFrame.Config
     /// 技能触发执行类型
     /// </summary>
     [LabelText("技能触发执行类型")]
-    public enum EItemTriggerType
+    public enum ESkillTriggersTheExecutionType
     {
         /// <summary>
         /// 触发立即开始执行
@@ -293,10 +295,10 @@ namespace GameFrame.Config
     }
     
     /// <summary>
-    /// 选取目标方式类型
+    /// 技能选取目标方式类型
     /// </summary>
-    [LabelText("选取目标方式类型")]
-    public enum ESkillTargetSelectType
+    [LabelText("技能选取目标方式类型")]
+    public enum ESkillSelectionTargetWayType
     {
         /// <summary>
         /// 手动指定

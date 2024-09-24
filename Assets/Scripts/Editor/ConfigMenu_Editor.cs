@@ -1,38 +1,32 @@
-using UnityEngine;
-using UnityEditor;
-using Sirenix.OdinInspector.Editor;
-using Sirenix.Utilities.Editor;
-using GameFrame.Config;
+#if UNITY_EDITOR
 
 namespace GameFrame.Editor
 {
+    using Sirenix.OdinInspector.Editor;
+    using Sirenix.Utilities;
+    using Sirenix.Utilities.Editor;
+    using UnityEditor;
+    using UnityEngine;
+    using System.Linq;
+    
     public class ConfigMenu_Editor : OdinMenuEditorWindow
     {
-        [MenuItem("配置/总面板")]
+        [MenuItem("配置/配置面板")]
         private static void OpenWindow()
         {
-            GetWindow<ConfigMenu_Editor>().Show();
+            var window = GetWindow<ConfigMenu_Editor>();
+            window.position = GUIHelper.GetEditorWindowRect().AlignCenter(800, 500);
         }
 
         protected override OdinMenuTree BuildMenuTree()
         {
-            OdinMenuTree tree = new OdinMenuTree(supportsMultiSelect: true);
-            tree.Selection.SupportsMultiSelect = false;
-
-            // 添加创建新技能的选项到 BasicSkills
-            tree.Add("Skills/BasicSkills/Create New Skill", new CreateSkillNodeDataConfig_Editor());
-
-            // 查找并添加所有的 SkillNodeDataConfig 实例到 BasicSkills
-            var skillConfigs = AssetDatabase.FindAssets("t:SkillNodeDataConfig");
-            foreach (var guid in skillConfigs)
-            {
-                string path = AssetDatabase.GUIDToAssetPath(guid);
-                SkillNodeDataConfig skillConfig = AssetDatabase.LoadAssetAtPath<SkillNodeDataConfig>(path);
-                tree.Add("Skills/BasicSkills/" + skillConfig.name, skillConfig);
-            }
-
+            var tree = new OdinMenuTree(true);
+            
+            tree.DefaultMenuStyle.IconSize = 28.00f;
+            tree.Config.DrawSearchToolbar = true;
+            
             return tree;
         }
     }
 }
-
+#endif

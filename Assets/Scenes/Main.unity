@@ -433,7 +433,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad8fe97b3cbe0f4eb823b523818d1c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  config: {fileID: 4900000, guid: 67bed9286fb7dd649b2c7c41defe066e, type: 3}
+  config: {fileID: 4900000, guid: 42d24dfbf522d4241949c1be601cd2f7, type: 3}
   destroyOnPlay: 0
 --- !u!114 &720725225
 MonoBehaviour:
