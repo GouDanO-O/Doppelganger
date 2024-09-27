@@ -1,12 +1,5 @@
 {
   "dependencies": {
-    "com.nobug.nbc.action_editor": {
-      "version": "https://github.com/NoBugCn/ActionEditor.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "2a25f06656bdf22d4be6416e2aabbaf516f3466c"
-    },
     "com.peterxiang.xmlib.am": {
       "version": "https://github.com/PxGame/XMLib.AM.git",
       "depth": 0,

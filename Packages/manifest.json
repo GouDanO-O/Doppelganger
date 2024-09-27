@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.nobug.nbc.action_editor": "https://github.com/NoBugCn/ActionEditor.git",
     "com.peterxiang.xmlib.am": "https://github.com/PxGame/XMLib.AM.git",
     "com.peterxiang.xmlib.common": "https://github.com/PxGame/XMLib.Common.git",
     "com.peterxiang.xmlib.thirdparty": "https://github.com/PxGame/XMLib.ThirdParty.git",

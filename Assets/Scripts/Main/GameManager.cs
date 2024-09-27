@@ -99,14 +99,13 @@ namespace GameFrame
             {
                 inputManager.MovementCheck();
             }
-
         }
 
         /// <summary>
         /// 进入菜单
         /// </summary>
         protected void EnterMenu()
-        {
+        { 
             sceneLoader.onLoadScene.Invoke(ESceneName.Menu);
         }
 

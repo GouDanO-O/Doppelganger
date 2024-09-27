@@ -24,7 +24,7 @@ MonoBehaviour:
   SkillID: 0
   SkillName: 
   SkillDescription: 
-  SkillNodeType: 0
+  SkillNodeType: 1
   skillSpellType: 0
   RequiredLevel: 0
   SkillPointsCost: 0

@@ -896,9 +896,6 @@
     <Reference Include="Unity.TestTools.CodeCoverage.Editor">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="NBC.ActionEditor">
-      <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\NBC.ActionEditor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Mathematics.Editor">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
     </Reference>
@@ -916,9 +913,6 @@
     </Reference>
     <Reference Include="Unity.Collections">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Collections.dll</HintPath>
-    </Reference>
-    <Reference Include="NBC.ActionEditor.Editor">
-      <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\NBC.ActionEditor.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Netcode.Editor.PackageChecker">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Netcode.Editor.PackageChecker.dll</HintPath>
