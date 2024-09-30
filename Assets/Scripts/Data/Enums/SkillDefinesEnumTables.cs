@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace GameFrame.Config
 {
@@ -17,24 +18,6 @@ namespace GameFrame.Config
         Combat,
         [LabelText("特殊类别")]
         Special
-    }
-
-    /// <summary>
-    /// 技能类型
-    /// </summary>
-    [LabelText("技能类型")]
-    public enum ESkill_SpellType
-    {
-        /// <summary>
-        /// 主动触发
-        /// </summary>
-        [LabelText("主动技能")]
-        Active,
-        /// <summary>
-        /// 被动触发
-        /// </summary>
-        [LabelText("被动技能")]
-        Passive
     }
     
     /// <summary>
@@ -87,20 +70,6 @@ namespace GameFrame.Config
         [LabelText("敌方")]
         EnemyTeam = 2,
     }
-
-
-    
-    /// <summary>
-    /// 目标类型
-    /// </summary>
-    [LabelText("目标类型")]
-    public enum ESkill_TargetType
-    {
-        [LabelText("单体检测")]
-        Single = 0,
-        [LabelText("多人检测")]
-        Multiple = 1,
-    }
     
     /// <summary>
     /// 区域场类型
@@ -129,77 +98,18 @@ namespace GameFrame.Config
         [LabelText("组合")]
         Compose = 3
     }
-    
 
     /// <summary>
-    /// 效果类型
+    /// 主动技能释放方式
     /// </summary>
-    [LabelText("效果类型")]
-    public enum ESkill_TypeOfEffect
+    public enum ESkill_TriggerConditionType
     {
-        /// <summary>
-        /// 无
-        /// </summary>
-        [LabelText("(添加效果)")]
-        None = 0,
-        /// <summary>
-        /// 造成伤害
-        /// </summary>
-        [LabelText("造成伤害")]
-        CauseDamage = 1,
-        /// <summary>
-        /// 治疗英雄
-        /// </summary>
-        [LabelText("治疗英雄")]
-        CureHero = 2,
-        /// <summary>
-        /// 施加状态
-        /// </summary>
-        [LabelText("施加状态")]
-        AddStatus = 3,
-        /// <summary>
-        /// 移除状态
-        /// </summary>
-        [LabelText("移除状态")]
-        RemoveStatus = 4,
-        /// <summary>
-        /// 增减数值
-        /// </summary>
-        [LabelText("增减数值")]
-        NumericModify = 6,
-        /// <summary>
-        /// 中毒
-        /// </summary>
-        [LabelText("中毒")]
-        Poison = 7,
-        /// <summary>
-        /// 灼烧
-        /// </summary>
-        [LabelText("灼烧")]
-        Burn = 8,
-    }
-    
-    /// <summary>
-    /// 技能触发执行类型
-    /// </summary>
-    [LabelText("技能触发执行类型")]
-    public enum ESkill_TriggersTheExecutionType
-    {
-        /// <summary>
-        /// 触发立即开始执行
-        /// </summary>
-        [LabelText("使用就立即执行")]
-        BeginTrigger = 0,
-        /// <summary>
-        /// 碰撞到目标就执行
-        /// </summary>
-        [LabelText("碰撞到目标就执行")]
-        CollisionTrigger = 1,
-        /// <summary>
-        /// 计时状态执行
-        /// </summary>
-        [LabelText("计时状态执行")]
-        TimeStateTrigger = 2
+        [LabelText("只有放到槽位上时且主动释放才会执行")]
+        PutIntoSkillSlots,
+        [LabelText("当满足某些条件时自动执行")]
+        ConditionalExecution,
+        [LabelText("定时执行")]
+        TimedExecution,
     }
     
     /// <summary>

@@ -25,9 +25,13 @@ MonoBehaviour:
   SkillName: 
   SkillDescription: 
   SkillNodeType: 1
-  skillSpellType: 0
+  SkillSpellType: 0
+  SkillTriggerConditionType: 1
+  SkillTriggerConditionFormula: 
   RequiredLevel: 0
   SkillPointsCost: 0
   PrerequisiteSkills: []
+  SkillActions: []
   SkillCooldown: 0
   MaxLevel: 0
+  LevelUpSkills: []

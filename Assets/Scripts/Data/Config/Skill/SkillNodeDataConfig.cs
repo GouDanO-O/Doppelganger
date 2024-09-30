@@ -33,9 +33,15 @@ namespace GameFrame.Config
         public ESkill_NodeTreeType SkillNodeType;
         
         [LabelText("技能触发类型\n主动--会添加到主动技能列表中(当玩家互动且满足使用条件时会释放)\n被动--当满足使用条件时会自动释放",true)]
-        public ESkill_SpellType skillSpellType;
+        public ETriggerType SkillSpellType;
         
-        [LabelText("所需等级")]
+        [LabelText("主动技能释放方式"),ShowIf("SkillSpellType",ETriggerType.ExecuteTrigger)]
+        public ESkill_TriggerConditionType SkillTriggerConditionType;
+        
+        [LabelText("技能触发条件")]
+        public string SkillTriggerConditionFormula;
+        
+        [LabelText("所需等级(-1表示无等级限制)")]
         public int RequiredLevel;
         
         [LabelText("所需技能点数")]
@@ -44,11 +50,17 @@ namespace GameFrame.Config
         [LabelText("前置技能列表")]
         public List<SkillNodeDataConfig> PrerequisiteSkills;
         
+        [LabelText("技能行为列表")]
+        public List<SkillAction_Config> SkillActions;
+        
         [LabelText("CD")]
         public float SkillCooldown;
 
-        [LabelText("最大等级")]
+        [LabelText("最大可升级等级")]
         public int MaxLevel;
+
+        [LabelText("每个升级的等级配置"),ShowIf("@this.MaxLevel>0")]
+        public SkillNodeDataConfig[] LevelUpSkills;
     }
 }
 
