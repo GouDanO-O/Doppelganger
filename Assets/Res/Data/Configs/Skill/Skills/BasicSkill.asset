@@ -28,10 +28,16 @@ MonoBehaviour:
   SkillSpellType: 0
   SkillTriggerConditionType: 1
   SkillTriggerConditionFormula: 
-  RequiredLevel: 0
-  SkillPointsCost: 0
+  RequiredLevel: 32
+  SkillPointsCost: 140
   PrerequisiteSkills: []
-  SkillActions: []
   SkillCooldown: 0
   MaxLevel: 0
   LevelUpSkills: []
+  SkillTracks:
+  - TrackName: New Track
+    SkillConfigInstance: {fileID: 11400000}
+    ActionClips: []
+  references:
+    version: 2
+    RefIds: []

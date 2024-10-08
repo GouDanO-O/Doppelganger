@@ -1,88 +1,83 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using UnityEngine;
 
 namespace GameFrame.Config
 {
-    public class SkillActionClip_Config : SerializationConfig
+    [Serializable]
+    [InlineProperty]
+    [HideReferenceObjectPicker]
+    public abstract class SkillActionClip_Config
     {
-        [LabelText("行为片段名称")]
-        public string ActionClipName;
-        
-        [LabelText("开始时间")]
-        public double StartTime;
-        
-        // 验证结束时间必须在开始时间和总时间之间
-        [LabelText("结束时间")]
-        public double EndTime;
+        #region 时间参数
 
-        [LabelText("行为片段类型")]
-        public EActionClipType ActionClipType;
-        
-        [LabelText("特效数据"),ShowIf("actionClipType",EActionClipType.ParticleEffect)]
-        public SActionClip_ParticleEffectData ActionClip_ParticleEffectData;
-        
-        [LabelText("音频数据"),ShowIf("actionClipType",EActionClipType.Audio)]
-        public SActionClip_AudioData ActionClip_AudioData;
-        
-        [LabelText("动画数据"),ShowIf("actionClipType",EActionClipType.Animation)]
-        public SActionClip_AniamtionData ActionClip_AniamtionData;
-        
+        [HorizontalGroup("Timing")]
+        [LabelText("开始时间"), LabelWidth(60), MinValue(0)]
+        public float StartTime;
+
+        [HorizontalGroup("Timing")]
+        [LabelText("持续时间"), LabelWidth(60)]
+        public float Duration = 1f;
+
+        [HorizontalGroup("Timing")]
+        [LabelText("结束时间"), LabelWidth(60), ReadOnly]
+        public float EndTime => StartTime + Duration;
+
+        #endregion
+
+        #region 触发条件
+
+        [FoldoutGroup("触发条件")]
         [LabelText("行为触发条件")]
-        public SAction_TriggerConditionFormula ActionTriggerConditionFormula;
-        
+        public SAction_TriggerConditionFormula ActionTriggerConditionFormula = new SAction_TriggerConditionFormula();
+
+        [FoldoutGroup("触发条件")]
         [LabelText("技能触发时的行为")]
         public EAction_TriggerType ActionTriggerType;
+
+        #endregion
     }
 
-    public enum EActionClipType
-    {
-        [LabelText("物体处理")]
-        ItemExecute,
-        [LabelText("行为处理")]
-        ActionEvent,
-        [LabelText("动画")]
-        Animation,
-        [LabelText("音频")]
-        Audio,
-        [LabelText("特效")]
-        ParticleEffect
-    }
-    
     [Serializable]
     public class SAction_TriggerConditionFormula
     {
         [LabelText("执行方式")]
-        public EAction_TriggerConditionFormulaTypes actionTriggerConditionType;
+        public EAction_TriggerConditionFormulaTypes ActionTriggerConditionType;
 
-        [LabelText("条件"),ShowIf("actionTriggerConditionType",EAction_TriggerConditionFormulaTypes.ConditionalExecution)]
-        public string condintionFormula;
-        
-        [LabelText("延时时间"),ShowIf("actionTriggerConditionType",EAction_TriggerConditionFormulaTypes.TimedExecution)]
-        public float timeDelayTime;
+        [LabelText("条件"), ShowIf("@ActionTriggerConditionType == EAction_TriggerConditionFormulaTypes.ConditionalExecution")]
+        public string ConditionFormula;
+
+        [LabelText("延时时间"), ShowIf("@ActionTriggerConditionType == EAction_TriggerConditionFormulaTypes.TimedExecution")]
+        public float TimeDelayTime;
     }
-    
+
     [Serializable]
-    public class SActionClip_ParticleEffectData
+    [InlineProperty]
+    [HideReferenceObjectPicker]
+    public class SActionClip_ParticleEffectData : SkillActionClip_Config
     {
-        public GameObject particleEffectPrefab;
+        [BoxGroup("特效设置")]
+        [LabelText("特效预制体")]
+        public GameObject ParticleEffectPrefab;
     }
-    
+
     [Serializable]
-    public class SActionClip_AniamtionData
+    [InlineProperty]
+    [HideReferenceObjectPicker]
+    public class SActionClip_AnimationData : SkillActionClip_Config
     {
-        public AnimationClip animationClip;
+        [BoxGroup("动画设置")]
+        [LabelText("动画剪辑")]
+        public AnimationClip AnimationClip;
     }
-    
+
     [Serializable]
-    public class SActionClip_AudioData
+    [InlineProperty]
+    [HideReferenceObjectPicker]
+    public class SActionClip_AudioData : SkillActionClip_Config
     {
-        public AudioClip audioClip;
+        [BoxGroup("音频设置")]
+        [LabelText("音频剪辑")]
+        public AudioClip AudioClip;
     }
-    
 }
-

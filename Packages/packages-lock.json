@@ -1,5 +1,30 @@
 {
   "dependencies": {
+    "com.peterxiang.xmlib.am": {
+      "version": "https://github.com/PxGame/XMLib.AM.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.peterxiang.xmlib.common": "1.1.0"
+      },
+      "hash": "76196fb14adbe5e2c0e0779601fdcf2b3bd0718b"
+    },
+    "com.peterxiang.xmlib.common": {
+      "version": "https://github.com/PxGame/XMLib.Common.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.peterxiang.xmlib.thirdparty": "1.1.0"
+      },
+      "hash": "545304401b0ad26b4851555921e2771ccbdeb598"
+    },
+    "com.peterxiang.xmlib.thirdparty": {
+      "version": "https://github.com/PxGame/XMLib.ThirdParty.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "d68271926b008375c5aec7295cf9b43fa6111e56"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
