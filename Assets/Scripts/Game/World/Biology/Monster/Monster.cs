@@ -67,20 +67,25 @@ namespace GameFrame.World
             {
                 moveController = new MoveController();
                 moveController.InitMovement(this,monsterDataConfig.moveData);
+                
                 this.RegisterEvent<SInputEvent_Move>(moveData =>
                 {
                     moveController.Move(moveData);
                 }).AddToUnregisterList(this);
+                
                 this.RegisterEvent<SInputEvent_MouseDrag>(mouseData =>
                 {
                     moveController.MouseRotate(mouseData);
                 }).AddToUnregisterList(this);
+                
                 this.RegisterEvent<SInputEvent_Run>(moveData =>
                 {
                     moveController.Running(moveData);
                 });
             }
         }
+        
+        
 
         protected override void InitJump()
         {

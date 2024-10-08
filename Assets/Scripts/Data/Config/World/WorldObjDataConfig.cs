@@ -12,6 +12,12 @@ namespace GameFrame.Config
         [Required(InfoMessageType.Error),LabelText("预制体")]
         public GameObject thisPrefab;
         
+        [LabelText("是否有技能")]
+        public bool hasSkill;
+        
+        [ShowIf("hasSkill"),LabelText("技能树")]
+        public SkillTreeConfig skillTree;
+        
         [LabelText("重力"),Range(0,20)]
         public float gravity;
         
@@ -20,9 +26,6 @@ namespace GameFrame.Config
         
         [ShowIf("healthyable"),LabelText("生命数据")]
         public SHealthyData healthyData;
-        
-        [LabelText("技能树")]
-        public SkillTreeConfig skillTree;
     }
     
     /// <summary>

@@ -32,7 +32,6 @@ namespace GameFrame.Config
         
         [ShowIf("crouchable"),LabelText("蹲伏数据")]
         public SCrouchData crouchData;
-        
     }
     
     /// <summary>
@@ -46,6 +45,9 @@ namespace GameFrame.Config
         
         [LabelText("奔跑速度")]
         public float runSpeed;
+        
+        [LabelText("空中移动速度")]
+        public float inAirMoveSpeed;
 
         [LabelText("最大上下转向角")]
         public Vector2 maxPitchAngle;
@@ -73,9 +75,6 @@ namespace GameFrame.Config
     {
         [LabelText("跳跃高度")]
         public float jumpHeight;
-        
-        [LabelText("空中移动速度")]
-        public float inAirMoveSpeed;
         
         [LabelText("能否二段跳")]
         public bool canDoubleJump;

@@ -15,6 +15,8 @@ namespace GameFrame.World
         public float walkSpeed { get; set; }
         
         public float runSpeed { get; set; }
+        
+        public float inAirMoveSpeed { get; set; } 
 
         public float mouseSensitivity { get; set; }
 
@@ -29,7 +31,7 @@ namespace GameFrame.World
         
         public float jumpHeight { get; set; }
         
-        public float inAirMoveSpeed { get; set; }
+
         
         public bool canDoubleJump { get; set; }
         
@@ -106,8 +108,6 @@ namespace GameFrame.World
         
         public LayerMask crouchCheckLayerMask { get; set; }
         
-        
-
         public float tickTime { get; set; }
         
         protected float curOwnerHeight;
@@ -134,7 +134,8 @@ namespace GameFrame.World
             this.headCameraRootTransfrom = owner.headCameraRootTransfrom;
             this.walkSpeed = moveData.walkSpeed;
             this.runSpeed = moveData.runSpeed;
-     
+            this.inAirMoveSpeed = moveData.inAirMoveSpeed;
+            
             this.maxPitchAngle = moveData.maxPitchAngle;
 
             this.temSpeed = this.walkSpeed;
@@ -152,7 +153,6 @@ namespace GameFrame.World
         public void InitJump(SJumpData jumpData)
         {
             this.canDoubleJump=jumpData.canDoubleJump;
-            this.inAirMoveSpeed = jumpData.inAirMoveSpeed;
             this.doubleJumpHeight= jumpData.doubleJumpHeight;
             this.doubleJumpDeepTime = jumpData.doubleJumpDeepTime;  
         }

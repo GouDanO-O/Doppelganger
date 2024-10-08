@@ -8,6 +8,7 @@ using UnityEngine.Scripting;
 using Unity.Netcode;
 using QFramework;
 using Unity.Netcode.Components;
+using UnityEngine.Events;
 
 namespace GameFrame.World
 {
@@ -16,15 +17,22 @@ namespace GameFrame.World
     {
         public WorldObjDataConfig thisDataConfig;
         
-        public HealthyController healthyController { get;protected set; }
+        public WorldObjDataConfig willDeformationConfig { get; }
         
         public Rigidbody rigidbody { get; set; }
         
         public Transform headCameraRootTransfrom { get; set; }
 
+        /// <summary>
+        /// 注册的事件列表
+        /// </summary>
         public List<IUnRegister> UnregisterList { get; } = new List<IUnRegister>();
         
+        public HealthyController healthyController { get;protected set; }
+        
         public SkillController skillController { get;protected set; }
+        
+        public DeformationController deformationController { get;protected set; }
         
         private void Awake()
         {
