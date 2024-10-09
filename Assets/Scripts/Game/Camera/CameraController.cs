@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GameFrame.World
 {
-    public class CameraController : MonoBehaviour, IController,IUnRegisterList
+    public class CameraController : MonoSingleton<CameraController>, IController,IUnRegisterList
     {
         public List<IUnRegister> UnregisterList { get; } = new List<IUnRegister>();
 
@@ -15,9 +15,9 @@ namespace GameFrame.World
             return Main.Interface;
         }
 
-        private CinemachineVirtualCamera virtualCamera;
+        public CinemachineVirtualCamera virtualCamera { get; set; }
 
-        private void Start()
+        private void Awake()
         {
             Init();
         }

@@ -22,34 +22,36 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   thisPrefab: {fileID: 8326906939082000971, guid: 988331e464615e440be0992a60fb49ba, type: 3}
-  gravity: 0
+  hasSkill: 1
+  skillTree: {fileID: 11400000, guid: eafa574460d4de945b17b5faf60a2ce6, type: 2}
+  gravity: 9.8
   healthyable: 1
   healthyData:
     maxHealth: 100
     maxArmor: 0
     damageReductionRatio: 0
-  skillTree: {fileID: 11400000, guid: eafa574460d4de945b17b5faf60a2ce6, type: 2}
-  moveable: 0
+  costDeformationEnergy: {x: 0, y: 0}
+  moveable: 1
   moveData:
     walkSpeed: 3
     runSpeed: 5
+    inAirMoveSpeed: 2
     maxPitchAngle: {x: -40, y: 60}
-  dashable: 0
+  dashable: 1
   dashData:
     dashSpeed: 5
     dashCD: 5
-  jumpable: 0
+  jumpable: 1
   jumpData:
     jumpHeight: 3
-    inAirMoveSpeed: 0
-    canDoubleJump: 0
+    canDoubleJump: 1
     doubleJumpDeepTime: 0
     doubleJumpHeight: 0
-  crouchable: 0
+  crouchable: 1
   crouchData:
     crouchSpeed: 2
     crouchReduceRatio: 0.45
-  attackable: 0
+  attackable: 1
   attackData:
     basicDamage: 0
     criticalRate: 0

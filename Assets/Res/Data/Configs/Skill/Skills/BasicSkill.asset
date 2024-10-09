@@ -34,10 +34,7 @@ MonoBehaviour:
   SkillCooldown: 0
   MaxLevel: 0
   LevelUpSkills: []
-  SkillTracks:
-  - TrackName: New Track
-    SkillConfigInstance: {fileID: 11400000}
-    ActionClips: []
+  SkillTracks: []
   references:
     version: 2
     RefIds: []

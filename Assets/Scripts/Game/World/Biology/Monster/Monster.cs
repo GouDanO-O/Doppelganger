@@ -82,6 +82,8 @@ namespace GameFrame.World
                 {
                     moveController.Running(moveData);
                 });
+
+                ActionKit.OnFixedUpdate.Register(()=>moveController.GroundCheck()).AddToUnregisterList(this);
             }
         }
         

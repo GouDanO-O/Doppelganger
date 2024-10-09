@@ -34,10 +34,10 @@ namespace GameFrame.World
         
         public DeformationController deformationController { get;protected set; }
         
-        private void Awake()
+        private void Start()
         {
             Init();
-        }
+        }  
 
         public IArchitecture GetArchitecture()
         {

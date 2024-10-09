@@ -259,6 +259,7 @@ namespace GameFrame
             if (mouseDrag != null)
             {
                 mouseDrag.performed += HandleMouseDrag;
+                mouseDrag.canceled += HandleMouseDrag_Cancel;
             }
 
             if (mouseLeftClick != null)
@@ -329,6 +330,7 @@ namespace GameFrame
             if (mouseDrag != null)
             {
                 mouseDrag.performed -= HandleMouseDrag;
+                mouseDrag.canceled -= HandleMouseDrag_Cancel;
             }
 
             if (mouseLeftClick != null)
@@ -346,11 +348,25 @@ namespace GameFrame
 
         private Vector2 curMovement;
         
+        private Vector2 curMousePosition;
+        
         public void MovementCheck()
         {
+            MouseDragCheck();
             if (curMovement != Vector2.zero)
             {
                 this.SendEvent(new SInputEvent_Move { movement = curMovement });
+            }
+        }
+        
+        /// <summary>
+        /// 持续检查并发送鼠标拖拽输入
+        /// </summary>
+        public void MouseDragCheck()
+        {
+            if (curMousePosition != Vector2.zero)
+            {
+                this.SendEvent(new SInputEvent_MouseDrag { mousePos = curMousePosition });
             }
         }
         
@@ -474,14 +490,23 @@ namespace GameFrame
         {
 
         }
-  
-
+        
         /// <summary>
-        /// 处理输入--鼠标移动--持续
+        /// 处理输入--鼠标移动（更新当前鼠标位置）
         /// </summary>
+        /// <param name="context"></param>
         private void HandleMouseDrag(InputAction.CallbackContext context)
         {
-            this.SendEvent<SInputEvent_MouseDrag>(new SInputEvent_MouseDrag(){ mousePos = context.ReadValue<Vector2>()});
+            curMousePosition = context.ReadValue<Vector2>();
+        }
+
+        /// <summary>
+        /// 清空鼠标输入（鼠标停止时）
+        /// </summary>
+        /// <param name="context"></param>
+        private void HandleMouseDrag_Cancel(InputAction.CallbackContext context)
+        {
+            curMousePosition = Vector2.zero;
         }
         
 

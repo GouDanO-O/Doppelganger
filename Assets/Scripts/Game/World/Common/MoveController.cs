@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using DG.Tweening;
 using GameFrame.Config;
 using QFramework;
@@ -123,6 +124,13 @@ namespace GameFrame.World
         protected bool running = false;
 
         /// <summary>
+        /// 是否处于自由相机模式
+        /// </summary>
+        public bool isInFreeCameraMod
+        {
+            get { return true;}}
+
+        /// <summary>
         /// 初始化移动
         /// </summary>
         /// <param name="owner"></param>
@@ -139,7 +147,8 @@ namespace GameFrame.World
             this.maxPitchAngle = moveData.maxPitchAngle;
 
             this.temSpeed = this.walkSpeed;
-            this.cameraTransform=Camera.main.transform;
+            this.cameraTransform = CameraController.Instance.virtualCamera.transform;
+            
             this.rigidbody = owner.rigidbody;
             ResourcesModel resModel = owner.GetModel<ResourcesModel>();
             this.mouseSensitivity = resModel.SettingConfig.MouseSensitivity;
@@ -185,11 +194,21 @@ namespace GameFrame.World
         {
             temSpeed = grounded ? (crouching ? crouchSpeed : running ? runSpeed : walkSpeed) : inAirMoveSpeed;
             Vector3 input = new Vector3(inputEvent_Move.movement.x, 0, inputEvent_Move.movement.y);
-            Vector3 movement = transfrom.right * input.x + transfrom.forward * input.z;
-            movement.y = 0;
+            Vector3 movement;
+            if (isInFreeCameraMod)
+            { 
+                movement = transfrom.right * input.x + transfrom.forward * input.z;
+            }
+            else
+            {
+                movement = cameraTransform.right * input.x + cameraTransform.forward * input.z;
+            }
             
-            Vector3 newPosition = rigidbody.position + movement * (temSpeed * tickTime);
-            rigidbody.MovePosition(newPosition);
+            movement.y = 0;
+            movement.Normalize();
+            
+            Vector3 newPosition = rigidbody.position + movement * (temSpeed * Time.deltaTime);
+            rigidbody.DOMove(newPosition,0.1f);
         }
 
         /// <summary>
@@ -215,12 +234,12 @@ namespace GameFrame.World
         public virtual void MouseRotate(SInputEvent_MouseDrag inputEvent_Mouse)
         {
             Vector2 input = inputEvent_Mouse.mousePos;
-            float mouseX = input.x * mouseSensitivity * tickTime;
+            float mouseX = input.x * mouseSensitivity *  Time.deltaTime;
             float mouseY = input.y * mouseSensitivity; 
-            rigidbody.DORotate(Vector3.up * mouseX,0.5f);
+            rigidbody.DORotate(Vector3.up * mouseX,0.1f);
             xRotation -= mouseY;
             xRotation = Mathf.Clamp(xRotation, maxPitchAngle.x, maxPitchAngle.y);
-            headCameraRootTransfrom.DOLocalRotate(xRotation*Vector3.right, 0.5f);
+            cameraTransform.DORotate(new Vector3(xRotation, 0f, 0f),0.1f);
         }
 
         /// <summary>
@@ -277,7 +296,12 @@ namespace GameFrame.World
         /// </summary>
         public virtual void Jump()
         {
-            
+            if (grounded)
+            {
+                // 添加向上的力，实现跳跃
+                rigidbody.AddForce(Vector3.up * Mathf.Sqrt(jumpHeight * -2f * gravity), ForceMode.VelocityChange);
+                grounded = false;
+            }
         }
 
         /// <summary>
@@ -285,9 +309,17 @@ namespace GameFrame.World
         /// </summary>
         public virtual void GroundCheck()
         {
-            grounded = true;
-            curJumpCount = 0;
-            curDoubleJumpDeepTime = 0;
+            RaycastHit hit;
+            if (Physics.SphereCast(transfrom.position, 0.5f, Vector3.down, out hit, 1f))
+            {
+                grounded = true;
+                curJumpCount = 0;
+                curDoubleJumpDeepTime = 0;
+            }
+            else
+            {
+                grounded = false;
+            }
         }
         
         /// <summary>

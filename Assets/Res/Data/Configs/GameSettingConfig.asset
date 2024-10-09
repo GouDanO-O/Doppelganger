@@ -12,5 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ce770e190a621342887622f2b7234b1, type: 3}
   m_Name: GameSettingConfig
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   CustomFont: {fileID: 12800000, guid: 7eaeacad5bc7c5d49b0f077a706212a8, type: 3}
-  MouseSensitivity: 0.5
+  MouseSensitivity: 1

@@ -26,6 +26,9 @@ namespace GameFrame.Config
         
         [ShowIf("healthyable"),LabelText("生命数据")]
         public SHealthyData healthyData;
+
+        [LabelText("变身所需要的能量\nx=>仅外貌, y=>完全变身")]
+        public Vector2 costDeformationEnergy;
     }
     
     /// <summary>
