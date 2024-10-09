@@ -18,10 +18,6 @@ namespace GameFrame.World
         public WorldObjDataConfig thisDataConfig;
         
         public WorldObjDataConfig willDeformationConfig { get; }
-        
-        public Rigidbody rigidbody { get; set; }
-        
-        public Transform headCameraRootTransfrom { get; set; }
 
         /// <summary>
         /// 注册的事件列表
@@ -32,7 +28,7 @@ namespace GameFrame.World
         
         public SkillController skillController { get;protected set; }
         
-        public DeformationController deformationController { get;protected set; }
+
         
         private void Start()
         {
@@ -72,8 +68,6 @@ namespace GameFrame.World
         /// </summary>
         protected virtual void InitComponents()
         {
-            rigidbody = GetComponent<Rigidbody>();
-            headCameraRootTransfrom = transform.Find("CameraRoot/HeadRoot");
             InitConfig();
         }
 

@@ -13,7 +13,9 @@ namespace GameFrame.World
     /// </summary>
     public class Monster : Biology
     {
-        private MonsterDataConfig monsterDataConfig;
+        public MonsterDataConfig monsterDataConfig { get;protected set; }
+        
+        public DeformationController deformationController { get;protected set; }
 
         public override void Init()
         {
@@ -40,13 +42,6 @@ namespace GameFrame.World
         {
             if (monsterDataConfig)
             {
-                if (this.IsOwner || NetManager.Instance.isLocalGameMode)
-                {
-                    InitMovement();
-                    InitJump();
-                    InitCrouch();
-                    InitDash();
-                }
                 InitHealthy();
                 InitSkill();
             }
@@ -58,70 +53,6 @@ namespace GameFrame.World
             {
                 healthyController = new HealthyController();
                 healthyController.InitHealthyer(monsterDataConfig.healthyData);
-            }
-        }
-        
-        protected override void InitMovement()
-        {
-            if (monsterDataConfig.moveable)
-            {
-                moveController = new MoveController();
-                moveController.InitMovement(this,monsterDataConfig.moveData);
-                
-                this.RegisterEvent<SInputEvent_Move>(moveData =>
-                {
-                    moveController.Move(moveData);
-                }).AddToUnregisterList(this);
-                
-                this.RegisterEvent<SInputEvent_MouseDrag>(mouseData =>
-                {
-                    moveController.MouseRotate(mouseData);
-                }).AddToUnregisterList(this);
-                
-                this.RegisterEvent<SInputEvent_Run>(moveData =>
-                {
-                    moveController.Running(moveData);
-                });
-
-                ActionKit.OnFixedUpdate.Register(()=>moveController.GroundCheck()).AddToUnregisterList(this);
-            }
-        }
-        
-        
-
-        protected override void InitJump()
-        {
-            if (monsterDataConfig.jumpable)
-            {
-                moveController.InitJump(monsterDataConfig.jumpData);
-                this.RegisterEvent<SInputEvent_Jump>(moveData =>
-                {
-                    moveController.JumpCheck();
-                }).AddToUnregisterList(this);
-            }
-        }
-
-        protected override void InitCrouch()
-        {
-            if (monsterDataConfig.crouchable)
-            {
-                moveController.InitCrouch(monsterDataConfig.crouchData);
-                this.RegisterEvent<SInputEvent_Crouch>(moveData =>
-                {
-                    moveController.CrouchCheck(moveData);
-                }).AddToUnregisterList(this);
-            }
-        }
-
-        protected override void InitDash()
-        {
-            if (monsterDataConfig.dashable)
-            {
-                moveController.InitDash(monsterDataConfig.dashData);
-                this.RegisterEvent<SInputEvent_Dash>(moveData =>
-                {
-                    moveController.DashCheck();
-                }).AddToUnregisterList(this);
             }
         }
 

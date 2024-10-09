@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using DG.Tweening;
 using GameFrame.Config;
+using GameFrame.Word;
 using QFramework;
 using Unity.Netcode.Components;
 using UnityEngine;
@@ -63,7 +64,7 @@ namespace GameFrame.World
     
     public class MoveController :IBiology_Move,IBiology_Jump,IBiology_Crouch,IBiology_Dash
     {
-        protected WorldObj owner;
+        protected PlayerController owner;
         
         protected bool grounded = false;
 
@@ -135,7 +136,7 @@ namespace GameFrame.World
         /// </summary>
         /// <param name="owner"></param>
         /// <param name="moveData"></param>
-        public void InitMovement(WorldObj owner,SMoveData moveData)
+        public void InitMovement(PlayerController owner,SMoveData moveData)
         {
             this.owner = owner;
             this.transfrom = owner.transform;
@@ -236,7 +237,9 @@ namespace GameFrame.World
             Vector2 input = inputEvent_Mouse.mousePos;
             float mouseX = input.x * mouseSensitivity *  Time.deltaTime;
             float mouseY = input.y * mouseSensitivity; 
-            rigidbody.DORotate(Vector3.up * mouseX,0.1f);
+            
+            transfrom.Rotate(Vector3.up * mouseX);
+            
             xRotation -= mouseY;
             xRotation = Mathf.Clamp(xRotation, maxPitchAngle.x, maxPitchAngle.y);
             cameraTransform.DORotate(new Vector3(xRotation, 0f, 0f),0.1f);

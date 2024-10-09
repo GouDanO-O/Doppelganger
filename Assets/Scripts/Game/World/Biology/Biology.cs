@@ -9,13 +9,11 @@ namespace GameFrame.World
 {
     public abstract class Biology : WorldObj
     {
-        private BiologyDataConfig biologyDataConfig;
-        
-        public MoveController moveController { get; set;}
+        public BiologyDataConfig biologyDataConfig { get; protected set; }
         
         public override void Init()
         {
-            if (thisDataConfig is BiologyDataConfig)
+            if (thisDataConfig is BiologyDataConfig && !biologyDataConfig)
             {
                 try
                 {
@@ -59,14 +57,6 @@ namespace GameFrame.World
                 skillController.Init(biologyDataConfig.skillTree,this);
             }
         }
-
-        protected abstract void InitMovement();
-
-        protected abstract void InitJump();
-
-        protected abstract void InitCrouch();
-
-        protected abstract void InitDash();
     }
 }
 
