@@ -6,13 +6,13 @@ using UnityEngine;
 
 namespace GameFrame.Config
 {
-    [CreateAssetMenu(fileName = "",menuName = "配置/世界/基础物体配置")]
+    [CreateAssetMenu(fileName = "WorldObj",menuName = "配置/世界/基础物体配置")]
     public class WorldObjDataConfig : SerializedScriptableObject
     {
         [Required(InfoMessageType.Error),LabelText("预制体")]
         public GameObject thisPrefab;
         
-        [LabelText("是否有技能")]
+        [Space(3),LabelText("是否有技能")]
         public bool hasSkill;
         
         [ShowIf("hasSkill"),LabelText("技能树")]
@@ -21,43 +21,48 @@ namespace GameFrame.Config
         [LabelText("重力"),Range(0,20)]
         public float gravity;
         
-        [LabelText("是否具有生命")]
+        [Space(3),LabelText("是否具有生命")]
         public bool healthyable;
         
-        [ShowIf("healthyable"),LabelText("生命数据")]
+        [ShowIf("healthyable"),LabelText("生命数据",SdfIconType.Box)]
         public SHealthyData healthyData;
 
-        [LabelText("变身所需要的能量\nx=>仅外貌, y=>完全变身")]
+        [Header("变身所需要的能量,x=>仅外貌, y=>完全变身")]
+        [LabelText("")]
         public Vector2 costDeformationEnergy;
         
         [LabelText("是否能够进行移动(不会接受输入数据,由物体本身控制移动)")]
         public bool moveable;
-        
-        [ShowIf("moveable"),LabelText("移动数据")]
+
+        [ShowIf("moveable"), LabelText("移动数据", SdfIconType.Box)]
         public SMoveData moveData;
-        
-        [ShowIf("moveable"),LabelText("是否能够进行闪烁")]
+
+        [Space(3)]
+        [ShowIf("moveable"), LabelText("是否能够进行闪烁")]
         public bool dashable;
-        
-        [ShowIf("dashable"),LabelText("闪烁数据")]
+
+        [ShowIf("@moveable && dashable"), LabelText("闪烁数据", SdfIconType.Box)]
         public SDashData dashData;
-        
-        [ShowIf("moveable"),LabelText("是否能够进行跳跃")]
+
+        [Space(3)]
+        [ShowIf("moveable"), LabelText("是否能够进行跳跃")]
         public bool jumpable;
-        
-        [ShowIf("jumpable"),LabelText("跳跃数据")]
+
+        [ShowIf("@moveable && jumpable"), LabelText("跳跃数据", SdfIconType.Box)]
         public SJumpData jumpData;
-        
-        [ShowIf("moveable"),LabelText("是否能够进行蹲伏")]
+
+        [Space(3)]
+        [ShowIf("moveable"), LabelText("是否能够进行蹲伏")]
         public bool crouchable;
-        
-        [ShowIf("crouchable"),LabelText("蹲伏数据")]
+
+        [ShowIf("@moveable && crouchable"), LabelText("蹲伏数据", SdfIconType.Box)]
         public SCrouchData crouchData;
+
         
-        [LabelText("能否进行攻击")]
+        [Space(3),LabelText("能否进行攻击")]
         public bool attackable;
         
-        [ShowIf("attackable"),LabelText("能否进行攻击")]
+        [ShowIf("attackable"),LabelText("攻击数据",SdfIconType.Box)]
         public SAttackData attackData;
     }
     

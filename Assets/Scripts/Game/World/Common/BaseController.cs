@@ -11,7 +11,7 @@ namespace GameFrame.World
     /// </summary>
     public abstract class BaseController : NetworkBehaviour,IController,IUnRegisterList
     {
-        public Biology biology { get; set; }
+        public WorldObj WorldObj { get; set; }
         
         public List<IUnRegister> UnregisterList { get; } = new List<IUnRegister>();
         

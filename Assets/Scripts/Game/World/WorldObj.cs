@@ -59,10 +59,14 @@ namespace GameFrame.World
     }
     
     
-    public abstract class WorldObj : NetworkBehaviour,IController,IUnRegisterList
+    public abstract class WorldObj : NetworkBehaviour,IUnRegisterList
     {
         [SerializeField] protected WorldObjDataConfig thisDataConfig;
 
+        public SWorldObjData_Persistence worldObjData_Persistence;
+        
+        public SWorldObjData_Temporality worldObjData_Temporality;
+        
         /// <summary>
         /// 注册的事件列表
         /// </summary>
@@ -92,11 +96,6 @@ namespace GameFrame.World
 
         
         #region Init
-        public IArchitecture GetArchitecture()
-        {
-            return Main.Interface;
-        }
-
         /// <summary>
         /// 初始化
         /// </summary>
@@ -123,6 +122,10 @@ namespace GameFrame.World
         /// </summary>
         protected virtual void InitComponents()
         {
+            worldObjData_Persistence = new SWorldObjData_Persistence();
+            worldObjData_Temporality = new SWorldObjData_Temporality();
+            
+            
             InitController();
             if (thisDataConfig)
             {
