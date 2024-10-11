@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using GameFrame.Config;
 using UnityEngine;
 using GameFrame.Net;
+using GameFrame.Word;
 using UnityEngine.Scripting;
 using Unity.Netcode;
 using QFramework;
@@ -12,12 +13,55 @@ using UnityEngine.Events;
 
 namespace GameFrame.World
 {
+    /// <summary>
+    /// 持久化的数据--生命周期内会一直存在
+    /// </summary>
+    public interface IData_Persistence
+    {
+        public void ClearData();
+    }
+    
+    /// <summary>
+    /// 临时性的数据
+    /// </summary>
+    public interface IData_Temporality
+    {
+        public void InitData();
+        
+        public void ClearData();
+    }
+    
+    /// <summary>
+    /// 持久化的世界物体数据--生命周期内会一直存在
+    /// </summary>
+    public class SWorldObjData_Persistence : IData_Persistence
+    {
+        public void ClearData()
+        {
+            
+        }
+    }
+
+    /// <summary>
+    /// 临时性的世界物体数据--当变形或其他操作时会被初始化
+    /// </summary>
+    public class SWorldObjData_Temporality: IData_Temporality
+    {
+        public void InitData()
+        {
+            
+        }
+
+        public void ClearData()
+        {
+            
+        }
+    }
+    
     
     public abstract class WorldObj : NetworkBehaviour,IController,IUnRegisterList
     {
-        public WorldObjDataConfig thisDataConfig;
-        
-        public WorldObjDataConfig willDeformationConfig { get; }
+        [SerializeField] protected WorldObjDataConfig thisDataConfig;
 
         /// <summary>
         /// 注册的事件列表
@@ -27,14 +71,27 @@ namespace GameFrame.World
         public HealthyController healthyController { get;protected set; }
         
         public SkillController skillController { get;protected set; }
-        
 
+        public PlayerController playerController { get;protected set; }
         
-        private void Start()
+        public AIController aiController { get;protected set; }
+        
+        protected bool isInit = false;
+
+        public bool isPlayerSelecting { get; set; }
+
+        /// <summary>
+        /// 是否由玩家进行操作
+        /// </summary>
+        /// <param name="isPlayerSelecting"></param>
+        public void ChangePlayerSelecting(bool isPlayerSelecting)
         {
-            Init();
-        }  
+            this.isPlayerSelecting = isPlayerSelecting;
+            this.Init();
+        }
 
+        
+        #region Init
         public IArchitecture GetArchitecture()
         {
             return Main.Interface;
@@ -45,16 +102,14 @@ namespace GameFrame.World
         /// </summary>
         public virtual void Init()
         {
-            if (thisDataConfig is WorldObjDataConfig)
+            if (isInit)
             {
-                InitComponents();
+                
             }
-            else
-            {
-                Debug.LogError("WorldObjDataConfig is not set!");
-            }
+            InitComponents();
+            isInit = true;
         }
-
+        
         /// <summary>
         /// 注销
         /// </summary>
@@ -68,18 +123,66 @@ namespace GameFrame.World
         /// </summary>
         protected virtual void InitComponents()
         {
-            InitConfig();
+            InitController();
+            if (thisDataConfig)
+            {
+                InitMovement();
+                InitHealthy();
+                InitSkill();
+            }
         }
 
         /// <summary>
-        /// 初始化配置
+        /// 初始化控制器
         /// </summary>
-        protected virtual void InitConfig()
+        protected virtual void InitController()
         {
-            if (thisDataConfig)
+            if (isPlayerSelecting)
             {
-                InitHealthy();
-                InitSkill();
+                if (playerController)
+                {
+                    playerController.EnableLogic();
+                }
+                else
+                {
+                    playerController=gameObject.AddComponent<PlayerController>();
+                }
+
+                if (aiController)
+                {
+                    aiController.DisableLogic();
+                }
+            }
+            else
+            {
+                if (aiController)
+                {
+                    aiController.EnableLogic();
+                }
+                else
+                {
+                    aiController=gameObject.AddComponent<AIController>();
+                }
+
+                if (playerController)
+                {
+                    playerController.DisableLogic();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// 初始化移动
+        /// </summary>
+        protected virtual void InitMovement()
+        {
+            if (isPlayerSelecting && playerController)
+            {
+                playerController.InitData();
+            }
+            else if(aiController)
+            {
+                aiController.InitData();
             }
         }
 
@@ -107,6 +210,9 @@ namespace GameFrame.World
             }
         }
         
+        #endregion
+        
+        #region CollisionCheck
         protected virtual void CollisionEnter(Collision other)
         {
             
@@ -136,6 +242,8 @@ namespace GameFrame.World
         {
             CollisionExit(other);
         }
+        
+        #endregion
     }
 }
 
