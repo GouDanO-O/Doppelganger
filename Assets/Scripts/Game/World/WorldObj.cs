@@ -57,29 +57,29 @@ namespace GameFrame.World
             
         }
     }
-    
-    
-    public abstract class WorldObj : NetworkBehaviour,IUnRegisterList
+
+
+    public abstract class WorldObj : NetworkBehaviour, IUnRegisterList
     {
         [SerializeField] protected WorldObjDataConfig thisDataConfig;
 
         public SWorldObjData_Persistence worldObjData_Persistence;
-        
+
         public SWorldObjData_Temporality worldObjData_Temporality;
-        
+
         /// <summary>
         /// 注册的事件列表
         /// </summary>
         public List<IUnRegister> UnregisterList { get; } = new List<IUnRegister>();
-        
-        public HealthyController healthyController { get;protected set; }
-        
-        public SkillController skillController { get;protected set; }
 
-        public PlayerController playerController { get;protected set; }
-        
-        public AIController aiController { get;protected set; }
-        
+        public HealthyController healthyController { get; protected set; }
+
+        public SkillController skillController { get; protected set; }
+
+        public PlayerController playerController { get; protected set; }
+
+        public AIController aiController { get; protected set; }
+
         protected bool isInit = false;
 
         public bool isPlayerSelecting { get; set; }
@@ -94,8 +94,8 @@ namespace GameFrame.World
             this.Init();
         }
 
-        
         #region Init
+
         /// <summary>
         /// 初始化
         /// </summary>
@@ -103,12 +103,13 @@ namespace GameFrame.World
         {
             if (isInit)
             {
-                
+
             }
+
             InitComponents();
             isInit = true;
         }
-        
+
         /// <summary>
         /// 注销
         /// </summary>
@@ -124,8 +125,8 @@ namespace GameFrame.World
         {
             worldObjData_Persistence = new SWorldObjData_Persistence();
             worldObjData_Temporality = new SWorldObjData_Temporality();
-            
-            
+
+
             InitController();
             if (thisDataConfig)
             {
@@ -148,7 +149,7 @@ namespace GameFrame.World
                 }
                 else
                 {
-                    playerController=gameObject.AddComponent<PlayerController>();
+                    playerController = gameObject.AddComponent<PlayerController>();
                 }
 
                 if (aiController)
@@ -164,7 +165,7 @@ namespace GameFrame.World
                 }
                 else
                 {
-                    aiController=gameObject.AddComponent<AIController>();
+                    aiController = gameObject.AddComponent<AIController>();
                 }
 
                 if (playerController)
@@ -173,7 +174,7 @@ namespace GameFrame.World
                 }
             }
         }
-        
+
         /// <summary>
         /// 初始化移动
         /// </summary>
@@ -183,7 +184,7 @@ namespace GameFrame.World
             {
                 playerController.InitData();
             }
-            else if(aiController)
+            else if (aiController)
             {
                 aiController.InitData();
             }
@@ -208,12 +209,61 @@ namespace GameFrame.World
         {
             if (thisDataConfig.skillTree)
             {
-                skillController=new SkillController();
-                skillController.Init(thisDataConfig.skillTree,this);
+                skillController = new SkillController();
+                skillController.Init(thisDataConfig.skillTree, this);
             }
         }
-        
+
         #endregion
+        
+        
+        /// <summary>
+        /// 短tick逻辑--Player
+        /// </summary>
+        public virtual void ShortTickLogic_Player()
+        {
+            
+        }
+        
+        /// <summary>
+        /// 短tick逻辑--AI
+        /// </summary>
+        public virtual void ShortTickLogic_AI()
+        {
+            
+        }
+
+        /// <summary>
+        /// 正常tick逻辑--Player
+        /// </summary>
+        public virtual void MainLogic_Player()
+        {
+            
+        }
+        
+        /// <summary>
+        /// 正常tick逻辑--AI
+        /// </summary>
+        public virtual void MainLogic_AI()
+        {
+            
+        }
+
+        /// <summary>
+        /// 长tick逻辑--Player
+        /// </summary>
+        public virtual void LongTickLogic_Player()
+        {
+            
+        }
+        
+        /// <summary>
+        /// 长tick逻辑--AI
+        /// </summary>
+        public virtual void LongTickLogic_AI()
+        {
+            
+        }
         
         #region CollisionCheck
         protected virtual void CollisionEnter(Collision other)

@@ -29,10 +29,12 @@ namespace GameFrame.Word
 
         public override void EnableLogic()
         {
+            
         }
 
         public override void DisableLogic()
         {
+            
         }
 
         public override void InitData()
@@ -42,7 +44,6 @@ namespace GameFrame.Word
             InitMovement();
         }
         
-
         protected override void InitMovement()
         {
             InitMove();

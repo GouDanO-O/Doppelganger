@@ -43,8 +43,6 @@ namespace GameFrame.World
         
         public LayerMask crouchCheckLayerMask { get; set; }
         
-        public float tickTime { get; set; }
-        
         protected float curOwnerHeight;
         
         protected int curJumpCount = 0;
@@ -168,8 +166,6 @@ namespace GameFrame.World
                 grounded = false;
             }
         }
-        
-        
         
         /// <summary>
         /// 跳跃检测
