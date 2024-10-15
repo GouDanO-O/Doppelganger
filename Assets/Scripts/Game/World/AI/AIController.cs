@@ -21,9 +21,9 @@ namespace GameFrame.World
             
         }
         
-        public override void InitData()
+        public override void InitData(WorldObj worldObj)
         {
-            
+            base.InitData(worldObj);
         }
         
         protected override void InitMovement()

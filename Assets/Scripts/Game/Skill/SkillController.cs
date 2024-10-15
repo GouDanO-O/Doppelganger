@@ -90,10 +90,8 @@ namespace GameFrame.World
         }
     }
     
-    public class SkillController : IController
+    public class SkillController : BasicController
     {
-        public WorldObj owner;
-        
         protected List<SkillNodeDataConfig> Skill_Inside = new List<SkillNodeDataConfig>();
         
         protected List<SkillNodeDataConfig> Skill_Outside = new List<SkillNodeDataConfig>();
@@ -132,13 +130,22 @@ namespace GameFrame.World
         /// 初始化
         /// </summary>
         /// <param name="skillTree"></param>
-        public void Init(SkillTreeConfig skillTree,WorldObj owner)
+        public override void InitData(WorldObj owner)
         {
-            this.owner = owner; 
+            base.InitData(owner);
+            SkillTreeConfig skillTree = owner.thisDataConfig.skillTree;
             Skill_Inside.AddRange(skillTree.Skill_Inside);
             Skill_Outside.AddRange(skillTree.Skill_Outside);
 
             SetOutSideSkill();
+        }
+        
+        /// <summary>
+        /// 注销
+        /// </summary>
+        public override void DeInitData()
+        {
+            
         }
 
         /// <summary>
@@ -253,6 +260,17 @@ namespace GameFrame.World
             if (CheckIsSatisfySkill(skill))
             {
                 skill.TriggerSkill(owner);
+            }
+        }
+
+        /// <summary>
+        /// 流程式使用技能
+        /// </summary>
+        public void UseSkill()
+        {
+            for (int i = 0; i < curOwnedSkills_Passive.Count; i++)
+            {
+                
             }
         }
     }

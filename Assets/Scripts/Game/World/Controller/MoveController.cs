@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameFrame.Config;
+using QFramework;
 using UnityEngine;
 
 namespace GameFrame.World
 {
-    public class MoveController
+    public class MoveController : BasicController
     {
         protected bool grounded = false;
         
@@ -39,9 +40,15 @@ namespace GameFrame.World
         
         public float dashCD { get; set; }
         
+        public bool isInvincibleInDashing { get; set; }
+        
+        public bool isInvincibleNow { get; set; }
+        
         public float crouchReduceRatio { get; set; }
         
         public LayerMask crouchCheckLayerMask { get; set; }
+        
+        protected float lastDashTime;
         
         protected float curOwnerHeight;
         
@@ -53,13 +60,20 @@ namespace GameFrame.World
         
         protected bool running = false;
         
-        public virtual void InitMovement(SMoveData moveData)
+        public override void InitData(WorldObj owner)
         {
+            base.InitData(owner);
+            SMoveData moveData = owner.thisDataConfig.moveData;
             this.walkSpeed = moveData.walkSpeed;
             this.runSpeed = moveData.runSpeed;
             this.inAirMoveSpeed = moveData.inAirMoveSpeed;
 
             this.temSpeed = GetTemSpeed();
+        }
+        
+        public override void DeInitData()
+        {
+            
         }
         
         /// <summary>
@@ -221,7 +235,34 @@ namespace GameFrame.World
         /// </summary>
         public virtual void DashCheck()
         {
+            if (Time.time - lastDashTime >= dashCD)
+            {
+                lastDashTime = Time.time;
+                Dash();
+            }
+        }
 
+        /// <summary>
+        /// 闪烁
+        /// </summary>
+        public virtual void Dash()
+        {
+            if (isInvincibleInDashing)
+            {
+                Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(InvincibleDashTimeCheck());
+            }
+            rigidbody.AddForce(transfrom.forward*dashSpeed, ForceMode.Impulse);
+        }
+
+        /// <summary>
+        /// 无敌时间检测
+        /// </summary>
+        /// <returns></returns>
+        protected virtual IEnumerator InvincibleDashTimeCheck()
+        {
+            isInvincibleNow = true;
+            yield return new WaitForSeconds(dashCD);
+            isInvincibleNow = false;
         }
     }
 }

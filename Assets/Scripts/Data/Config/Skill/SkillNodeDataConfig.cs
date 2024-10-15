@@ -6,7 +6,7 @@ using UnityEngine;
 namespace GameFrame.Config
 {
     [CreateAssetMenu(fileName = "BasicSkill", menuName = "配置/技能/基础技能配置")]
-    public class SkillNodeDataConfig : SerializedScriptableObject, ISerializationCallbackReceiver
+    public class SkillNodeDataConfig : SerializedScriptableObject
     {
         #region 技能基本信息
 
@@ -80,24 +80,5 @@ namespace GameFrame.Config
 
         #endregion
 
-        public void OnBeforeSerialize()
-        {
-            // 不需要实现
-        }
-
-        public void OnAfterDeserialize()
-        {
-            // 反序列化后，设置每个轨道的 SkillConfigInstance
-            if (SkillTracks != null)
-            {
-                foreach (var track in SkillTracks)
-                {
-                    if (track != null)
-                    {
-                        track.SkillConfigInstance = this;
-                    }
-                }
-            }
-        }
     }
 }

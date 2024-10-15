@@ -51,9 +51,10 @@ namespace GameFrame.World
         /// </summary>
         /// <param name="owner"></param>
         /// <param name="moveData"></param>
-        public override void InitMovement(SMoveData moveData)
+        public override void InitData(WorldObj owner)
         {
-            base.InitMovement(moveData);
+            base.InitData(owner);
+            SMoveData moveData = owner.thisDataConfig.moveData;
             this.maxPitchAngle = moveData.maxPitchAngle;
             
             ResourcesModel resModel = owner.GetModel<ResourcesModel>();
@@ -139,15 +140,6 @@ namespace GameFrame.World
                     StandUp();
                 }
             }
-        }
-        
-        
-        /// <summary>
-        /// 闪烁检测
-        /// </summary>
-        public override void DashCheck()
-        {
-
         }
     }  
 }

@@ -17,9 +17,7 @@ namespace GameFrame.Word
     {
         public WorldObj worldObj;
 
-        public readonly WorldObjDataConfig worldObjDataConfig;
-
-        public readonly WorldObjDataConfig willDeformationConfig;
+        public WorldObjDataConfig willDeformationConfig { get; }
 
         public Rigidbody rigidbody { get; set; }
 
@@ -37,28 +35,19 @@ namespace GameFrame.Word
             
         }
 
-        public override void InitData()
+        public override void InitData(WorldObj worldObj)
         {
             rigidbody = GetComponent<Rigidbody>();
             headCameraRootTransfrom = transform.Find("CameraRoot/HeadRoot");
-            InitMovement();
+            base.InitData(worldObj);
         }
         
-        protected override void InitMovement()
-        {
-            InitMove();
-            InitJump();
-            InitCrouch();
-            InitDash();
-        }
-
-
         protected override void InitMove()
         {
-            if (worldObjDataConfig.moveable)
+            if (thisDataConfig.moveable)
             {
                 moveController = new MoveController_Player();
-                moveController.InitMovement(worldObjDataConfig.moveData);
+                moveController.InitData(owner);
 
                 this.RegisterEvent<SInputEvent_Move>(moveData => { moveController.Move(moveData); })
                     .AddToUnregisterList(this);
@@ -74,9 +63,9 @@ namespace GameFrame.Word
 
         protected override void InitJump()
         {
-            if (worldObjDataConfig.jumpable)
+            if (thisDataConfig.jumpable)
             {
-                moveController.InitJump(worldObjDataConfig.jumpData);
+                moveController.InitJump(thisDataConfig.jumpData);
                 this.RegisterEvent<SInputEvent_Jump>(moveData => { moveController.JumpCheck(); })
                     .AddToUnregisterList(this);
             }
@@ -84,9 +73,9 @@ namespace GameFrame.Word
 
         protected override void InitCrouch()
         {
-            if (worldObjDataConfig.crouchable)
+            if (thisDataConfig.crouchable)
             {
-                moveController.InitCrouch(worldObjDataConfig.crouchData);
+                moveController.InitCrouch(thisDataConfig.crouchData);
                 this.RegisterEvent<SInputEvent_Crouch>(moveData => { moveController.CrouchCheck(moveData); })
                     .AddToUnregisterList(this);
             }
@@ -94,9 +83,9 @@ namespace GameFrame.Word
 
         protected override void InitDash()
         {
-            if (worldObjDataConfig.dashable)
+            if (thisDataConfig.dashable)
             {
-                moveController.InitDash(worldObjDataConfig.dashData);
+                moveController.InitDash(thisDataConfig.dashData);
                 this.RegisterEvent<SInputEvent_Dash>(moveData => { moveController.DashCheck(); })
                     .AddToUnregisterList(this);
             }

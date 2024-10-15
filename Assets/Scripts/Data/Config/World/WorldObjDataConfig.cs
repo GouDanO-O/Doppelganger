@@ -57,7 +57,6 @@ namespace GameFrame.Config
 
         [ShowIf("@moveable && crouchable"), LabelText("蹲伏数据", SdfIconType.Box)]
         public SCrouchData crouchData;
-
         
         [Space(3),LabelText("能否进行攻击")]
         public bool attackable;

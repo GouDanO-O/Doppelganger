@@ -19,6 +19,8 @@ namespace GameFrame.World
     public interface IData_Persistence
     {
         public void ClearData();
+        
+        public void SaveData();
     }
     
     /// <summary>
@@ -37,6 +39,11 @@ namespace GameFrame.World
     public class SWorldObjData_Persistence : IData_Persistence
     {
         public void ClearData()
+        {
+            SaveData();
+        }
+
+        public void SaveData()
         {
             
         }
@@ -59,9 +66,9 @@ namespace GameFrame.World
     }
 
 
-    public abstract class WorldObj : NetworkBehaviour, IUnRegisterList
-    {
-        [SerializeField] protected WorldObjDataConfig thisDataConfig;
+    public abstract class WorldObj : NetworkBehaviour,IController, IUnRegisterList
+    { 
+        public WorldObjDataConfig thisDataConfig;
 
         public SWorldObjData_Persistence worldObjData_Persistence;
 
@@ -71,10 +78,6 @@ namespace GameFrame.World
         /// 注册的事件列表
         /// </summary>
         public List<IUnRegister> UnregisterList { get; } = new List<IUnRegister>();
-
-        public HealthyController healthyController { get; protected set; }
-
-        public SkillController skillController { get; protected set; }
 
         public PlayerController playerController { get; protected set; }
 
@@ -96,6 +99,11 @@ namespace GameFrame.World
 
         #region Init
 
+        public IArchitecture GetArchitecture()
+        {
+            return Main.Interface;
+        }
+
         /// <summary>
         /// 初始化
         /// </summary>
@@ -103,7 +111,7 @@ namespace GameFrame.World
         {
             if (isInit)
             {
-
+                DeInit();
             }
 
             InitComponents();
@@ -116,6 +124,8 @@ namespace GameFrame.World
         public virtual void DeInit()
         {
             this.UnRegisterAll();
+            worldObjData_Persistence.ClearData();
+            worldObjData_Temporality.ClearData();
         }
 
         /// <summary>
@@ -125,14 +135,10 @@ namespace GameFrame.World
         {
             worldObjData_Persistence = new SWorldObjData_Persistence();
             worldObjData_Temporality = new SWorldObjData_Temporality();
-
-
-            InitController();
+            
             if (thisDataConfig)
             {
-                InitMovement();
-                InitHealthy();
-                InitSkill();
+                InitController();
             }
         }
 
@@ -150,6 +156,7 @@ namespace GameFrame.World
                 else
                 {
                     playerController = gameObject.AddComponent<PlayerController>();
+                    playerController.InitData(this);
                 }
 
                 if (aiController)
@@ -166,6 +173,7 @@ namespace GameFrame.World
                 else
                 {
                     aiController = gameObject.AddComponent<AIController>();
+                    aiController.InitData(this);
                 }
 
                 if (playerController)
@@ -175,48 +183,10 @@ namespace GameFrame.World
             }
         }
 
-        /// <summary>
-        /// 初始化移动
-        /// </summary>
-        protected virtual void InitMovement()
-        {
-            if (isPlayerSelecting && playerController)
-            {
-                playerController.InitData();
-            }
-            else if (aiController)
-            {
-                aiController.InitData();
-            }
-        }
-
-        /// <summary>
-        /// 初始化生命
-        /// </summary>
-        protected virtual void InitHealthy()
-        {
-            if (thisDataConfig.healthyable)
-            {
-                healthyController = new HealthyController();
-                healthyController.InitHealthyer(thisDataConfig.healthyData);
-            }
-        }
-
-        /// <summary>
-        /// 初始化技能
-        /// </summary>
-        protected virtual void InitSkill()
-        {
-            if (thisDataConfig.skillTree)
-            {
-                skillController = new SkillController();
-                skillController.Init(thisDataConfig.skillTree, this);
-            }
-        }
-
         #endregion
-        
-        
+
+        #region Player
+
         /// <summary>
         /// 短tick逻辑--Player
         /// </summary>
@@ -226,6 +196,26 @@ namespace GameFrame.World
         }
         
         /// <summary>
+        /// 正常tick逻辑--Player
+        /// </summary>
+        public virtual void MainLogic_Player()
+        {
+            
+        }
+        
+        /// <summary>
+        /// 长tick逻辑--Player
+        /// </summary>
+        public virtual void LongTickLogic_Player()
+        {
+            
+        }
+
+        #endregion
+
+        #region AI
+        
+        /// <summary>
         /// 短tick逻辑--AI
         /// </summary>
         public virtual void ShortTickLogic_AI()
@@ -233,13 +223,7 @@ namespace GameFrame.World
             
         }
 
-        /// <summary>
-        /// 正常tick逻辑--Player
-        /// </summary>
-        public virtual void MainLogic_Player()
-        {
-            
-        }
+
         
         /// <summary>
         /// 正常tick逻辑--AI
@@ -249,13 +233,7 @@ namespace GameFrame.World
             
         }
 
-        /// <summary>
-        /// 长tick逻辑--Player
-        /// </summary>
-        public virtual void LongTickLogic_Player()
-        {
-            
-        }
+
         
         /// <summary>
         /// 长tick逻辑--AI
@@ -264,6 +242,8 @@ namespace GameFrame.World
         {
             
         }
+        
+        #endregion
         
         #region CollisionCheck
         protected virtual void CollisionEnter(Collision other)

@@ -26,7 +26,7 @@ namespace GameFrame.World
         public void Death();
     }
     
-    public class HealthyController : IBiology_Healthy
+    public class HealthyController : BasicController,IBiology_Healthy
     {
         public BindableProperty<bool> isDeath { get; set; }= new BindableProperty<bool>(false);
         
@@ -42,13 +42,23 @@ namespace GameFrame.World
         /// 初始化
         /// </summary>
         /// <param name="healthyData"></param>
-        public virtual void InitHealthyer(SHealthyData healthyData)
+        public override void InitData(WorldObj worldObj)
         {
+            base.InitData(worldObj);
+            SHealthyData healthyData=owner.thisDataConfig.healthyData;
             this.curHealthy.Value = healthyData.maxHealth;
             this.maxHealthy.Value = healthyData.maxHealth;    
             this.curArmor.Value = healthyData.maxArmor;
             this.maxArmor.Value = healthyData.maxArmor;
             this.isDeath.Value = false;
+        }
+
+        /// <summary>
+        /// 注销
+        /// </summary>
+        public override void DeInitData()
+        {
+            
         }
         
         /// <summary>
