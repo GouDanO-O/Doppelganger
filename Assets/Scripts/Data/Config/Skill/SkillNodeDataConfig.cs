@@ -66,18 +66,8 @@ namespace GameFrame.Config
 
         #region 轨道列表
 
-        [BoxGroup("技能轨道")]
-        [LabelText("轨道列表")]
-        [ListDrawerSettings(CustomAddFunction = "AddNewTrack", DraggableItems = false)]
+        [BoxGroup("技能行为轨道"),LabelText("技能行为轨道")]
         public List<SkillTrack> SkillTracks = new List<SkillTrack>();
-
-        private SkillTrack AddNewTrack()
-        {
-            var newTrack = new SkillTrack(this);
-            newTrack.TrackName = "New Track";
-            return newTrack;
-        }
-
         #endregion
 
     }

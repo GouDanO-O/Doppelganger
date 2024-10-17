@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97e64fa305f83434681a3520e4210b79, type: 3}
-  m_Name: BasicSkill
+  m_Script: {fileID: 11500000, guid: 1646fce2242e4f209af85c848267ff0a, type: 3}
+  m_Name: FireBallAction
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -20,19 +20,22 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
-  SkillID: 0
-  SkillName: 
-  SkillDescription: 
-  SkillNodeType: 1
-  SkillSpellType: 0
-  SkillTriggerConditionType: 1
-  SkillTriggerConditionFormula: 
-  RequiredLevel: 32
-  SkillPointsCost: 140
-  PrerequisiteSkills: []
-  SkillCooldown: 0
-  MaxLevel: 0
-  LevelUpSkills: []
-  SkillTracks:
-  - {fileID: 11400000, guid: 99305f41280a3a245b2f8742bc297015, type: 2}
+    SerializationNodes:
+    - Name: ObjectAsset
+      Entry: 6
+      Data: 
+  StartTime: 0
+  Duration: 1
+  ConditionFormula: 
+  TimeDelayTime: 0
+  ActionTriggerType: 1
+  LifeTime: 0
+  FireCount: 0
+  MoveSpeed: 0
+  FireDelayTime: 0
+  FireFurcationAngle: 0
+  MaxFlyDistance: 0
+  NormalCollisionType: 0
+  SpecialCollisionType: 0
+  ShootProjectileType: 0
+  MaxParabolaHeight: 0

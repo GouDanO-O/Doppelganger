@@ -41,7 +41,12 @@ namespace GameFrame.Word
             headCameraRootTransfrom = transform.Find("CameraRoot/HeadRoot");
             base.InitData(worldObj);
         }
-        
+
+        public override void DeInitData()
+        {
+            base.DeInitData();
+        }
+
         protected override void InitMove()
         {
             if (thisDataConfig.moveable)

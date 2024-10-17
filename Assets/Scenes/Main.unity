@@ -547,6 +547,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 270338283322287743, guid: 2a5a33552edb7c0429273e8a8448649d, type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 567
+      objectReference: {fileID: 0}
     - target: {fileID: 679964791463339438, guid: 2a5a33552edb7c0429273e8a8448649d, type: 3}
       propertyPath: m_RenderMode
       value: 0
@@ -647,27 +651,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8869431289380939280, guid: 2a5a33552edb7c0429273e8a8448649d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6175102366252572480}
-    - targetCorrespondingSourceObject: {fileID: 3990632769104150271, guid: 2a5a33552edb7c0429273e8a8448649d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6175102366252572478}
   m_SourcePrefab: {fileID: 100100000, guid: 2a5a33552edb7c0429273e8a8448649d, type: 3}
---- !u!1 &6175102366252572477 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3990632769104150271, guid: 2a5a33552edb7c0429273e8a8448649d, type: 3}
-  m_PrefabInstance: {fileID: 6175102366252572476}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6175102366252572478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6175102366252572477}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6175102366252572479 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8869431289380939280, guid: 2a5a33552edb7c0429273e8a8448649d, type: 3}

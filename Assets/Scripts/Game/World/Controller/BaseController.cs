@@ -10,7 +10,7 @@ namespace GameFrame.World
     public abstract class BasicController : IController
     {
         public WorldObj owner;
-
+        
         public virtual void InitData(WorldObj owner)
         {
             this.owner = owner;
@@ -54,6 +54,10 @@ namespace GameFrame.World
         
         public AttackController attackController { get; set; }
         
+        /// <summary>
+        /// 注册数据
+        /// </summary>
+        /// <param name="owner"></param>
         public override void InitData(WorldObj owner)
         {
             base.InitData(owner);
@@ -63,15 +67,25 @@ namespace GameFrame.World
             InitSkill();
         }
 
+        /// <summary>
+        /// 注销数据
+        /// </summary>
         public virtual void DeInitData()
         {
+            this.UnRegisterAll();
             healthyController.DeInitData();
             skillController.DeInitData();
             attackController.DeInitData();
         }
 
+        /// <summary>
+        /// 开始逻辑循环
+        /// </summary>
         public abstract void EnableLogic();
-
+        
+        /// <summary>
+        /// 取消逻辑循环
+        /// </summary>
         public abstract void DisableLogic();
 
         /// <summary>
@@ -110,12 +124,24 @@ namespace GameFrame.World
             }
         }
         
+        /// <summary>
+        /// 初始化移动
+        /// </summary>
         protected abstract void InitMove();
 
+        /// <summary>
+        /// 初始化跳跃
+        /// </summary>
         protected abstract void InitJump();
 
+        /// <summary>
+        /// 初始化蹲伏
+        /// </summary>
         protected abstract void InitCrouch();
         
+        /// <summary>
+        /// 初始化冲刺
+        /// </summary>
         protected abstract void InitDash();
     }
 }

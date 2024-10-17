@@ -9,7 +9,7 @@ namespace GameFrame
     {
         public override void InitUtility()
         {
-            
+            Main.Interface.RegisterUtility(this);
         }
         
         
