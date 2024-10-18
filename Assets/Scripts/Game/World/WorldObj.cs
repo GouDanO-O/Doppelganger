@@ -28,8 +28,6 @@ namespace GameFrame.World
     /// </summary>
     public interface IData_Temporality
     {
-        public void InitData();
-        
         public void ClearData();
     }
     
@@ -54,11 +52,6 @@ namespace GameFrame.World
     /// </summary>
     public class SWorldObjData_Temporality: IData_Temporality
     {
-        public void InitData()
-        {
-            
-        }
-
         public void ClearData()
         {
             

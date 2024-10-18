@@ -86,6 +86,11 @@ namespace GameFrame.Config
         private bool isLifeTimeCheck;
 
         /// <summary>
+        /// 用来标记是否能够进行生命周期内的行为循环
+        /// </summary>
+        private bool canUpdateExecute;
+
+        /// <summary>
         /// 开始行为前,进行前置检测
         /// </summary>
         public virtual void ExecuteCheck(WorldObj target)
@@ -158,6 +163,7 @@ namespace GameFrame.Config
         public virtual void StartExecute()
         {
             TriggerTypeCheck();
+            canUpdateExecute = true;
         }
 
         /// <summary>
@@ -165,7 +171,7 @@ namespace GameFrame.Config
         /// </summary>
         public virtual void UpdateExecute()
         {
-            if(!timeDelayEnd)
+            if(!timeDelayEnd && !canUpdateExecute)
                 return;
 
             if (isLifeTimeCheck)
@@ -185,7 +191,7 @@ namespace GameFrame.Config
         /// </summary>
         public virtual void EndExecute()
         {
-            
+            canUpdateExecute = false;
         }
 
         /// <summary>

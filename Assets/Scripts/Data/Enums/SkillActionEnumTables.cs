@@ -52,10 +52,15 @@ namespace GameFrame
         CollisionAndRebound
     }
 
-
+    [LabelText("元素伤害类型")]
     public enum EAction_Skill_ElementType
     {
+        [LabelText("无属性")]
         None,
+        [LabelText("火属性")]
+        Fire,
+        [LabelText("雷属性")]
+        Electricity,
     }
     
 }

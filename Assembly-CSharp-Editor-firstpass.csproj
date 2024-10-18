@@ -404,20 +404,11 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\PackageCache\com.unity.nuget.newtonsoft-json@3.2.1\Runtime\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SevenZip">
-      <HintPath>D:\Project\UnityProject\Doppelganger\Library\PackageCache\com.peterxiang.xmlib.thirdparty@d68271926b\Runtime\SevenZip.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.VisualScripting.YamlDotNet">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll</HintPath>
     </Reference>
-    <Reference Include="CloudBase">
-      <HintPath>D:\Project\UnityProject\Doppelganger\Library\PackageCache\com.peterxiang.xmlib.thirdparty@d68271926b\Runtime\CloudBase.dll</HintPath>
-    </Reference>
     <Reference Include="Sirenix.Reflection.Editor">
       <HintPath>D:\Project\UnityProject\Doppelganger\Assets\Plugins\Sirenix\Assemblies\Sirenix.Reflection.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="protobuf-net">
-      <HintPath>D:\Project\UnityProject\Doppelganger\Library\PackageCache\com.peterxiang.xmlib.thirdparty@d68271926b\Runtime\protobuf-net.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Collections.LowLevel.ILSupport">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\PackageCache\com.unity.collections@1.2.4\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
@@ -458,12 +449,6 @@
     <Reference Include="Markdig">
       <HintPath>D:\Project\UnityProject\Doppelganger\Assets\QFramework\Toolkits\_CoreKit\PackageKit\Markdown\Markdig.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Protobuf">
-      <HintPath>D:\Project\UnityProject\Doppelganger\Library\PackageCache\com.peterxiang.xmlib.thirdparty@d68271926b\Runtime\Google.Protobuf.dll</HintPath>
-    </Reference>
-    <Reference Include="EPPlus">
-      <HintPath>D:\Project\UnityProject\Doppelganger\Library\PackageCache\com.peterxiang.xmlib.thirdparty@d68271926b\Editor\EPPlus.dll</HintPath>
-    </Reference>
     <Reference Include="Sirenix.Utilities.Editor">
       <HintPath>D:\Project\UnityProject\Doppelganger\Assets\Plugins\Sirenix\Assemblies\Sirenix.Utilities.Editor.dll</HintPath>
     </Reference>
@@ -472,12 +457,6 @@
     </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\PackageCache\com.unity.nuget.mono-cecil@1.11.4\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="FlatBuffers">
-      <HintPath>D:\Project\UnityProject\Doppelganger\Library\PackageCache\com.peterxiang.xmlib.thirdparty@d68271926b\Runtime\FlatBuffers.dll</HintPath>
-    </Reference>
-    <Reference Include="websocket-sharp">
-      <HintPath>D:\Project\UnityProject\Doppelganger\Library\PackageCache\com.peterxiang.xmlib.thirdparty@d68271926b\Runtime\websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Android.Types">
       <HintPath>D:\Unity\Editors\2023.2.20f1\Editor\Data\PlaybackEngines\AndroidPlayer\Unity.Android.Types.dll</HintPath>
@@ -872,9 +851,6 @@
     <Reference Include="Unity.Services.Relay">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Services.Relay.dll</HintPath>
     </Reference>
-    <Reference Include="XMLib.Common.Editor">
-      <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\XMLib.Common.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.InputSystem.ForUI">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.InputSystem.ForUI.dll</HintPath>
     </Reference>
@@ -914,9 +890,6 @@
     <Reference Include="Unity.Performance.Profile-Analyzer.Editor">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Performance.Profile-Analyzer.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="XMLib.AM.Editor">
-      <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\XMLib.AM.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Services.Authentication.PlayerAccounts">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Services.Authentication.PlayerAccounts.dll</HintPath>
     </Reference>
@@ -938,9 +911,6 @@
     <Reference Include="Unity.VisualScripting.Core.Editor">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.VisualScripting.Core.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="XMLib.AM">
-      <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\XMLib.AM.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection.dll</HintPath>
     </Reference>
@@ -955,9 +925,6 @@
     </Reference>
     <Reference Include="Unity.EditorCoroutines.Editor">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.EditorCoroutines.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="XMLib.Common">
-      <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\XMLib.Common.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Services.Authentication">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Services.Authentication.dll</HintPath>
