@@ -46,7 +46,7 @@ namespace GameFrame.Config
         {
             float randomCriticalRate = Random.Range(curCriticalRate, 100);
             bool isCritical = randomCriticalRate <= curCriticalRate;
-            return (isCritical ? curCriticalDamage * curCriticalDamage : curCriticalDamage)*damageAttenuationRate;
+            return (isCritical ? curWillTriggerDamage * curCriticalDamage : curWillTriggerDamage)*damageAttenuationRate;
         }
 
         /// <summary>
@@ -156,7 +156,6 @@ namespace GameFrame.Config
         {
             base.UpdateExecute();
             Fly();
-            FlyDistanceCheck();
         }
         
 
@@ -165,9 +164,13 @@ namespace GameFrame.Config
             base.EndExecute();
         }
 
-        public override void Trigger()
+        public override void Trigger(WorldObj triggerTarget)
         {
-            CrossOneTarget();
+            if (tempProjectileData.CheckDamageAttenuationLevel())
+            {
+                triggerTarget.GetController().healthyController.Beharmed(tempProjectileData.CaculateDamage());
+                EndExecute();
+            }
         }
 
         public override void TriggerTypeCheck()
@@ -175,6 +178,9 @@ namespace GameFrame.Config
             base.TriggerTypeCheck();
         }
 
+        /// <summary>
+        /// 飞行
+        /// </summary>
         protected virtual void Fly()
         {
             if (ShootProjectileType == EAction_Projectile_ShootType.Line)
@@ -185,6 +191,7 @@ namespace GameFrame.Config
             {
                 FlyWithParabola();
             }
+            FlyDistanceCheck();
         }
 
         /// <summary>
@@ -192,7 +199,8 @@ namespace GameFrame.Config
         /// </summary>
         protected virtual void FlyWithLine()
         {
-            
+            Vector3 direction = transform.forward;
+            transform.position += direction * MoveSpeed * Time.deltaTime;
         }
 
         /// <summary>
@@ -200,7 +208,15 @@ namespace GameFrame.Config
         /// </summary>
         protected virtual void FlyWithParabola()
         {
-            
+            float gravity = Physics.gravity.y;
+            float time = Time.deltaTime;
+
+            // 使用抛物线的公式计算弹体的位移
+            Vector3 horizontalMove = transform.forward * MoveSpeed * time;
+            Vector3 verticalMove = Vector3.up * (MaxParabolaHeight * time + 0.5f * gravity * time * time);
+
+            // 更新弹体的位置
+            transform.position += horizontalMove + verticalMove;
         }
         
         /// <summary>
@@ -210,24 +226,12 @@ namespace GameFrame.Config
         {
             if (MaxFlyDistance > 0)
             {
+                tempProjectileData.curFlyDistance += MoveSpeed * Time.deltaTime;
                 if (tempProjectileData.curFlyDistance >= MaxFlyDistance)
                 {
                     EndExecute();
                 }
             }
-        }
-
-        /// <summary>
-        /// 穿过或伤害了一个目标
-        /// </summary>
-        protected virtual void CrossOneTarget()
-        {
-            if (tempProjectileData.CheckDamageAttenuationLevel())
-            {
-                EndExecute();
-            }
-            
-           
         }
         
         

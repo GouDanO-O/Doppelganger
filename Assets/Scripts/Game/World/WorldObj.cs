@@ -9,6 +9,7 @@ using UnityEngine.Scripting;
 using Unity.Netcode;
 using QFramework;
 using Unity.Netcode.Components;
+using Unity.VisualScripting;
 using UnityEngine.Events;
 
 namespace GameFrame.World
@@ -237,7 +238,20 @@ namespace GameFrame.World
         }
         
         #endregion
-        
+
+        /// <summary>
+        /// 获取控制器
+        /// </summary>
+        /// <returns></returns>
+        public virtual BaseController  GetController()
+        {
+            if (isPlayerSelecting)
+            {
+                return playerController;
+            }
+
+            return aiController;
+        }        
         #region CollisionCheck
         protected virtual void CollisionEnter(Collision other)
         {

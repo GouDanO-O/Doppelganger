@@ -201,6 +201,11 @@ namespace GameFrame.Config
         {
             
         }
+
+        public virtual void Trigger(WorldObj triggerTarget)
+        {
+            
+        }
         
         /// <summary>
         /// 触发类型检测
