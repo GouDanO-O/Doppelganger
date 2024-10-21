@@ -22,6 +22,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   thisPrefab: {fileID: 0}
+  CollisionType: 0
   hasSkill: 0
   skillTree: {fileID: 0}
   gravity: 0

@@ -59,6 +59,8 @@ namespace GameFrame.World
     }
 
 
+
+
     public abstract class WorldObj : NetworkBehaviour,IController, IUnRegisterList
     { 
         public WorldObjDataConfig thisDataConfig;
@@ -79,6 +81,8 @@ namespace GameFrame.World
         protected bool isInit = false;
 
         public bool isPlayerSelecting { get; set; }
+        
+        public EWorldObjCollisionType CollisionType { get; set; }
 
         /// <summary>
         /// 是否由玩家进行操作

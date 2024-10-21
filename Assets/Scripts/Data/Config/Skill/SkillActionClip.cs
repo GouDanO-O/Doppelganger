@@ -187,7 +187,7 @@ namespace GameFrame.Config
         }
 
         /// <summary>
-        /// 结束生命周期
+        /// 结束生命周期--不能本帧就销毁(要么延时,要么下一帧,以确保本帧逻辑执行完毕)
         /// </summary>
         public virtual void EndExecute()
         {
@@ -198,6 +198,15 @@ namespace GameFrame.Config
         /// 触发(可以多次触发,直到生命周期结束)
         /// </summary>
         public virtual void Trigger()
+        {
+            
+        }
+
+        /// <summary>
+        /// 对世界中的物体触发
+        /// </summary>
+        /// <param name="curTriggerTarget"></param>
+        public virtual void Trigger(WorldObj curTriggerTarget)
         {
             
         }

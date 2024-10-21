@@ -12,6 +12,9 @@ namespace GameFrame.Config
         [Required(InfoMessageType.Error),LabelText("预制体")]
         public GameObject thisPrefab;
         
+        [LabelText("碰撞等级")]
+        public EWorldObjCollisionType CollisionType;
+        
         [Space(3),LabelText("是否有技能")]
         public bool hasSkill;
         
@@ -163,6 +166,22 @@ namespace GameFrame.Config
         
         [LabelText("攻击距离")]
         public float attackDistance;
+    }
+    
+    /// <summary>
+    /// 物体的碰撞等级
+    /// 
+    /// </summary>
+    public enum EWorldObjCollisionType
+    {
+        [LabelText("正常等级--通常场景中的静态物体")]
+        NormalLevel,
+        [LabelText("中等等级--")]
+        MidLevel,
+        [LabelText("高等等级--")]
+        HighLevel,
+        [LabelText("特殊等级--")]
+        SpecialLevel,
     }
 }
 

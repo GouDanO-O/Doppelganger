@@ -24,6 +24,7 @@ MonoBehaviour:
   TrackName: 
   ActionClips:
   - ActionType: 1
+    DetailAction: {fileID: 0}
     AnimationData:
       StartTime: 0
       Duration: 1
@@ -37,6 +38,7 @@ MonoBehaviour:
       Duration: 1
       ParticleEffectPrefab: {fileID: 0}
   - ActionType: 0
+    DetailAction: {fileID: 0}
     AnimationData:
       StartTime: 0
       Duration: 1

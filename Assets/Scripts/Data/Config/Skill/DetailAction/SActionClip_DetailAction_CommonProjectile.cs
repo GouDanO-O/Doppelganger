@@ -46,18 +46,26 @@ namespace GameFrame.Config
         {
             float randomCriticalRate = Random.Range(curCriticalRate, 100);
             bool isCritical = randomCriticalRate <= curCriticalRate;
-            return (isCritical ? curCriticalDamage * curCriticalDamage : curCriticalDamage)*damageAttenuationRate;
+            return (isCritical ?  curWillTriggerDamage* curCriticalDamage : curWillTriggerDamage)*damageAttenuationRate;
         }
 
         /// <summary>
-        /// 检查当前伤害衰减等级
+        /// 增加伤害等级
+        /// </summary>
+        public void AddDamageAttenuationLevel()
+        {
+            if (maxDamageAttenuationLevel > 0)
+                curDamageAttenuationLevel++;
+        }
+        
+        /// <summary>
+        /// 检查当前伤害衰减等级,从而计算是否要进行伤害衰减计算
         /// </summary>
         /// <returns></returns>
         public bool CheckDamageAttenuationLevel()
         {
             if (maxDamageAttenuationLevel == 0)
                 return false;
-            curDamageAttenuationLevel++;
             return curDamageAttenuationLevel >= maxDamageAttenuationLevel;
         }
 
@@ -89,11 +97,8 @@ namespace GameFrame.Config
         [LabelText("最大飞行距离"),MinValue(0)]
         public int MaxFlyDistance;
         
-        [LabelText("碰撞到正常碰撞等级物体时")]
-        public EAction_Projectile_CollisionType NormalCollisionType;
-        
-        [LabelText("碰撞到特殊碰撞等级物体时")]
-        public EAction_Projectile_CollisionType SpecialCollisionType;
+        [LabelText("碰撞到不同碰撞等级物体时的处理(共有4种碰撞等级)")]
+        public EAction_Projectile_CollisionType[] CollisionTypes=new EAction_Projectile_CollisionType[4];
 
         [LabelText("伤害衰减比例(只有当碰到敌人时才会进行衰减,如果没有就代表没有衰减)")]
         public float[] DamageAttenuations;
@@ -156,7 +161,7 @@ namespace GameFrame.Config
         {
             base.UpdateExecute();
             Fly();
-            FlyDistanceCheck();
+
         }
         
 
@@ -165,9 +170,16 @@ namespace GameFrame.Config
             base.EndExecute();
         }
 
-        public override void Trigger()
+        public override void Trigger(WorldObj curTriggerTarget)
         {
             CrossOneTarget();
+            CheckCollisionTarget(curTriggerTarget);
+            
+            
+            if (tempProjectileData.CheckDamageAttenuationLevel())
+            {
+                EndExecute();
+            }
         }
 
         public override void TriggerTypeCheck()
@@ -185,6 +197,7 @@ namespace GameFrame.Config
             {
                 FlyWithParabola();
             }
+            FlyDistanceCheck();
         }
 
         /// <summary>
@@ -222,13 +235,42 @@ namespace GameFrame.Config
         /// </summary>
         protected virtual void CrossOneTarget()
         {
-            if (tempProjectileData.CheckDamageAttenuationLevel())
-            {
-                EndExecute();
-            }
-            
-           
+            tempProjectileData.AddDamageAttenuationLevel();
         }
+
+        /// <summary>
+        /// 检测碰撞体的等级
+        /// </summary>
+        /// <param name="curTriggerTarget"></param>
+        protected virtual void CheckCollisionTarget(WorldObj curTriggerTarget)
+        {
+            EWorldObjCollisionType curObjCollisionType = curTriggerTarget.CollisionType;
+            int index=(int)curObjCollisionType;
+
+            EAction_Projectile_CollisionType curCollisionType=CollisionTypes[index];
+            switch (curCollisionType)
+            {
+                case EAction_Projectile_CollisionType.ContinuteFly:
+                    
+                    break;
+                case EAction_Projectile_CollisionType.CollisionAndDestroy:
+                    EndExecute();
+                    break;
+                case EAction_Projectile_CollisionType.CollisionAndRebound:
+                    ReboundProjectile();
+                    break;
+            }
+        }
+        
+        
+        /// <summary>
+        /// 反弹弹体
+        /// </summary>
+        protected virtual void ReboundProjectile()
+        {
+            transform.forward = -transform.forward;
+        }
+
         
         
         // 使用 OnValidate 来动态调整列表长度
