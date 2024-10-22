@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using GameFrame.World;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -153,9 +154,43 @@ namespace GameFrame.Config
         public override void StartExecute()
         {
             base.StartExecute();
+            ShootProjectileCheck();
         }
-        
-        
+
+        /// <summary>
+        /// 发射弹体前置检查
+        /// </summary>
+        protected virtual void ShootProjectileCheck()
+        {
+            for (int i = 0; i < FireCount; i++)
+            {
+                if (FireDelayTime > 0)
+                {
+                    Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(FireTimeDelay());
+                }
+            }
+        }
+
+        IEnumerator FireTimeDelay()
+        {
+            yield return new WaitForSeconds(FireDelayTime);
+        }
+
+        /// <summary>
+        /// 发射弹体
+        /// </summary>
+        protected virtual void ShootProjectile()
+        {
+            if (isLoadFromPool)
+            {
+                
+            }
+            else
+            {
+                GameObject bullet = Instantiate(ObjectPrefab);
+            }
+
+        }
 
         public override void UpdateExecute()
         {

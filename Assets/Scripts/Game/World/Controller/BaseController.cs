@@ -7,38 +7,6 @@ using UnityEngine;
 
 namespace GameFrame.World
 {
-    public abstract class BasicController : IController
-    {
-        public WorldObj owner;
-        
-        public virtual void InitData(WorldObj owner)
-        {
-            this.owner = owner;
-        }
-
-        public abstract void DeInitData();
-        
-        public IArchitecture GetArchitecture()
-        {
-            return Main.Interface;
-        }
-    }
-
-    public abstract class BasicNetController : NetworkBehaviour, IController
-    {
-        public WorldObj owner;
-        
-        public virtual void InitData(WorldObj owner)
-        {
-            this.owner = owner;
-        }
-        
-        public IArchitecture GetArchitecture()
-        {
-            return Main.Interface;
-        }
-    }
-    
     /// <summary>
     /// 基础物体管理器
     /// </summary>

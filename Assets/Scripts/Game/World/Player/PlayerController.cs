@@ -8,7 +8,7 @@ using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace GameFrame.Word
+namespace GameFrame.World
 {
     /// <summary>
     /// 客户端玩家控制器，用来管理玩家

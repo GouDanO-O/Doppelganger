@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Cinemachine;
 using DG.Tweening;
 using GameFrame.Config;
-using GameFrame.Word;
 using QFramework;
 using Unity.Netcode.Components;
 using UnityEngine;

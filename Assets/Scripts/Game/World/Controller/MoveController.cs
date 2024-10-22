@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GameFrame.World
 {
-    public class MoveController : BasicController
+    public class MoveController : AbstractController
     {
         protected bool grounded = false;
         
@@ -107,6 +107,10 @@ namespace GameFrame.World
             this.dashCD = dashData.dashCD;
         }
         
+        /// <summary>
+        /// 获取当前的速度
+        /// </summary>
+        /// <returns></returns>
         public float GetTemSpeed()
         {
             return grounded ? (crouching ? crouchSpeed : running ? runSpeed : walkSpeed) : inAirMoveSpeed;

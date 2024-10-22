@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GameFrame.World;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -61,6 +62,9 @@ namespace GameFrame.Config
         [BoxGroup("技能基本信息")]
         [LabelText("每个升级的等级配置"), ShowIf("@this.MaxLevel > 0")]
         public SkillNodeDataConfig[] LevelUpSkills;
+        
+        [LabelText("技能执行条件")]
+        public string SkillConditionFormula;
 
         #endregion
 
@@ -70,5 +74,12 @@ namespace GameFrame.Config
         public List<SkillTrack> SkillTracks = new List<SkillTrack>();
         #endregion
 
+        public void TriggerSkill(WorldObj owner=null, WorldObj target=null)
+        {
+            for (int i = 0; i < SkillTracks.Count; i++)
+            {
+                SkillTracks[i].Trigger(owner, target);
+            }
+        }
     }
 }

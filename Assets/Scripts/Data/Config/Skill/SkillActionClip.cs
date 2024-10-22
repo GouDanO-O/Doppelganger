@@ -25,6 +25,25 @@ namespace GameFrame.Config
         
         [ShowIf("@ActionType ==EActionType.ParticleSystem"), LabelText("粒子特效")]
         public SActionClip_ParticleEffectData ParticleEffectData;
+
+        public void TriggerSkillAction(WorldObj owner =null,WorldObj target=null)
+        {
+            switch (ActionType)
+            {
+                case EActionType.DetailAction:
+                    DetailAction?.ExecuteCheck(owner); // 检查并执行具体行为
+                    break;
+                case EActionType.Animation:
+
+                    break;
+                case EActionType.Audio:
+
+                    break;
+                case EActionType.ParticleSystem:
+
+                    break;
+            }
+        }
     }
 
     [Serializable]
@@ -42,6 +61,12 @@ namespace GameFrame.Config
         [LabelText("结束时间"), LabelWidth(60), ReadOnly]
         public float EndTime => StartTime + Duration;
     }
+
+    [LabelText("对象池所属类型")]
+    public enum EObjectPoolType
+    {
+                
+    }
     
     /// <summary>
     /// 基础行为--(具体行为方式在行为中定义)
@@ -49,8 +74,14 @@ namespace GameFrame.Config
     [Serializable]
     public class SActionClip_DetailAction_Basic : SerializedScriptableObject
     {
-        [LabelText("物体")]
-        public object ObjectAsset;
+        [LabelText("是否从对象池中进行加载")]
+        public bool isLoadFromPool;
+        
+        [ShowIf("isLoadFromPool")]
+        public EObjectPoolType ObjectPoolType;
+        
+        [ShowIf("@isLoadFromPool ==false"),LabelText("物体")]
+        public GameObject ObjectPrefab;
         
         [HorizontalGroup("Timing")]
         [LabelText("开始时间"), LabelWidth(60), MinValue(0)]
@@ -63,9 +94,6 @@ namespace GameFrame.Config
         [HorizontalGroup("Timing")]
         [LabelText("结束时间"), LabelWidth(60), ReadOnly]
         public float EndTime => StartTime + Duration;
-        
-        [LabelText("行为执行条件"),SerializeField]
-        private string ConditionFormula;
 
         [LabelText("行为延时的时间"),SerializeField]
         private float TimeDelayTime;
@@ -75,7 +103,7 @@ namespace GameFrame.Config
         [ShowIf("@ActionTriggerType==EAction_TriggerType.LifeTimeEndTrigger"),LabelText("生命周期时间"),SerializeField]
         private float LifeTime;
         
-        protected WorldObj target;
+        protected WorldObj owner;
         
         protected Transform transform;
 
@@ -93,27 +121,11 @@ namespace GameFrame.Config
         /// <summary>
         /// 开始行为前,进行前置检测
         /// </summary>
-        public virtual void ExecuteCheck(WorldObj target)
+        public virtual void ExecuteCheck(WorldObj owner)
         {
-            if (CheckCondition(target))
-            {
-                this.target = target;
-                this.transform = target.transform;
-                CheckDelayTime();
-            }
-        }
-
-        /// <summary>
-        /// 计算条件
-        /// </summary>
-        public bool CheckCondition(WorldObj target)
-        {
-            if (target)
-            {
-                return true;
-            }
-
-            return false;
+            this.owner = owner;
+            this.transform = owner.transform;
+            CheckDelayTime();
         }
 
         /// <summary>
@@ -183,7 +195,6 @@ namespace GameFrame.Config
                     return;
                 }
             }
-
         }
 
         /// <summary>
@@ -195,7 +206,7 @@ namespace GameFrame.Config
         }
 
         /// <summary>
-        /// 触发(可以多次触发,直到生命周期结束)
+        /// 触发(可以多次触发,直到生命周期结束)--一般作用于无目标自触发类型(例如每几秒在飞行路径上生成一个毒坑)
         /// </summary>
         public virtual void Trigger()
         {

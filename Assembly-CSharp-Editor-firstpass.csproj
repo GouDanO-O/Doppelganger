@@ -873,6 +873,9 @@
     <Reference Include="Unity.Multiplayer.Tools.NetStatsMonitor.Implementation">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Multiplayer.Tools.NetStatsMonitor.Implementation.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Cinemachine.Editor">
+      <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Cinemachine.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Netcode.Runtime">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Netcode.Runtime.dll</HintPath>
     </Reference>
@@ -905,6 +908,9 @@
     </Reference>
     <Reference Include="Unity.VisualScripting.Core">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.VisualScripting.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Splines.Editor">
+      <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Splines.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Multiplayer.Playmode">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Multiplayer.Playmode.dll</HintPath>
@@ -981,9 +987,6 @@
     <Reference Include="Unity.Services.QoS">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Services.QoS.dll</HintPath>
     </Reference>
-    <Reference Include="com.unity.cinemachine.editor">
-      <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\com.unity.cinemachine.editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Multiplayer.Tools.Editor">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Multiplayer.Tools.Editor.dll</HintPath>
     </Reference>
@@ -1029,8 +1032,14 @@
     <Reference Include="Unity.Multiplayer.Center.Integrations">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Multiplayer.Center.Integrations.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Splines">
+      <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Splines.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Mathematics.Editor">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Cinemachine">
+      <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Cinemachine.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Multiplayer.Tools.NetworkProfiler.Runtime">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Multiplayer.Tools.NetworkProfiler.Runtime.dll</HintPath>
@@ -1076,9 +1085,6 @@
     </Reference>
     <Reference Include="Unity.VisualScripting.State.Editor">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.VisualScripting.State.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Cinemachine">
-      <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Cinemachine.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Multiplayer.Tools.Adapters">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\ScriptAssemblies\Unity.Multiplayer.Tools.Adapters.dll</HintPath>

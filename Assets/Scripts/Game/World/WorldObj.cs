@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using GameFrame.Config;
 using UnityEngine;
 using GameFrame.Net;
-using GameFrame.Word;
 using UnityEngine.Scripting;
 using Unity.Netcode;
 using QFramework;
@@ -13,24 +12,6 @@ using UnityEngine.Events;
 
 namespace GameFrame.World
 {
-    /// <summary>
-    /// 持久化的数据--生命周期内会一直存在
-    /// </summary>
-    public interface IData_Persistence
-    {
-        public void ClearData();
-        
-        public void SaveData();
-    }
-    
-    /// <summary>
-    /// 临时性的数据
-    /// </summary>
-    public interface IData_Temporality
-    {
-        public void ClearData();
-    }
-    
     /// <summary>
     /// 持久化的世界物体数据--生命周期内会一直存在
     /// </summary>
@@ -57,9 +38,6 @@ namespace GameFrame.World
             
         }
     }
-
-
-
 
     public abstract class WorldObj : NetworkBehaviour,IController, IUnRegisterList
     { 
