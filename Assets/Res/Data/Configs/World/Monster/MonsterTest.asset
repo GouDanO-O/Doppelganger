@@ -23,8 +23,8 @@ MonoBehaviour:
     SerializationNodes: []
   thisPrefab: {fileID: 0}
   CollisionType: 0
-  hasSkill: 0
-  skillTree: {fileID: 0}
+  hasSkill: 1
+  skillTree: {fileID: 11400000, guid: eafa574460d4de945b17b5faf60a2ce6, type: 2}
   gravity: 0
   healthyable: 1
   healthyData:

@@ -414,6 +414,9 @@
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>D:\Unity\Editors\6000.0.23f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="websocket-sharp">
+      <HintPath>D:\Project\UnityProject\Doppelganger\Library\PackageCache\com.unity.services.wire\Plugins\websocket-sharp.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VisualScripting.YamlDotNet">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\PackageCache\com.unity.visualscripting\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll</HintPath>
     </Reference>
@@ -470,9 +473,6 @@
     </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>D:\Project\UnityProject\Doppelganger\Library\PackageCache\com.unity.nuget.mono-cecil\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="websocket-sharp">
-      <HintPath>D:\Project\UnityProject\Doppelganger\Library\PackageCache\com.unity.services.wire\Plugins\websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>D:\Unity\Editors\6000.0.23f1\Editor\Data\NetStandard\ref\2.1.0\netstandard.dll</HintPath>

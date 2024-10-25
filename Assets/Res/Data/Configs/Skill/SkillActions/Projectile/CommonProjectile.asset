@@ -20,22 +20,29 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: ObjectAsset
-      Entry: 6
-      Data: 
+    SerializationNodes: []
   StartTime: 0
   Duration: 1
-  ConditionFormula: 
   TimeDelayTime: 0
-  ActionTriggerType: 0
-  LifeTime: 0
-  FireCount: 0
-  MoveSpeed: 0
-  FireDelayTime: 0
-  FireFurcationAngle: 0
-  MaxFlyDistance: 0
-  NormalCollisionType: 0
-  SpecialCollisionType: 0
-  ShootProjectileType: 0
-  MaxParabolaHeight: 0
+  ActionTriggerType: 4
+  LifeTime: 1
+  persistenceProjectileData:
+    isLoadFromPool: 0
+    ObjectPoolType: 0
+    ObjectPrefab: {fileID: 0}
+    FireCount: 1
+    MoveSpeed: 0
+    FireDelayTime: 0
+    FireFurcationAngle: 0
+    MaxFlyDistance: 0
+    CollisionTypes: 00000000000000000000000000000000
+    DamageAttenuations: []
+    ShootProjectileType: 0
+    MaxParabolaHeight: 0
+    elementType: 0
+    maxElementAccLevel: 0
+    elementDamage: 0
+    maxElementDamage: 0
+    elementLevelUpAddedDamage: []
+    elementTriggerInterval: 0
+    elementLevelUpDesriggerInterval: []

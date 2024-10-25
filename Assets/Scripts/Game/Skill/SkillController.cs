@@ -234,27 +234,15 @@ namespace GameFrame.World
         {
             if (CheckHasSkill(skill.skillNodeDataConfig) != -1)
             {
-                string formula=skill.skillNodeDataConfig.SkillConditionFormula;
+                SkillConditionConfig formula=skill.skillNodeDataConfig.SkillCondition;
                 if (formula == default)
                     return true;
 
-                if (ConversionSkillFormula(formula) == default)
-                    return false;
+
             }
             return false;
         }
-
-        /// <summary>
-        /// 转换公式
-        /// </summary>
-        /// <param name="formula"></param>
-        /// <returns></returns>
-        protected string ConversionSkillFormula(string formula)
-        {
-            string conversionFormula = "";
-            
-            return conversionFormula;
-        }
+        
         
         /// <summary>
         /// 使用技能
@@ -273,9 +261,9 @@ namespace GameFrame.World
         /// </summary>
         public void UseSkill()
         {
-            for (int i = 0; i < curOwnedSkills_Passive.Count; i++)
+            for (int i = 0; i < Skill_Outside.Count; i++)
             {
-                
+                Skill_Outside[i].TriggerSkill();
             }
         }
     }

@@ -86,7 +86,6 @@ namespace GameFrame.World
         {
             if (thisDataConfig.skillTree)
             {
-                
                 skillController = new SkillController();
                 skillController.InitData(owner);
             }

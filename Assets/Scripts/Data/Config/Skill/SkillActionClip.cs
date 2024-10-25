@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameFrame.World;
+using QFramework;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -13,6 +14,9 @@ namespace GameFrame.Config
     {
         [LabelText("行为类型")]
         public EActionType ActionType;
+
+        [LabelText("行为描述")]
+        public string ActionDes;
 
         [ShowIf("@ActionType ==EActionType.DetailAction"), LabelText("具体行为")]
         public SActionClip_DetailAction_Basic DetailAction;
@@ -67,6 +71,38 @@ namespace GameFrame.Config
     {
                 
     }
+
+    public class SActionClipData_Temporality :IPoolable,IPoolType
+    {
+        public WorldObj owner;
+        
+        public bool timeDelayEnd;
+        
+        public bool IsRecycled { get; set; }
+
+        public static SActionClipData_Temporality Allocate()
+        {
+            return SafeObjectPool<SActionClipData_Temporality>.Instance.Allocate();
+        }
+
+        public void SetOwner(WorldObj owner)
+        {
+            this.owner = owner;
+            Debug.Log("使用");
+        }
+
+        public void OnRecycled()
+        {
+            owner = null;
+            timeDelayEnd = false;
+            Debug.Log("回收");
+        }
+        
+        public void Recycle2Cache()
+        {
+            SafeObjectPool<SActionClipData_Temporality>.Instance.Recycle(this);
+        }
+    }
     
     /// <summary>
     /// 基础行为--(具体行为方式在行为中定义)
@@ -74,15 +110,6 @@ namespace GameFrame.Config
     [Serializable]
     public class SActionClip_DetailAction_Basic : SerializedScriptableObject
     {
-        [LabelText("是否从对象池中进行加载")]
-        public bool isLoadFromPool;
-        
-        [ShowIf("isLoadFromPool")]
-        public EObjectPoolType ObjectPoolType;
-        
-        [ShowIf("@isLoadFromPool ==false"),LabelText("物体")]
-        public GameObject ObjectPrefab;
-        
         [HorizontalGroup("Timing")]
         [LabelText("开始时间"), LabelWidth(60), MinValue(0)]
         public float StartTime;
@@ -95,36 +122,23 @@ namespace GameFrame.Config
         [LabelText("结束时间"), LabelWidth(60), ReadOnly]
         public float EndTime => StartTime + Duration;
 
-        [LabelText("行为延时的时间"),SerializeField]
+        [LabelText("行为延时的时间(释放这个技能需要的前摇时长)"),SerializeField]
         private float TimeDelayTime;
         
         public EAction_TriggerType ActionTriggerType;
 
-        [ShowIf("@ActionTriggerType==EAction_TriggerType.LifeTimeEndTrigger"),LabelText("生命周期时间"),SerializeField]
-        private float LifeTime;
-        
-        protected WorldObj owner;
-        
-        protected Transform transform;
+        [ShowIf("@ActionTriggerType==EAction_TriggerType.LifeTimeEndTrigger"),LabelText("生命周期时间")]
+        public float LifeTime;
 
-        private bool timeDelayEnd;
+        private SActionClipData_Temporality clipDataTemporality;
         
-        private float lastLifeTime;
-        
-        private bool isLifeTimeCheck;
-
         /// <summary>
-        /// 用来标记是否能够进行生命周期内的行为循环
-        /// </summary>
-        private bool canUpdateExecute;
-
-        /// <summary>
-        /// 开始行为前,进行前置检测
+        /// 开始行为前,进行前置检测(分配临时数据变量)
         /// </summary>
         public virtual void ExecuteCheck(WorldObj owner)
         {
-            this.owner = owner;
-            this.transform = owner.transform;
+            clipDataTemporality = SActionClipData_Temporality.Allocate();
+            clipDataTemporality.SetOwner(owner);
             CheckDelayTime();
         }
 
@@ -139,14 +153,14 @@ namespace GameFrame.Config
             }
             else
             {
-                timeDelayEnd = true;
+                clipDataTemporality.timeDelayEnd = true;
                 StartExecute();
             }
         }
 
         IEnumerator TimeDelay()
         {
-            timeDelayEnd = false;
+            clipDataTemporality.timeDelayEnd = false;
             yield return new WaitForSeconds(TimeDelayTime);
             EndTimeDelay();
         }
@@ -156,16 +170,8 @@ namespace GameFrame.Config
         /// </summary>
         public virtual void EndTimeDelay()
         {
-            timeDelayEnd = true;
+            clipDataTemporality.timeDelayEnd = true;
             StartExecute();
-        }
-
-        /// <summary>
-        /// 重设行为
-        /// </summary>
-        public virtual void ResetExecution()
-        {
-            
         }
         
         /// <summary>
@@ -175,25 +181,16 @@ namespace GameFrame.Config
         public virtual void StartExecute()
         {
             TriggerTypeCheck();
-            canUpdateExecute = true;
         }
-
+        
         /// <summary>
-        /// 生命周期更新
+        /// 触发类型检测
         /// </summary>
-        public virtual void UpdateExecute()
+        public virtual void TriggerTypeCheck()
         {
-            if(!timeDelayEnd && !canUpdateExecute)
-                return;
-
-            if (isLifeTimeCheck)
+            if (ActionTriggerType == EAction_TriggerType.StartTrigger)
             {
-                lastLifeTime -= Time.deltaTime;
-                if (lastLifeTime <= 0)
-                {
-                    EndExecute();
-                    return;
-                }
+                Trigger();
             }
         }
 
@@ -202,7 +199,16 @@ namespace GameFrame.Config
         /// </summary>
         public virtual void EndExecute()
         {
-            canUpdateExecute = false;
+            ResetExecute();
+        }
+
+        /// <summary>
+        /// 结束生命周期时重设变量
+        /// </summary>
+        public virtual void ResetExecute()
+        {
+            clipDataTemporality.Recycle2Cache();
+            clipDataTemporality = null;
         }
 
         /// <summary>
@@ -222,22 +228,7 @@ namespace GameFrame.Config
             
         }
         
-        /// <summary>
-        /// 触发类型检测
-        /// </summary>
-        public virtual void TriggerTypeCheck()
-        {
-            isLifeTimeCheck = false;
-            if (ActionTriggerType == EAction_TriggerType.StartTrigger)
-            {
-                Trigger();
-            }
-            else if (ActionTriggerType == EAction_TriggerType.LifeTimeEndTrigger)
-            {
-                lastLifeTime = LifeTime;
-                isLifeTimeCheck = true;
-            }
-        }
+
     }
     
     

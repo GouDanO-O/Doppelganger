@@ -39,7 +39,7 @@ namespace GameFrame.World
         }
     }
 
-    public abstract class WorldObj : NetworkBehaviour,IController, IUnRegisterList
+    public abstract class WorldObj : BasicNetController, IUnRegisterList
     { 
         public WorldObjDataConfig thisDataConfig;
 
@@ -62,6 +62,11 @@ namespace GameFrame.World
         
         public EWorldObjCollisionType CollisionType { get; set; }
 
+        private void Start()
+        {
+            ChangePlayerSelecting(true);
+        }
+
         /// <summary>
         /// 是否由玩家进行操作
         /// </summary>
@@ -73,11 +78,6 @@ namespace GameFrame.World
         }
 
         #region Init
-
-        public IArchitecture GetArchitecture()
-        {
-            return Main.Interface;
-        }
 
         /// <summary>
         /// 初始化

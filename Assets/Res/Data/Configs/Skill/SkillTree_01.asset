@@ -12,6 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c09b7b433e0cde44e80e6ec14df35ee3, type: 3}
   m_Name: SkillTree_01
   m_EditorClassIdentifier: 
-  Skill_Inside: []
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  Skill_Inside:
+  - {fileID: 11400000, guid: 3800a6fdcad1c334bb82213f2c72c593, type: 2}
   Skill_Outside:
   - {fileID: 11400000, guid: 3800a6fdcad1c334bb82213f2c72c593, type: 2}

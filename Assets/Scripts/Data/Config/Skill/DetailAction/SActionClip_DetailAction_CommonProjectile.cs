@@ -1,92 +1,29 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using GameFrame.World;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GameFrame.Config
 {
-    public class SCommonProjectileData : IData_Temporality
+    [Serializable]
+    public class SCommonProjectileData_Persistence : IData_Persistence
     {
-        /// <summary>
-        /// 当前会造成的伤害
-        /// </summary>
-        public float curWillTriggerDamage;
-
-        /// <summary>
-        /// 当前暴击率
-        /// </summary>
-        public float curCriticalRate;
+        [LabelText("是否从对象池中进行加载")]
+        public bool isLoadFromPool;
         
-        /// <summary>
-        /// 当前暴击伤害
-        /// </summary>
-        public float curCriticalDamage;
+        [ShowIf("isLoadFromPool")]
+        public EObjectPoolType ObjectPoolType;
         
-        /// <summary>
-        /// 当前伤害过敌人的数量
-        /// </summary>
-        public int curDamageAttenuationLevel;
-
-        /// <summary>
-        /// 最大伤害敌人数量
-        /// </summary>
-        public int maxDamageAttenuationLevel;
+        [ShowIf("@isLoadFromPool ==false"),LabelText("物体")]
+        public GameObject ObjectPrefab;
         
-        /// <summary>
-        /// 当前飞行距离
-        /// </summary>
-        public float curFlyDistance;
-
-        /// <summary>
-        /// 计算当前伤害
-        /// </summary>
-        /// <param name="damageAttenuationRate"></param>
-        /// <returns></returns>
-        public float CaculateDamage(float damageAttenuationRate=1)
-        {
-            float randomCriticalRate = Random.Range(curCriticalRate, 100);
-            bool isCritical = randomCriticalRate <= curCriticalRate;
-            return (isCritical ?  curWillTriggerDamage* curCriticalDamage : curWillTriggerDamage)*damageAttenuationRate;
-        }
-
-        /// <summary>
-        /// 增加伤害等级
-        /// </summary>
-        public void AddDamageAttenuationLevel()
-        {
-            if (maxDamageAttenuationLevel > 0)
-                curDamageAttenuationLevel++;
-        }
-        
-        /// <summary>
-        /// 检查当前伤害衰减等级,从而计算是否要进行伤害衰减计算
-        /// </summary>
-        /// <returns></returns>
-        public bool CheckDamageAttenuationLevel()
-        {
-            if (maxDamageAttenuationLevel == 0)
-                return false;
-            return curDamageAttenuationLevel >= maxDamageAttenuationLevel;
-        }
-
-        public void ClearData()
-        {
-            curDamageAttenuationLevel = 0;
-            curFlyDistance = 0;
-        }
-    }
-    
-    /// <summary>
-    /// 普通弹体类型
-    /// </summary>
-    [CreateAssetMenu(fileName = "CommonProjectile",menuName = "配置/技能/行为/弹体/普通弹体")]
-    public class SActionClip_DetailAction_CommonProjectile : SActionClip_DetailAction_Basic
-    {
         [LabelText("发射次数"),MinValue(1)]
-        public int FireCount;
+        public int FireCount =1;
 
-        [LabelText("飞行速度")]
+        [LabelText("飞行速度"),MinValue(0)]
         public float MoveSpeed;
         
         [ShowIf("@FireCount >1"),LabelText("开火间隔"),MinValue(0)]
@@ -105,6 +42,9 @@ namespace GameFrame.Config
         public float[] DamageAttenuations;
 
         public EAction_Projectile_ShootType ShootProjectileType;
+        
+        [ShowIf("@ShootProjectileType==EAction_Projectile_ShootType.Parabola"),LabelText("抛物线最高点")]
+        public float MaxParabolaHeight;
 
         public EAction_Skill_ElementType elementType;
 
@@ -125,188 +65,16 @@ namespace GameFrame.Config
         
         [ShowIf("@elementType!=EAction_Skill_ElementType.None"),LabelText("每次升级减少造成伤害的间隔时间")]
         public List<float> elementLevelUpDesriggerInterval;
-
-        [ShowIf("@ShootProjectileType==EAction_Projectile_ShootType.Parabola"),LabelText("抛物线最高点")]
-        public float MaxParabolaHeight;
         
-        /// <summary>
-        /// 临时数据
-        /// </summary>
-        protected SCommonProjectileData tempProjectileData;
-
-        public override void ExecuteCheck(WorldObj target)
-        {
-            base.ExecuteCheck(target);
-            SetTemData();
-        }
-
-        protected virtual void SetTemData()
-        {
-            tempProjectileData = new SCommonProjectileData();
-            tempProjectileData.maxDamageAttenuationLevel=DamageAttenuations.Length;
-        }
-
-        public override void ResetExecution()
-        {
-            tempProjectileData.ClearData();
-        }
-
-        public override void StartExecute()
-        {
-            base.StartExecute();
-            ShootProjectileCheck();
-        }
-
-        /// <summary>
-        /// 发射弹体前置检查
-        /// </summary>
-        protected virtual void ShootProjectileCheck()
-        {
-            for (int i = 0; i < FireCount; i++)
-            {
-                if (FireDelayTime > 0)
-                {
-                    Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(FireTimeDelay());
-                }
-            }
-        }
-
-        IEnumerator FireTimeDelay()
-        {
-            yield return new WaitForSeconds(FireDelayTime);
-        }
-
-        /// <summary>
-        /// 发射弹体
-        /// </summary>
-        protected virtual void ShootProjectile()
-        {
-            if (isLoadFromPool)
-            {
-                
-            }
-            else
-            {
-                GameObject bullet = Instantiate(ObjectPrefab);
-            }
-
-        }
-
-        public override void UpdateExecute()
-        {
-            base.UpdateExecute();
-            Fly();
-
-        }
-        
-
-        public override void EndExecute()
-        {
-            base.EndExecute();
-        }
-
-        public override void Trigger(WorldObj curTriggerTarget)
-        {
-            CrossOneTarget();
-            CheckCollisionTarget(curTriggerTarget);
-            
-            
-            if (tempProjectileData.CheckDamageAttenuationLevel())
-            {
-                EndExecute();
-            }
-        }
-
-        public override void TriggerTypeCheck()
-        {
-            base.TriggerTypeCheck();
-        }
-
-        protected virtual void Fly()
-        {
-            if (ShootProjectileType == EAction_Projectile_ShootType.Line)
-            {
-                FlyWithLine();
-            }
-            else if (ShootProjectileType == EAction_Projectile_ShootType.Parabola)
-            {
-                FlyWithParabola();
-            }
-            FlyDistanceCheck();
-        }
-
-        /// <summary>
-        /// 直线飞行
-        /// </summary>
-        protected virtual void FlyWithLine()
+        public void ClearData()
         {
             
         }
 
-        /// <summary>
-        /// 抛物线
-        /// </summary>
-        protected virtual void FlyWithParabola()
+        public void SaveData()
         {
             
         }
-        
-        /// <summary>
-        /// 飞行距离检测
-        /// </summary>
-        protected virtual void FlyDistanceCheck()
-        {
-            if (MaxFlyDistance > 0)
-            {
-                if (tempProjectileData.curFlyDistance >= MaxFlyDistance)
-                {
-                    EndExecute();
-                }
-            }
-        }
-
-        /// <summary>
-        /// 穿过或伤害了一个目标
-        /// </summary>
-        protected virtual void CrossOneTarget()
-        {
-            tempProjectileData.AddDamageAttenuationLevel();
-        }
-
-        /// <summary>
-        /// 检测碰撞体的等级
-        /// </summary>
-        /// <param name="curTriggerTarget"></param>
-        protected virtual void CheckCollisionTarget(WorldObj curTriggerTarget)
-        {
-            EWorldObjCollisionType curObjCollisionType = curTriggerTarget.CollisionType;
-            int index=(int)curObjCollisionType;
-
-            EAction_Projectile_CollisionType curCollisionType=CollisionTypes[index];
-            switch (curCollisionType)
-            {
-                case EAction_Projectile_CollisionType.ContinuteFly:
-                    
-                    break;
-                case EAction_Projectile_CollisionType.CollisionAndDestroy:
-                    EndExecute();
-                    break;
-                case EAction_Projectile_CollisionType.CollisionAndRebound:
-                    ReboundProjectile();
-                    break;
-            }
-        }
-        
-        
-        /// <summary>
-        /// 反弹弹体
-        /// </summary>
-        protected virtual void ReboundProjectile()
-        {
-            transform.forward = -transform.forward;
-        }
-
-        
         
         // 使用 OnValidate 来动态调整列表长度
         private void OnValidate()
@@ -336,6 +104,71 @@ namespace GameFrame.Config
                     elementLevelUpDesriggerInterval.Add(0f); // 填充默认值
                 }
             }
+        }
+    }
+    
+    /// <summary>
+    /// 普通弹体类型
+    /// </summary>
+    [CreateAssetMenu(fileName = "CommonProjectile",menuName = "配置/技能/行为/弹体/普通弹体")]
+    public class SActionClip_DetailAction_CommonProjectile : SActionClip_DetailAction_Basic
+    {
+        [LabelText("弹体数据")]
+        public SCommonProjectileData_Persistence persistenceProjectileData;
+
+        public override void StartExecute()
+        {
+            base.StartExecute();
+        }
+
+        public override void Trigger()
+        {
+            base.Trigger();
+            ShootProjectileCheck();
+        }
+
+        /// <summary>
+        /// 发射弹体前置检查
+        /// </summary>
+        protected virtual void ShootProjectileCheck()
+        {
+            for (int i = 0; i < persistenceProjectileData.FireCount; i++)
+            {
+                if (persistenceProjectileData.FireDelayTime > 0)
+                {
+                    Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(FireTimeDelay(i));
+                }
+                else
+                {
+                    ShootProjectile(i);
+                }
+            }
+        }
+
+        IEnumerator FireTimeDelay(int curShootCount)
+        {
+            yield return new WaitForSeconds(persistenceProjectileData.FireDelayTime);
+            ShootProjectile(curShootCount);
+        }
+
+        /// <summary>
+        /// 发射弹体
+        /// </summary>
+        protected virtual void ShootProjectile(int curShootCount)
+        {
+            GameObject projectile = null;
+            if (persistenceProjectileData.isLoadFromPool)
+            {
+                projectile = PoolManager.Instance.LoadObjFromPool(persistenceProjectileData.ObjectPoolType);
+            }
+            else
+            {
+                projectile = Instantiate(persistenceProjectileData.ObjectPrefab);
+            }
+            if(projectile==null)
+                return;
+            ProjectileController projectileController = projectile.GetComponent<ProjectileController>();
+            projectileController.InitData(persistenceProjectileData);
         }
     }
 }

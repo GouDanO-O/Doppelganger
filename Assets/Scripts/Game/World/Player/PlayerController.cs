@@ -95,5 +95,13 @@ namespace GameFrame.World
                     .AddToUnregisterList(this);
             }
         }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                skillController.UseSkill();
+            }
+        }
     }
 }

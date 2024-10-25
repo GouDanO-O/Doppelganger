@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace GameFrame.Config
 {
+    
     [CreateAssetMenu(fileName = "BasicSkill", menuName = "配置/技能/基础技能配置")]
     public class SkillNodeDataConfig : SerializedScriptableObject
     {
@@ -36,10 +37,6 @@ namespace GameFrame.Config
         public ESkill_TriggerConditionType SkillTriggerConditionType;
 
         [BoxGroup("技能基本信息")]
-        [LabelText("技能触发条件")]
-        public string SkillTriggerConditionFormula;
-
-        [BoxGroup("技能基本信息")]
         [LabelText("所需等级(-1表示无等级限制)")]
         public int RequiredLevel;
 
@@ -63,8 +60,9 @@ namespace GameFrame.Config
         [LabelText("每个升级的等级配置"), ShowIf("@this.MaxLevel > 0")]
         public SkillNodeDataConfig[] LevelUpSkills;
         
+        [BoxGroup("技能基本信息")]
         [LabelText("技能执行条件")]
-        public string SkillConditionFormula;
+        public SkillConditionConfig SkillCondition;
 
         #endregion
 
