@@ -15,14 +15,10 @@ namespace GameFrame.World
     /// <summary>
     /// 持久化的世界物体数据--生命周期内会一直存在
     /// </summary>
-    public class SWorldObjData_Persistence : IData_Persistence
+    public class SWorldObjData_Persistence : PersistentData
     {
-        public void ClearData()
-        {
-            SaveData();
-        }
-
-        public void SaveData()
+        
+        public override void SaveData()
         {
             
         }
@@ -31,14 +27,27 @@ namespace GameFrame.World
     /// <summary>
     /// 临时性的世界物体数据--当变形或其他操作时会被初始化
     /// </summary>
-    public class SWorldObjData_Temporality: IData_Temporality
+    public class SWorldObjData_Temporality : TemporalityData_Pool
     {
-        public void ClearData()
+        public static SWorldObjData_Temporality Allocate()
+        {
+            return SafeObjectPool<SWorldObjData_Temporality>.Instance.Allocate();
+        }
+        
+        public override void OnRecycled()
+        {
+            
+        }
+
+        public override void Recycle2Cache()
         {
             
         }
     }
 
+    /// <summary>
+    /// 世界物体基类--主要负责集中管理该物体
+    /// </summary>
     public abstract class WorldObj : BasicNetController, IUnRegisterList
     { 
         public WorldObjDataConfig thisDataConfig;
@@ -99,8 +108,8 @@ namespace GameFrame.World
         public virtual void DeInit()
         {
             this.UnRegisterAll();
-            worldObjData_Persistence.ClearData();
-            worldObjData_Temporality.ClearData();
+            worldObjData_Persistence.SaveData();
+            worldObjData_Temporality.Recycle2Cache();
         }
 
         /// <summary>
@@ -157,80 +166,32 @@ namespace GameFrame.World
                 }
             }
         }
-
         #endregion
 
-        #region Player
-
-        /// <summary>
-        /// 短tick逻辑--Player
-        /// </summary>
-        public virtual void ShortTickLogic_Player()
-        {
-            
-        }
+        #region 碰撞检测
         
         /// <summary>
-        /// 正常tick逻辑--Player
+        /// 开始碰撞
         /// </summary>
-        public virtual void MainLogic_Player()
-        {
-            
-        }
-        
-        /// <summary>
-        /// 长tick逻辑--Player
-        /// </summary>
-        public virtual void LongTickLogic_Player()
-        {
-            
-        }
-
-        #endregion
-
-        #region AI
-        
-        /// <summary>
-        /// 短tick逻辑--AI
-        /// </summary>
-        public virtual void ShortTickLogic_AI()
-        {
-            
-        }
-
-
-        
-        /// <summary>
-        /// 正常tick逻辑--AI
-        /// </summary>
-        public virtual void MainLogic_AI()
-        {
-            
-        }
-
-
-        
-        /// <summary>
-        /// 长tick逻辑--AI
-        /// </summary>
-        public virtual void LongTickLogic_AI()
-        {
-            
-        }
-        
-        #endregion
-        
-        #region CollisionCheck
+        /// <param name="other"></param>
         protected virtual void CollisionEnter(Collision other)
         {
             
         }
         
+        /// <summary>
+        /// 碰撞中
+        /// </summary>
+        /// <param name="other"></param>
         protected virtual void CollisionStay(Collision other)
         {
             
         }
         
+        /// <summary>
+        /// 碰撞结束
+        /// </summary>
+        /// <param name="other"></param>
         protected virtual void CollisionExit(Collision other)
         {
             
@@ -251,7 +212,9 @@ namespace GameFrame.World
             CollisionExit(other);
         }
         
+
         #endregion
+        
     }
 }
 

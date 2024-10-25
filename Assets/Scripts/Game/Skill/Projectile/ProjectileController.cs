@@ -202,7 +202,7 @@ namespace GameFrame.World
         }
     }
     
-    public class SCommonProjectileData_Temporality : IPoolable,IPoolType
+    public class SCommonProjectileData_Temporality : TemporalityData_Pool
     {
         /// <summary>
         /// 当前会造成的伤害
@@ -268,19 +268,18 @@ namespace GameFrame.World
             return curDamageAttenuationLevel >= maxDamageAttenuationLevel;
         }
 
-        public void OnRecycled()
-        {
-            curDamageAttenuationLevel = 0;
-            curFlyDistance = 0;
-        }
-
         public static SCommonProjectileData_Temporality Allocate()
         {
             return SafeObjectPool<SCommonProjectileData_Temporality>.Instance.Allocate();
         }
         
-
-        public void Recycle2Cache()
+        public override void OnRecycled()
+        {
+            curDamageAttenuationLevel = 0;
+            curFlyDistance = 0;
+        }
+        
+        public override void Recycle2Cache()
         {
             
         }

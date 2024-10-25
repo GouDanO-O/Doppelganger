@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 namespace GameFrame.Config
 {
     [Serializable]
-    public class SCommonProjectileData_Persistence : IData_Persistence
+    public class SCommonProjectileData_Persistence : PersistentData
     {
         [LabelText("是否从对象池中进行加载")]
         public bool isLoadFromPool;

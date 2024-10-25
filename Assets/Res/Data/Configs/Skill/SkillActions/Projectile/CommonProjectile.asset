@@ -25,7 +25,7 @@ MonoBehaviour:
   Duration: 1
   TimeDelayTime: 0
   ActionTriggerType: 4
-  LifeTime: 1
+  LifeTime: 0
   persistenceProjectileData:
     isLoadFromPool: 0
     ObjectPoolType: 0

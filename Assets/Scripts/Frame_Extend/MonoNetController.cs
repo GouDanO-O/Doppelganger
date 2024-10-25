@@ -7,7 +7,7 @@ namespace GameFrame
 {
     public abstract class BasicNetController : NetworkBehaviour, IController
     {
-        public WorldObj owner;
+        [HideInInspector]public WorldObj owner;
         
         public virtual void InitData(WorldObj owner)
         {

@@ -72,7 +72,7 @@ namespace GameFrame.Config
                 
     }
 
-    public class SActionClipData_Temporality :IPoolable,IPoolType
+    public class SActionClipData_Temporality : TemporalityData_Pool
     {
         public WorldObj owner;
         
@@ -88,17 +88,15 @@ namespace GameFrame.Config
         public void SetOwner(WorldObj owner)
         {
             this.owner = owner;
-            Debug.Log("使用");
         }
 
-        public void OnRecycled()
+        public override void OnRecycled()
         {
             owner = null;
             timeDelayEnd = false;
-            Debug.Log("回收");
         }
         
-        public void Recycle2Cache()
+        public override void Recycle2Cache()
         {
             SafeObjectPool<SActionClipData_Temporality>.Instance.Recycle(this);
         }
@@ -208,7 +206,6 @@ namespace GameFrame.Config
         public virtual void ResetExecute()
         {
             clipDataTemporality.Recycle2Cache();
-            clipDataTemporality = null;
         }
 
         /// <summary>

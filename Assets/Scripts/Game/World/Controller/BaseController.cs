@@ -110,6 +110,32 @@ namespace GameFrame.World
         /// 初始化冲刺
         /// </summary>
         protected abstract void InitDash();
+        
+        /// <summary>
+        /// 短tick逻辑
+        /// </summary>
+        public virtual void ShortTickLogic()
+        {
+            
+        }
+        
+        /// <summary>
+        /// 正常tick逻辑
+        /// </summary>
+        public virtual void MainLogic()
+        {
+            
+        }
+        
+        /// <summary>
+        /// 长tick逻辑
+        /// </summary>
+        public virtual void LongTickLogic()
+        {
+            
+        }
+        
+        
     }
 }
 

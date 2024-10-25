@@ -968,6 +968,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  owner: {fileID: 0}
   thisDataConfig: {fileID: 11400000, guid: a0f59e33ccca2254a97a028381ae9e7b, type: 2}
 --- !u!4 &1958522693
 Transform:
