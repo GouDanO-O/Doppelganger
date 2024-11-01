@@ -6,7 +6,7 @@ namespace GameFrame
     /// <summary>
     /// 持久化对象---非池
     /// </summary>
-    public abstract class PersistentData
+    public class PersistentData
     {
         public virtual void SaveData()
         {
