@@ -21,7 +21,7 @@ namespace GameFrame.Config
         [ShowIf("hasSkill"),LabelText("技能树")]
         public SkillTreeConfig skillTree;
         
-        [LabelText("重力"),Range(0,20)]
+        [LabelText("重力"),Range(-20,0)]
         public float gravity;
         
         [Space(3),LabelText("是否具有生命")]

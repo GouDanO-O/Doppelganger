@@ -25,34 +25,34 @@ MonoBehaviour:
   CollisionType: 0
   hasSkill: 1
   skillTree: {fileID: 11400000, guid: eafa574460d4de945b17b5faf60a2ce6, type: 2}
-  gravity: 0
+  gravity: -9.8
   healthyable: 1
   healthyData:
     maxHealth: 0
     maxArmor: 0
     damageReductionRatio: 0
   costDeformationEnergy: {x: 0, y: 0}
-  moveable: 0
+  moveable: 1
   moveData:
-    walkSpeed: 0
-    runSpeed: 0
-    inAirMoveSpeed: 0
-    maxPitchAngle: {x: 0, y: 0}
-  dashable: 0
+    walkSpeed: 3
+    runSpeed: 5
+    inAirMoveSpeed: 3
+    maxPitchAngle: {x: -40, y: 60}
+  dashable: 1
   dashData:
-    dashSpeed: 0
-    dashCD: 0
-  jumpable: 0
+    dashSpeed: 10
+    dashCD: 5
+  jumpable: 1
   jumpData:
-    jumpHeight: 0
-    canDoubleJump: 0
-    doubleJumpDeepTime: 0
-    doubleJumpHeight: 0
-  crouchable: 0
+    jumpHeight: 5
+    canDoubleJump: 1
+    doubleJumpDeepTime: 0.5
+    doubleJumpHeight: 3
+  crouchable: 1
   crouchData:
-    crouchSpeed: 0
-    crouchReduceRatio: 0
-  attackable: 0
+    crouchSpeed: 2
+    crouchReduceRatio: 0.5
+  attackable: 1
   attackData:
     basicDamage: 0
     criticalRate: 0

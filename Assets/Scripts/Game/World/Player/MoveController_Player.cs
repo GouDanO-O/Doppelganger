@@ -69,6 +69,7 @@ namespace GameFrame.World
             temSpeed = GetTemSpeed();
             Vector3 input = new Vector3(inputEvent_Move.movement.x, 0, inputEvent_Move.movement.y);
             Vector3 movement;
+
             if (isInFreeCameraMod)
             { 
                 movement = transfrom.right * input.x + transfrom.forward * input.z;
@@ -77,12 +78,12 @@ namespace GameFrame.World
             {
                 movement = cameraTransform.right * input.x + cameraTransform.forward * input.z;
             }
-            
+
             movement.y = 0;
             movement.Normalize();
-            
-            Vector3 newPosition = rigidbody.position + movement * (temSpeed * Time.deltaTime);
-            rigidbody.DOMove(newPosition,0.1f);
+
+            Vector3 newPosition = rigidbody.position + movement * (temSpeed * Time.fixedDeltaTime);
+            rigidbody.MovePosition(newPosition);
         }
 
         /// <summary>
@@ -109,13 +110,14 @@ namespace GameFrame.World
         {
             Vector2 input = inputEvent_Mouse.mousePos;
             float mouseX = input.x * mouseSensitivity *  Time.deltaTime;
-            float mouseY = input.y * mouseSensitivity; 
+            float mouseY = input.y * mouseSensitivity * Time.deltaTime; 
             
-            transfrom.Rotate(Vector3.up * mouseX);
+            Quaternion deltaRotation = Quaternion.Euler(0f, mouseX, 0f);
+            rigidbody.MoveRotation(rigidbody.rotation * deltaRotation);
             
             xRotation -= mouseY;
             xRotation = Mathf.Clamp(xRotation, maxPitchAngle.x, maxPitchAngle.y);
-            cameraTransform.DORotate(new Vector3(xRotation, 0f, 0f),0.1f);
+            cameraTransform.localEulerAngles = new Vector3(xRotation, 0f, 0f);
         }
         
         /// <summary>

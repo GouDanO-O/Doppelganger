@@ -18,6 +18,7 @@ namespace GameFrame.World
         public override void Init()
         {
             base.Init();
+            
         }
     }
 }

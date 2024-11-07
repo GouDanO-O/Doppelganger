@@ -63,11 +63,11 @@ namespace GameFrame.World
         public override void InitData(WorldObj owner)
         {
             base.InitData(owner);
+            this.gravity = owner.thisDataConfig.gravity;
             SMoveData moveData = owner.thisDataConfig.moveData;
             this.walkSpeed = moveData.walkSpeed;
             this.runSpeed = moveData.runSpeed;
             this.inAirMoveSpeed = moveData.inAirMoveSpeed;
-
             this.temSpeed = GetTemSpeed();
         }
         
@@ -82,6 +82,8 @@ namespace GameFrame.World
         /// <param name="jumpData"></param>
         public virtual void InitJump(SJumpData jumpData)
         {
+            this.jumpHeight = jumpData.jumpHeight;
+            
             this.canDoubleJump=jumpData.canDoubleJump;
             this.doubleJumpHeight= jumpData.doubleJumpHeight;
             this.doubleJumpDeepTime = jumpData.doubleJumpDeepTime;  
@@ -121,12 +123,7 @@ namespace GameFrame.World
         /// </summary>
         protected virtual void Jump()
         {
-            if (grounded)
-            {
-                // 添加向上的力，实现跳跃
-                rigidbody.AddForce(Vector3.up * Mathf.Sqrt(jumpHeight * -2f * gravity), ForceMode.VelocityChange);
-                grounded = false;
-            }
+            rigidbody.AddForce(Vector3.up * Mathf.Sqrt(jumpHeight * -2f * gravity), ForceMode.VelocityChange);
         }
 
         /// <summary>
@@ -153,8 +150,9 @@ namespace GameFrame.World
             if (grounded)
             {
                 temSpeed = crouchSpeed;
-                curOwnerHeight = ownerHeight * crouchReduceRatio;
                 crouching = true;
+                curOwnerHeight = ownerHeight * crouchReduceRatio;
+                ChangeOwnerHeight();
             }
         }
         
@@ -215,7 +213,7 @@ namespace GameFrame.World
                 {
                     if (canDoubleJump && curJumpCount==1 && curDoubleJumpDeepTime>=doubleJumpDeepTime)
                     {
-                        Jump();
+                         Jump();
                     }
                     else
                     {

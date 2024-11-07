@@ -53,6 +53,7 @@ namespace GameFrame.World
             {
                 moveController = new MoveController_Player();
                 moveController.InitData(owner);
+                moveController.InitOwner(this);
 
                 this.RegisterEvent<SInputEvent_Move>(moveData => { moveController.Move(moveData); })
                     .AddToUnregisterList(this);
