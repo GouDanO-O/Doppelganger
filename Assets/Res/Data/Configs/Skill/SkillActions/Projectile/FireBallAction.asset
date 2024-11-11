@@ -30,12 +30,20 @@ MonoBehaviour:
   TimeDelayTime: 0
   ActionTriggerType: 1
   LifeTime: 0
-  FireCount: 0
+  FireCount: 1
   MoveSpeed: 0
   FireDelayTime: 0
   FireFurcationAngle: 0
   MaxFlyDistance: 0
   NormalCollisionType: 0
   SpecialCollisionType: 0
+  DamageAttenuations: []
   ShootProjectileType: 0
+  elementType: 0
+  maxElementAccLevel: 0
+  elementDamage: 0
+  maxElementDamage: 0
+  elementLevelUpAddedDamage: []
+  elementTriggerInterval: 0
+  elementLevelUpDesriggerInterval: []
   MaxParabolaHeight: 0
