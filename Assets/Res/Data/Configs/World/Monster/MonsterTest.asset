@@ -38,6 +38,9 @@ MonoBehaviour:
     runSpeed: 5
     inAirMoveSpeed: 3
     maxPitchAngle: {x: -40, y: 60}
+    groundLayerMask:
+      serializedVersion: 2
+      m_Bits: 8192
   dashable: 1
   dashData:
     dashSpeed: 10
@@ -52,6 +55,9 @@ MonoBehaviour:
   crouchData:
     crouchSpeed: 2
     crouchReduceRatio: 0.5
+    crouchCheckLayerMask:
+      serializedVersion: 2
+      m_Bits: 245760
   attackable: 1
   attackData:
     basicDamage: 0

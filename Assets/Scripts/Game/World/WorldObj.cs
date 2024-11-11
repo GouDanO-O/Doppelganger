@@ -70,6 +70,10 @@ namespace GameFrame.World
         public bool isPlayerSelecting { get; set; }
         
         public EWorldObjCollisionType CollisionType { get; set; }
+        
+        public Rigidbody rigidbody { get; set; }
+        
+        public Collider collider { get; set; }
 
         private void Start()
         {
@@ -119,6 +123,8 @@ namespace GameFrame.World
         {
             worldObjData_Persistence = new SWorldObjData_Persistence();
             worldObjData_Temporality = new SWorldObjData_Temporality();
+            rigidbody = GetComponent<Rigidbody>();
+            collider = GetComponent<Collider>();
             
             if (thisDataConfig)
             {

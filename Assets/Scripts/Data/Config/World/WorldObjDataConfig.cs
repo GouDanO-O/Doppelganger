@@ -101,6 +101,9 @@ namespace GameFrame.Config
 
         [LabelText("最大上下转向角")]
         public Vector2 maxPitchAngle;
+        
+        [LabelText("检测层级")]
+        public LayerMask groundLayerMask;
     }
     
     /// <summary>
@@ -147,6 +150,9 @@ namespace GameFrame.Config
         
         [LabelText("蹲伏高度变化率"),Range(0,1)]
         public float crouchReduceRatio;
+
+        [LabelText("蹲伏检测层级")]
+        public LayerMask crouchCheckLayerMask;
     }
     
     /// <summary>

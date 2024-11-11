@@ -10,7 +10,7 @@ namespace GameFrame.World
 {
     public class MoveController_Player :  MoveController
     {
-        protected PlayerController owner;
+        protected PlayerController playerController;
         
         protected Transform cameraTransform;
 
@@ -37,11 +37,11 @@ namespace GameFrame.World
         /// 初始化拥有者
         /// </summary>
         /// <param name="owner"></param>
-        public void InitOwner(PlayerController owner)
+        public void InitPlayerController(PlayerController playerController)
         {
-            this.rigidbody = owner.rigidbody;
-            this.transfrom = owner.transform;
-            this.headCameraRootTransfrom = owner.headCameraRootTransfrom;
+            this.playerController = playerController;
+            this.transfrom = playerController.transform;
+            this.headCameraRootTransfrom = playerController.headCameraRootTransfrom;
         }
 
         /// <summary>

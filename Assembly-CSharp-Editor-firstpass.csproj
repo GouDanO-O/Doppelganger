@@ -48,43 +48,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Plugins\Sirenix\Demos\Editor Windows\Scripts\Editor\SomeData.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Editor\Plugins - Editor - Animating\Ragdoll Animator 2 - Editor\Ragdoll Handler Editor\RAHE.Construct.Colliders.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Editor\Plugins - Editor - Animating\Ragdoll Animator 2 - Editor\RagAnim.Performance.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Editor\Plugins - Editor - Animating\Ragdoll Animator 2 - Editor\Ragdoll Handler Editor\RAHE.Construct.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Shared Tools\Editor\Property Drawers\FPD_SuffixDrawer.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Editor\Plugins - Editor - Animating\Ragdoll Animator 2 - Editor\RagAnim.StartGUI.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Editor\Editor Tools\Files and Components Support\FEditor_ScriptMenuAddOptions.Prefabs.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Editor\Plugins - Editor - Animating\Ragdoll Animator 2 - Editor\RagdollAnimator2Editor.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Editor\Plugins - Editor - Animating\Ragdoll Animator 2 - Editor\Ragdoll Handler Editor\RAHE.ExtraFeatures.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Demos\Editor Windows\Scripts\Editor\SomeTextureToolWindow.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Editor\Plugins - Editor - Animating\Ragdoll Animator 2 - Editor\Ragdoll Handler Editor\RAHE.Setup.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Shared Tools\Editor\Property Drawers\FPD_PropertiesFoldoutDrawer.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Editor\Plugins - Editor - Animating\Ragdoll Animator 2 - Editor\Ragdoll Handler Editor\RagdollHandlerEditor.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Demos\Editor Windows\Scripts\Editor\OdinMenuStyleExample.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Shared Tools\Editor\Property Drawers\FPD_ResourcesIconDrawer.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Demos\Editor Windows\Scripts\Editor\QuicklyInspectObjects.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Shared Tools\Editor\Property Drawers\FPD_SingleLineTwoPropsDrawer.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Demos\Sample - RPG Editor\Scripts\Editor\ScriptableObjectCreator.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Editor\Editor Tools\Files and Components Support\FEditor_ScriptMenuAddOptions.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Editor\Plugins - Editor - Animating\Ragdoll Animator 2 - Editor\Ragdoll Property Drawers\RagdollBoneSelector_Drawer.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Editor\Editor Tools\Files and Components Support\FEditor_ScriptMenuAddOptions.Files.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Editor\Plugins - Editor - Animating\Ragdoll Animator 2 - Editor\Ragdoll Handler Editor\RAHE.Motion.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Editor\Plugins - Editor - Animating\Ragdoll Animator 2 - Editor\Ragdoll Handler Editor\RAHE.Construct.Setup.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Shared Tools\Editor\Property Drawers\FPD_HeaderDrawer.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Demos\Sample - RPG Editor\Scripts\Editor\ItemDrawer.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Demos\Sample - RPG Editor\Scripts\Editor\RPGEditorWindow.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Shared Tools\Editor\Property Drawers\FPD_LayersDrawer.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Shared Tools\Editor\FTypesCollecting.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Editor\Editor Tools\Files and Components Support\FEditor_ScriptMenuAddOptions.Components.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Editor\Plugins - Editor - Animating\Ragdoll Animator 2 - Editor\RagAnim.ViewHelpers.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Demos\Sample - RPG Editor\Scripts\Editor\ItemSlotCellDrawer.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Editor\Plugins - Editor - Animating\Ragdoll Animator 2 - Editor\Ragdoll Handler Editor\RAHE.Construct.Physics.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Demos\Editor Windows\Scripts\Editor\OverrideGetTargetsExampleWindow.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Demos\Sample - RPG Editor\Scripts\Editor\CharacterTable.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Demos\Editor Windows\Scripts\Editor\BasicOdinEditorExampleWindow.cs" />
-    <Compile Include="Assets\Plugins\FImpossible Creations\Shared Tools\Editor\Property Drawers\FPD_FixedCurveWindowDrawer.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Demos\Editor Windows\Scripts\Editor\OdinMenuEditorWindowExample.cs" />
-    <None Include="Assets\Plugins\FImpossible Creations\Editor\Editor Directory Info.txt" />
     <None Include="Assets\Plugins\Sirenix\Odin Inspector\Assets\Editor\Bootstrap License.txt" />
     <Reference Include="UnityEngine">
       <HintPath>D:\Unity\Editors\6000.0.23f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
