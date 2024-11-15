@@ -63,51 +63,6 @@ namespace GameFrame.World
                 ActionKit.OnFixedUpdate.Register(() => moveController.GroundCheck()).AddToUnregisterList(this);
             }
         }
-        
-        void OnDrawGizmos()
-        {
-            if (Application.isPlaying)
-            {
-                float radius = 0.5f; // 与您的 SphereCast 半径一致
-                float detectionDistance = 1f; // 与您的 SphereCast 距离一致
-                Vector3 origin = transform.position+Vector3.up*0.1f; // SphereCast 的起始位置
-                Vector3 direction = Vector3.down; // SphereCast 的方向
-
-                RaycastHit hit;
-
-                // 设置 Gizmos 的颜色
-                Gizmos.color = Color.red;
-
-                // 执行 SphereCast，用于获取命中点
-                if (Physics.SphereCast(origin, radius, direction, out hit, detectionDistance, 1<<13))
-                {
-                    // 绘制从起点到命中点的线
-                    Gizmos.DrawLine(origin, hit.point);
-
-                    // 在起点绘制一个球体
-                    Gizmos.DrawWireSphere(origin, radius);
-
-                    // 在命中点绘制一个球体
-                    Gizmos.DrawWireSphere(hit.point, radius);
-
-                    // 可选：在命中点绘制法线方向
-                    Gizmos.color = Color.green;
-                    Gizmos.DrawRay(hit.point, hit.normal * 0.5f);
-                }
-                else
-                {
-                    // // 如果未命中，绘制从起点到最大距离的线
-                    // Vector3 endPoint = origin + direction * detectionDistance;
-                    // Gizmos.DrawLine(origin, endPoint);
-                    //
-                    // // 在起点绘制一个球体
-                    // Gizmos.DrawWireSphere(origin, radius);
-                    //
-                    // // 在最大距离处绘制一个球体
-                    // Gizmos.DrawWireSphere(endPoint, radius);
-                }
-            }
-        }
 
         protected override void InitJump()
         {

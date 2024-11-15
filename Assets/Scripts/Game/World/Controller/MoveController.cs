@@ -191,8 +191,7 @@ namespace GameFrame.World
         /// </summary>
         public virtual void GroundCheck()
         {
-            RaycastHit hit;
-            if (Physics.SphereCast(transfrom.position+Vector3.up*0.1f, 0.5f, Vector3.down, out hit, 1f,groundLayMask))
+            if (Physics.OverlapSphere(transfrom.position, 0.5f, groundLayMask).Length>0)
             {
                 grounded = true;
                 curJumpCount = 0;

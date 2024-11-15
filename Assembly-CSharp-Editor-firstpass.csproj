@@ -1184,6 +1184,10 @@
       <Project>{85575eb1-efc2-683b-860e-a49d863d399c}</Project>
       <Name>UIKit.Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="EnhancedScroller_asmdef.csproj">
+      <Project>{81f3713d-568c-cc15-20e8-9863cce21f22}</Project>
+      <Name>EnhancedScroller_asmdef</Name>
+    </ProjectReference>
     <ProjectReference Include="UIKit.csproj">
       <Project>{79196bba-51ac-6493-df92-776a1baa9937}</Project>
       <Name>UIKit</Name>
