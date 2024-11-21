@@ -21,8 +21,8 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  thisPrefab: {fileID: 0}
-  CollisionType: 0
+  thisPrefab: {fileID: 6505841128741061604, guid: 07a6a9a6beb68094fa2a41800e37d7d4, type: 3}
+  CollisionType: 1
   hasSkill: 1
   skillTree: {fileID: 11400000, guid: eafa574460d4de945b17b5faf60a2ce6, type: 2}
   gravity: -9.8

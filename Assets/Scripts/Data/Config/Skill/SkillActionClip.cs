@@ -38,10 +38,10 @@ namespace GameFrame.Config
                     DetailAction?.ExecuteCheck(owner); // 检查并执行具体行为
                     break;
                 case EActionType.Animation:
-
+                    
                     break;
                 case EActionType.Audio:
-
+                    
                     break;
                 case EActionType.ParticleSystem:
 
@@ -66,17 +66,13 @@ namespace GameFrame.Config
         public float EndTime => StartTime + Duration;
     }
 
-    [LabelText("对象池所属类型")]
-    public enum EObjectPoolType
-    {
-                
-    }
+
 
     public class SActionClipData_Temporality : TemporalityData_Pool
     {
         public WorldObj owner;
-        
-        public bool timeDelayEnd;
+
+        public WorldObj[] triggerTargets;
         
         public bool IsRecycled { get; set; }
 
@@ -93,7 +89,6 @@ namespace GameFrame.Config
         public override void OnRecycled()
         {
             owner = null;
-            timeDelayEnd = false;
         }
         
         public override void Recycle2Cache()
@@ -108,27 +103,10 @@ namespace GameFrame.Config
     [Serializable]
     public class SActionClip_DetailAction_Basic : SerializedScriptableObject
     {
-        [HorizontalGroup("Timing")]
-        [LabelText("开始时间"), LabelWidth(60), MinValue(0)]
-        public float StartTime;
-
-        [HorizontalGroup("Timing")]
-        [LabelText("持续时间"), LabelWidth(60)]
-        public float Duration = 1f;
-
-        [HorizontalGroup("Timing")]
-        [LabelText("结束时间"), LabelWidth(60), ReadOnly]
-        public float EndTime => StartTime + Duration;
-
-        [LabelText("行为延时的时间(释放这个技能需要的前摇时长)"),SerializeField]
+        [LabelText("行为延时的时间"),SerializeField]
         private float TimeDelayTime;
-        
-        public EAction_TriggerType ActionTriggerType;
 
-        [ShowIf("@ActionTriggerType==EAction_TriggerType.LifeTimeEndTrigger"),LabelText("生命周期时间")]
-        public float LifeTime;
-
-        private SActionClipData_Temporality clipDataTemporality;
+        protected SActionClipData_Temporality clipDataTemporality;
         
         /// <summary>
         /// 开始行为前,进行前置检测(分配临时数据变量)
@@ -151,14 +129,12 @@ namespace GameFrame.Config
             }
             else
             {
-                clipDataTemporality.timeDelayEnd = true;
                 StartExecute();
             }
         }
 
         IEnumerator TimeDelay()
         {
-            clipDataTemporality.timeDelayEnd = false;
             yield return new WaitForSeconds(TimeDelayTime);
             EndTimeDelay();
         }
@@ -168,32 +144,21 @@ namespace GameFrame.Config
         /// </summary>
         public virtual void EndTimeDelay()
         {
-            clipDataTemporality.timeDelayEnd = true;
-            StartExecute();
+            
         }
         
         /// <summary>
-        /// 开始生命周期计算
+        /// 开始执行
         /// </summary>
         /// <param name="thisObj"></param>
         public virtual void StartExecute()
         {
-            TriggerTypeCheck();
+           
         }
         
-        /// <summary>
-        /// 触发类型检测
-        /// </summary>
-        public virtual void TriggerTypeCheck()
-        {
-            if (ActionTriggerType == EAction_TriggerType.StartTrigger)
-            {
-                Trigger();
-            }
-        }
 
         /// <summary>
-        /// 结束生命周期--不能本帧就销毁(要么延时,要么下一帧,以确保本帧逻辑执行完毕)
+        /// 结束执行
         /// </summary>
         public virtual void EndExecute()
         {
@@ -201,7 +166,7 @@ namespace GameFrame.Config
         }
 
         /// <summary>
-        /// 结束生命周期时重设变量
+        /// 重设变量
         /// </summary>
         public virtual void ResetExecute()
         {
@@ -209,23 +174,23 @@ namespace GameFrame.Config
         }
 
         /// <summary>
-        /// 触发(可以多次触发,直到生命周期结束)--一般作用于无目标自触发类型(例如每几秒在飞行路径上生成一个毒坑)
+        ///  触发(可以多次触发,直到生命周期结束)--所有者发出,但是无目标自触发(例如每几秒在飞行路径上生成一个毒坑)
         /// </summary>
-        public virtual void Trigger()
+        /// <param name="curTriggerTarget"></param>
+        public virtual void Trigger(WorldObj owner)
         {
             
         }
 
         /// <summary>
-        /// 对世界中的物体触发
+        /// 明确目标和所有者
         /// </summary>
+        /// <param name="owner"></param>
         /// <param name="curTriggerTarget"></param>
-        public virtual void Trigger(WorldObj curTriggerTarget)
+        public virtual void Trigger(WorldObj owner, WorldObj curTriggerTarget)
         {
             
         }
-        
-
     }
     
     
@@ -248,5 +213,14 @@ namespace GameFrame.Config
     {
         [LabelText("音频Clip")]
         public AudioClip AudioClip;
+
+        [LabelText("是否是全局播放")]
+        public bool IsGobal;
+        
+        [LabelText("音量")]
+        public float Volume;
+        
+        [LabelText("播放次数(如果为-1,就代表循环播放)")]
+        public int PlayCount = 1;
     }
 }

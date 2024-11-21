@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using GameFrame.Multilingual;
 using GameFrame.Net;
 using GameFrame.UI;
-using Unity.VisualScripting;
+using GameFrame.World;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -115,6 +115,7 @@ namespace GameFrame
         public void StartGame()
         {
             sceneLoader.onLoadScene.Invoke(ESceneName.GameScene);
+            PoolManager.Instance.InitNormalPool();
         }
 
         /// <summary>

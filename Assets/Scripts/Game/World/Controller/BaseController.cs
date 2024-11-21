@@ -10,8 +10,12 @@ namespace GameFrame.World
     /// <summary>
     /// 基础物体管理器
     /// </summary>
-    public abstract class BaseController : BasicNetController,IUnRegisterList
+    public abstract class BaseController : MonoNetController,IUnRegisterList
     {
+        public EasyEvent<bool> onDeathEvent;
+        
+        public EasyEvent<float> onBeHarmedEvent;
+        
         public WorldObjDataConfig thisDataConfig { get; protected set; }
         
         public List<IUnRegister> UnregisterList { get; } = new List<IUnRegister>();
@@ -21,6 +25,8 @@ namespace GameFrame.World
         public SkillController skillController { get; set;}
         
         public AttackController attackController { get; set; }
+        
+        public AnimatorController animatorController { get; set; }
         
         /// <summary>
         /// 注册数据
@@ -33,12 +39,13 @@ namespace GameFrame.World
             InitMovement();
             InitHealthy();
             InitSkill();
+            InitAnimator();
         }
 
         /// <summary>
         /// 注销数据
         /// </summary>
-        public virtual void DeInitData()
+        public override void DeInitData()
         {
             this.UnRegisterAll();
             healthyController.DeInitData();
@@ -90,6 +97,15 @@ namespace GameFrame.World
                 skillController.InitData(owner);
             }
         }
+
+        /// <summary>
+        /// 初始化动画
+        /// </summary>
+        protected virtual void InitAnimator()
+        {
+            animatorController = new AnimatorController();
+            animatorController.InitData(owner);
+        }
         
         /// <summary>
         /// 初始化移动
@@ -134,8 +150,21 @@ namespace GameFrame.World
         {
             
         }
-        
-        
+
+        public virtual void Death(bool isDeath)
+        {
+            onDeathEvent?.Trigger(isDeath);
+        }
+
+        public virtual void BeHarmed(float harmedValue)
+        {
+            onBeHarmedEvent?.Trigger(harmedValue);
+        }
+
+        public virtual void DoPlayAnimations(SAnimatorEvent animatorEvent)
+        {
+            animatorController.onPlayAnimationEvent.Invoke(animatorEvent);
+        }
     }
 }
 

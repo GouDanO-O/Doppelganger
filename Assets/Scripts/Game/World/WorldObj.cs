@@ -48,19 +48,16 @@ namespace GameFrame.World
     /// <summary>
     /// 世界物体基类--主要负责集中管理该物体
     /// </summary>
-    public abstract class WorldObj : BasicNetController, IUnRegisterList
+    public abstract class WorldObj : MonoNetController
     { 
         public WorldObjDataConfig thisDataConfig;
 
         public SWorldObjData_Persistence worldObjData_Persistence;
 
         public SWorldObjData_Temporality worldObjData_Temporality;
-
-        /// <summary>
-        /// 注册的事件列表
-        /// </summary>
-        public List<IUnRegister> UnregisterList { get; } = new List<IUnRegister>();
-
+        
+        public BaseController thisController { get;protected set; }
+        
         public PlayerController playerController { get; protected set; }
 
         public AIController aiController { get; protected set; }
@@ -99,7 +96,7 @@ namespace GameFrame.World
         {
             if (isInit)
             {
-                DeInit();
+                DeInitData();
             }
 
             InitComponents();
@@ -109,9 +106,8 @@ namespace GameFrame.World
         /// <summary>
         /// 注销
         /// </summary>
-        public virtual void DeInit()
+        public override void DeInitData()
         {
-            this.UnRegisterAll();
             worldObjData_Persistence.SaveData();
             worldObjData_Temporality.Recycle2Cache();
         }
@@ -147,6 +143,7 @@ namespace GameFrame.World
                 {
                     playerController = gameObject.AddComponent<PlayerController>();
                     playerController.InitData(this);
+                    thisController = playerController;
                 }
 
                 if (aiController)
@@ -164,6 +161,7 @@ namespace GameFrame.World
                 {
                     aiController = gameObject.AddComponent<AIController>();
                     aiController.InitData(this);
+                    thisController = aiController;
                 }
 
                 if (playerController)
@@ -220,7 +218,30 @@ namespace GameFrame.World
         
 
         #endregion
-        
+
+        #region
+
+        public void Death(bool isDeath)
+        {
+            thisController.Death(isDeath);
+        }
+
+        public void BeHarmed(float harmedValue)
+        {
+            thisController.BeHarmed(harmedValue);
+        }
+
+        public void DoPlayAnimations(SAnimatorEvent animatorEvent)
+        {
+            thisController.DoPlayAnimations(animatorEvent);
+        }
+
+        #endregion
+
+        public bool IsPlayer()
+        {
+            return isPlayerSelecting;
+        }
     }
 }
 

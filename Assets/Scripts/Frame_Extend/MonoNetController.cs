@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameFrame
 {
-    public abstract class BasicNetController : NetworkBehaviour, IController
+    public abstract class MonoNetController : NetworkBehaviour, IController
     {
         [HideInInspector]public WorldObj owner;
         
@@ -13,6 +13,8 @@ namespace GameFrame
         {
             this.owner = owner;
         }
+
+        public abstract void DeInitData();
         
         public IArchitecture GetArchitecture()
         {

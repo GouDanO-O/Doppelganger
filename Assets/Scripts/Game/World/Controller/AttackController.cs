@@ -7,6 +7,8 @@ namespace GameFrame.World
 {
     public class AttackController : AbstractController
     {
+        public WeaponController weaponController;
+        
         public override void InitData(WorldObj owner)
         {
             base.InitData(owner);

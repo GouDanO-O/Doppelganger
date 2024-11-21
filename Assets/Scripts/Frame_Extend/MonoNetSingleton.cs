@@ -4,36 +4,27 @@ using UnityEngine;
 
 namespace GameFrame.World
 {
-    public class MonoNetSingleton<T> : NetworkBehaviour where T : NetworkBehaviour
+    public class MonoNetSingleton<T> : MonoNetController,ISingleton where T : MonoNetSingleton<T>
     {
         private static T _instance;
-
+        
         public static T Instance
         {
             get
             {
-                if (_instance == null)
-                {
-                    _instance = FindObjectOfType<T>();
-                    if (_instance == null)
-                    {
-                        Debug.LogError(typeof(T) + " instance is missing in the scene.");
-                    }
-                }
-                return _instance;
+                return MonoSingletonProperty<T>.Instance;
             }
         }
 
-        protected virtual void Awake()
+
+        public override void DeInitData()
         {
-            if (_instance == null)
-            {
-                _instance = this as T;
-            }
-            else if (_instance != this)
-            {
-                Destroy(gameObject);
-            }
+            
+        }
+
+        public void OnSingletonInit()
+        {
+            
         }
     }
 }

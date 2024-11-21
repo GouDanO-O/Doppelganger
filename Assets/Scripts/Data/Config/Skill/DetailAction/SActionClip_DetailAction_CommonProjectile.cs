@@ -11,119 +11,124 @@ namespace GameFrame.Config
     [Serializable]
     public class SCommonProjectileData_Persistence : PersistentData
     {
-        [LabelText("是否从对象池中进行加载")]
-        public bool isLoadFromPool;
-        
-        [ShowIf("isLoadFromPool")]
-        public EObjectPoolType ObjectPoolType;
-        
-        [ShowIf("@isLoadFromPool ==false"),LabelText("物体")]
-        public GameObject ObjectPrefab;
-        
-        [LabelText("发射次数"),MinValue(1)]
-        public int FireCount =1;
+        [InfoBox("即以武器数据为准,且会计算来自玩家的增减益,而不是弹体自己的数据")] [LabelText("是否从武器上继承数据")]
+        public bool IsExtendWeaponData;
 
-        [LabelText("飞行速度"),MinValue(0)]
-        public float MoveSpeed;
-        
-        [ShowIf("@FireCount >1"),LabelText("开火间隔"),MinValue(0)]
+        [HideIf("@IsExtendWeaponData")] [LabelText("是否从对象池中进行加载")]
+        public bool IsLoadFromPool;
+
+        [HideIf("@IsExtendWeaponData || !IsLoadFromPool")]
+        public EObjectPoolType ObjectPoolType;
+
+        [HideIf("@IsExtendWeaponData || IsLoadFromPool")] [LabelText("物体")]
+        public GameObject ObjectPrefab;
+
+        [HideIf("@IsExtendWeaponData")] [LabelText("发射次数"), MinValue(1)]
+        public int FireCount = 1;
+
+        [HideIf("@IsExtendWeaponData")] [LabelText("基础伤害")]
+        public float BaiscDamage;
+
+        [HideIf("@IsExtendWeaponData")] [LabelText("暴击率")]
+        public float CriticalRate;
+
+        [HideIf("@IsExtendWeaponData")] [LabelText("暴击伤害")]
+        public float CriticalDamage;
+
+        [HideIf("@IsExtendWeaponData")] [LabelText("飞行速度"), MinValue(0)]
+        public float FlySpeed;
+
+        [HideIf("@IsExtendWeaponData || FireCount <= 1")] [LabelText("开火间隔"), MinValue(0)]
         public float FireDelayTime;
 
-        [ShowIf("@FireCount >1"),LabelText("间隔角度(以一个扇形来计算)"),MinValue(0)]
+        [HideIf("@IsExtendWeaponData || FireCount <= 1")] [LabelText("间隔角度(以一个扇形来计算)"), MinValue(0)]
         public float FireFurcationAngle;
-        
-        [LabelText("最大飞行距离"),MinValue(0)]
+
+        [HideIf("@IsExtendWeaponData")] [LabelText("最大飞行距离"), MinValue(0)]
         public int MaxFlyDistance;
-        
-        [LabelText("碰撞到不同碰撞等级物体时的处理(共有4种碰撞等级)")]
-        public EAction_Projectile_CollisionType[] CollisionTypes=new EAction_Projectile_CollisionType[4];
 
-        [LabelText("伤害衰减比例(只有当碰到敌人时才会进行衰减,如果没有就代表没有衰减)")]
-        public float[] DamageAttenuations;
+        [HideIf("@IsExtendWeaponData")] [LabelText("碰撞到不同碰撞等级物体时的处理(共有4种碰撞等级)")]
+        public List<EAction_Projectile_CollisionType> CollisionTypes = new List<EAction_Projectile_CollisionType>(4);
 
+        [HideIf("@IsExtendWeaponData")] [LabelText("伤害衰减比例(只有当碰到敌人时才会进行衰减,如果没有就代表没有衰减)")]
+        public List<float> DamageAttenuations;
+
+        [HideIf("@IsExtendWeaponData")] 
         public EAction_Projectile_ShootType ShootProjectileType;
-        
-        [ShowIf("@ShootProjectileType==EAction_Projectile_ShootType.Parabola"),LabelText("抛物线最高点")]
+
+        [HideIf("@IsExtendWeaponData || ShootProjectileType != EAction_Projectile_ShootType.Parabola")]
+        [LabelText("抛物线最高点")]
         public float MaxParabolaHeight;
 
-        public EAction_Skill_ElementType elementType;
+        [HideIf("@IsExtendWeaponData")] 
+        public EAction_Skill_ElementType ElementType;
 
-        [ShowIf("@elementType!=EAction_Skill_ElementType.None"),LabelText("最大元素可积累等级")]
-        public float maxElementAccLevel;
-        
-        [ShowIf("@elementType!=EAction_Skill_ElementType.None"),LabelText("元素伤害")]
-        public float elementDamage;
-        
-        [ShowIf("@elementType!=EAction_Skill_ElementType.None"),LabelText("最大元素伤害")]
-        public float maxElementDamage;
-        
-        [ShowIf("@elementType!=EAction_Skill_ElementType.None"),LabelText("每次升级增加的伤害比例")]
-        public List<float> elementLevelUpAddedDamage;
-        
-        [ShowIf("@elementType!=EAction_Skill_ElementType.None"),LabelText("元素造成伤害的间隔时间")]
-        public float elementTriggerInterval;
-        
-        [ShowIf("@elementType!=EAction_Skill_ElementType.None"),LabelText("每次升级减少造成伤害的间隔时间")]
-        public List<float> elementLevelUpDesriggerInterval;
-        
-        public void ClearData()
-        {
-            
-        }
+        [HideIf("@IsExtendWeaponData || ElementType == EAction_Skill_ElementType.None")] [LabelText("最大元素可积累等级")]
+        public float MaxElementAccLevel;
 
-        public void SaveData()
-        {
-            
-        }
-        
+        [HideIf("@IsExtendWeaponData || ElementType == EAction_Skill_ElementType.None")] [LabelText("基础元素伤害")]
+        public float BasicElementDamage;
+
+        [HideIf("@IsExtendWeaponData || ElementType == EAction_Skill_ElementType.None")] [LabelText("每次升级增加的伤害比例")]
+        public List<float> ElementLevelUpAddedDamage;
+
+        [HideIf("@IsExtendWeaponData || ElementType == EAction_Skill_ElementType.None")] [LabelText("元素造成伤害的间隔时间")]
+        public float BasicElementTriggerInterval;
+
+        [HideIf("@IsExtendWeaponData || ElementType == EAction_Skill_ElementType.None")] [LabelText("每次升级减少造成伤害的间隔时间")]
+        public List<float> ElementLevelUpDesriggerInterval;
+
         // 使用 OnValidate 来动态调整列表长度
         private void OnValidate()
         {
             // 限制 elementLevelUpAddedDamage 列表长度
-            if (elementLevelUpAddedDamage.Count > maxElementAccLevel)
+            if (ElementLevelUpAddedDamage.Count > MaxElementAccLevel)
             {
-                elementLevelUpAddedDamage.RemoveRange((int)maxElementAccLevel, elementLevelUpAddedDamage.Count - (int)maxElementAccLevel);
+                ElementLevelUpAddedDamage.RemoveRange((int)MaxElementAccLevel,
+                    ElementLevelUpAddedDamage.Count - (int)MaxElementAccLevel);
             }
             else
             {
-                while (elementLevelUpAddedDamage.Count < maxElementAccLevel)
+                while (ElementLevelUpAddedDamage.Count < MaxElementAccLevel)
                 {
-                    elementLevelUpAddedDamage.Add(0f); // 填充默认值
+                    ElementLevelUpAddedDamage.Add(0f); // 填充默认值
                 }
             }
 
             // 限制 elementLevelUpDesriggerInterval 列表长度
-            if (elementLevelUpDesriggerInterval.Count > maxElementAccLevel)
+            if (ElementLevelUpDesriggerInterval.Count > MaxElementAccLevel)
             {
-                elementLevelUpDesriggerInterval.RemoveRange((int)maxElementAccLevel, elementLevelUpDesriggerInterval.Count - (int)maxElementAccLevel);
+                ElementLevelUpDesriggerInterval.RemoveRange((int)MaxElementAccLevel,
+                    ElementLevelUpDesriggerInterval.Count - (int)MaxElementAccLevel);
             }
             else
             {
-                while (elementLevelUpDesriggerInterval.Count < maxElementAccLevel)
+                while (ElementLevelUpDesriggerInterval.Count < MaxElementAccLevel)
                 {
-                    elementLevelUpDesriggerInterval.Add(0f); // 填充默认值
+                    ElementLevelUpDesriggerInterval.Add(0f); // 填充默认值
                 }
             }
         }
     }
     
+    
     /// <summary>
     /// 普通弹体类型
     /// </summary>
-    [CreateAssetMenu(fileName = "CommonProjectile",menuName = "配置/技能/行为/弹体/普通弹体")]
+    [CreateAssetMenu(fileName = "CommonProjectile", menuName = "配置/技能/行为/弹体/普通弹体")]
     public class SActionClip_DetailAction_CommonProjectile : SActionClip_DetailAction_Basic
     {
-        [LabelText("弹体数据")]
-        public SCommonProjectileData_Persistence persistenceProjectileData;
+        [LabelText("弹体数据")] public SCommonProjectileData_Persistence persistenceProjectileData;
 
         public override void StartExecute()
         {
             base.StartExecute();
+            Trigger(clipDataTemporality.owner);
         }
 
-        public override void Trigger()
+        public override void Trigger(WorldObj owner)
         {
-            base.Trigger();
+            base.Trigger(owner);
             ShootProjectileCheck();
         }
 
@@ -136,28 +141,28 @@ namespace GameFrame.Config
             {
                 if (persistenceProjectileData.FireDelayTime > 0)
                 {
-                    Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(FireTimeDelay(i));
+                    Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(FireTimeDelay());
                 }
                 else
                 {
-                    ShootProjectile(i);
+                    ShootProjectile();
                 }
             }
         }
 
-        IEnumerator FireTimeDelay(int curShootCount)
+        IEnumerator FireTimeDelay()
         {
             yield return new WaitForSeconds(persistenceProjectileData.FireDelayTime);
-            ShootProjectile(curShootCount);
+            ShootProjectile();
         }
 
         /// <summary>
         /// 发射弹体
         /// </summary>
-        protected virtual void ShootProjectile(int curShootCount)
+        protected virtual void ShootProjectile()
         {
             GameObject projectile = null;
-            if (persistenceProjectileData.isLoadFromPool)
+            if (persistenceProjectileData.IsLoadFromPool)
             {
                 projectile = PoolManager.Instance.LoadObjFromPool(persistenceProjectileData.ObjectPoolType);
             }
@@ -165,10 +170,12 @@ namespace GameFrame.Config
             {
                 projectile = Instantiate(persistenceProjectileData.ObjectPrefab);
             }
-            if(projectile==null)
+
+            if (projectile == null)
                 return;
+
             ProjectileController projectileController = projectile.GetComponent<ProjectileController>();
-            projectileController.InitData(persistenceProjectileData);
+            projectileController.InitData(clipDataTemporality.owner, persistenceProjectileData);
         }
     }
 }

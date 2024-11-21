@@ -5,7 +5,6 @@ using GameFrame.Config;
 using GameFrame.World;
 using QFramework;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GameFrame.World
@@ -17,7 +16,15 @@ namespace GameFrame.World
     {
         public WorldObj worldObj;
 
-        public WorldObjDataConfig willDeformationConfig { get; }
+        public WorldObjDataConfig willDeformationConfig
+        {
+            get
+            {
+                if (worldObj == null)
+                    return null;
+                return worldObj.thisDataConfig;
+            }
+        }
 
         public Transform headCameraRootTransfrom { get; set; }
 
@@ -36,12 +43,8 @@ namespace GameFrame.World
         public override void InitData(WorldObj worldObj)
         {
             headCameraRootTransfrom = transform.Find("CameraRoot/HeadRoot");
+            WorldManager.Instance.SetPlayer(this);
             base.InitData(worldObj);
-        }
-
-        public override void DeInitData()
-        {
-            base.DeInitData();
         }
 
         protected override void InitMove()
@@ -58,9 +61,11 @@ namespace GameFrame.World
                 this.RegisterEvent<SInputEvent_MouseDrag>(mouseData => { moveController.MouseRotate(mouseData); })
                     .AddToUnregisterList(this);
 
-                this.RegisterEvent<SInputEvent_Run>(moveData => { moveController.Running(moveData); });
+                this.RegisterEvent<SInputEvent_Run>(moveData => { moveController.Running(moveData); })
+                    .AddToUnregisterList(this);
 
-                ActionKit.OnFixedUpdate.Register(() => moveController.GroundCheck()).AddToUnregisterList(this);
+                ActionKit.OnUpdate.Register(() => moveController.GroundCheck())
+                    .AddToUnregisterList(this);
             }
         }
 
@@ -91,14 +96,6 @@ namespace GameFrame.World
                 moveController.InitDash(thisDataConfig.dashData);
                 this.RegisterEvent<SInputEvent_Dash>(moveData => { moveController.DashCheck(); })
                     .AddToUnregisterList(this);
-            }
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                skillController.UseSkill();
             }
         }
     }

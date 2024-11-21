@@ -152,6 +152,15 @@ namespace GameFrame.World
                 capsuleCollider.height = curOwnerHeight;
                 capsuleCollider.center=new Vector3(capsuleCollider.center.x,curOwnerHeight/2,capsuleCollider.center.z);
             }
+
+            if (crouching)
+            {
+                owner.DoPlayAnimations(new SAnimatorEvent() { animationType = EAnimationType.Crouching });
+            }
+            else
+            {
+                owner.DoPlayAnimations(new SAnimatorEvent() { animationType = EAnimationType.StandUp });
+            }
         }
         
         /// <summary>
@@ -217,12 +226,14 @@ namespace GameFrame.World
                         if (canDoubleJump && curJumpCount==1 && curDoubleJumpDeepTime>=doubleJumpDeepTime)
                         {
                             Jump();
+                            owner.DoPlayAnimations(new SAnimatorEvent() { animationType = EAnimationType.StartJumping });
                         }
                         else
                         {
                             Jump();
                             curJumpCount++;
                             Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(DoubleJumpTimeCheck());
+                            owner.DoPlayAnimations(new SAnimatorEvent() { animationType = EAnimationType.DoubleJumping });
                         }
                     }
                 }
@@ -234,12 +245,14 @@ namespace GameFrame.World
                     if (canDoubleJump && curJumpCount==1 && curDoubleJumpDeepTime>=doubleJumpDeepTime)
                     {
                          Jump();
+                         owner.DoPlayAnimations(new SAnimatorEvent() { animationType = EAnimationType.StartJumping });
                     }
                     else
                     {
                         Jump();
                         curJumpCount++;
                         Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(DoubleJumpTimeCheck());
+                        owner.DoPlayAnimations(new SAnimatorEvent() { animationType = EAnimationType.DoubleJumping });
                     }
                 }
             }
@@ -251,6 +264,7 @@ namespace GameFrame.World
         protected virtual void Jump()
         {
             rigidbody.AddForce(Vector3.up * Mathf.Sqrt(jumpHeight * -2f * gravity), ForceMode.VelocityChange);
+            
         }
         
         protected virtual IEnumerator DoubleJumpTimeCheck()
@@ -282,6 +296,7 @@ namespace GameFrame.World
                 Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(InvincibleDashTimeCheck());
             }
             rigidbody.AddForce(transfrom.forward*dashSpeed, ForceMode.Impulse);
+            owner.DoPlayAnimations(new SAnimatorEvent() { animationType = EAnimationType.Dashing });
         }
 
         /// <summary>

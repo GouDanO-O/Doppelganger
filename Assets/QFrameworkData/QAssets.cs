@@ -16,12 +16,18 @@ namespace QAssetBundle
         public const string BundleName = "configs";
         public const string GameSettingConfig = "GameSettingConfig";
         public const string NetDataConfig = "NetDataConfig";
+        public const string CommonProjectile = "CommonProjectile";
+        public const string BasicSkill = "BasicSkill";
+        public const string SkillTrack = "SkillTrack";
         public const string SkillTree_01 = "SkillTree_01";
         public const string SkillTree_02 = "SkillTree_02";
-        public const string Monster_Test = "Monster_Test";
-        public const string Scientist = "Scientist";
-        public const string Security = "Security";
-        public const string TestObj = "TestObj";
+        public const string UIPrefabsDataConfig = "UIPrefabsDataConfig";
+        public const string MonsterTest = "MonsterTest";
+    }
+    public class Healthystatusfollower_prefab
+    {
+        public const string BundleName = "healthystatusfollower_prefab";
+        public const string HealthyStatusFollower = "HealthyStatusFollower";
     }
     public class Player_inputactions
     {
