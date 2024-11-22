@@ -66,7 +66,7 @@ namespace GameFrame.World
 
         public void TriggerDeformationAppearance(WorldObjDataConfig deformationData)
         {
-            if (CheckHasEnoughEnergy(deformationData.costDeformationEnergy.x))
+            if (CheckHasEnoughEnergy(deformationData.CostDeformationEnergy.x))
             {
                 
             }
@@ -74,7 +74,7 @@ namespace GameFrame.World
 
         public void TriggerDeformationCompletely(WorldObjDataConfig deformationData)
         {
-            if (CheckHasEnoughEnergy(deformationData.costDeformationEnergy.y))
+            if (CheckHasEnoughEnergy(deformationData.CostDeformationEnergy.y))
             {
                 
             }

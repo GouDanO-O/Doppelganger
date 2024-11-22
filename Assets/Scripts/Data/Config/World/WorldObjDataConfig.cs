@@ -10,68 +10,70 @@ namespace GameFrame.Config
     public class WorldObjDataConfig : SerializedScriptableObject
     {
         [Required(InfoMessageType.Error),LabelText("预制体")]
-        public GameObject thisPrefab;
+        public GameObject ThisPrefab;
         
         [LabelText("碰撞等级")]
         public EWorldObjCollisionType CollisionType;
         
         [Space(3),LabelText("是否有技能")]
-        public bool hasSkill;
+        public bool HasSkill;
         
-        [ShowIf("hasSkill"),LabelText("技能树")]
+        [ShowIf("HasSkill"),LabelText("技能树")]
         public SkillTreeConfig skillTree;
         
         [LabelText("重力"),Range(-20,0)]
-        public float gravity;
+        public float Gravity;
         
         [Space(3),LabelText("是否具有生命")]
-        public bool healthyable;
+        public bool Healthyable;
         
-        [ShowIf("healthyable"),LabelText("生命数据",SdfIconType.Box)]
-        public SHealthyData healthyData;
+        [ShowIf("Healthyable")]
+        public SHealthyData HealthyData;
+        
+        [ShowIf("Healthyable"),LabelText("元素属性配置--归属玩家的可成长数据", SdfIconType.Box),DictionaryDrawerSettings()]
+        public Dictionary<EAction_Skill_ElementType,SElementPropertyData> ElementPropertyData= new Dictionary<EAction_Skill_ElementType,SElementPropertyData>();
 
         [Header("变身所需要的能量,x=>仅外貌, y=>完全变身")]
         [LabelText("")]
-        public Vector2 costDeformationEnergy;
+        public Vector2 CostDeformationEnergy;
         
         [LabelText("是否能够进行移动(不会接受输入数据,由物体本身控制移动)")]
-        public bool moveable;
+        public bool Moveable;
 
-        [ShowIf("moveable"), LabelText("移动数据", SdfIconType.Box)]
-        public SMoveData moveData;
-
-        [Space(3)]
-        [ShowIf("moveable"), LabelText("是否能够进行闪烁")]
-        public bool dashable;
-
-        [ShowIf("@moveable && dashable"), LabelText("闪烁数据", SdfIconType.Box)]
-        public SDashData dashData;
+        [ShowIf("Moveable")]
+        public SMoveData MoveData;
 
         [Space(3)]
-        [ShowIf("moveable"), LabelText("是否能够进行跳跃")]
-        public bool jumpable;
+        [ShowIf("Moveable"), LabelText("是否能够进行闪烁")]
+        public bool Dashable;
 
-        [ShowIf("@moveable && jumpable"), LabelText("跳跃数据", SdfIconType.Box)]
-        public SJumpData jumpData;
+        [ShowIf("@Moveable && Dashable")]
+        public SDashData DashData;
 
         [Space(3)]
-        [ShowIf("moveable"), LabelText("是否能够进行蹲伏")]
-        public bool crouchable;
+        [ShowIf("Moveable"), LabelText("是否能够进行跳跃")]
+        public bool Jumpable;
 
-        [ShowIf("@moveable && crouchable"), LabelText("蹲伏数据", SdfIconType.Box)]
-        public SCrouchData crouchData;
+        [ShowIf("@Moveable && Jumpable")]
+        public SJumpData JumpData;
+
+        [Space(3)]
+        [ShowIf("Moveable"), LabelText("是否能够进行蹲伏")]
+        public bool Crouchable;
+
+        [ShowIf("@Moveable && Crouchable")]
+        public SCrouchData CrouchData;
         
-        [Space(3),LabelText("能否进行攻击")]
-        public bool attackable;
+        [Space(3),LabelText("能否使用武器攻击")]
+        public bool WeaponAttackable;
         
-        [ShowIf("attackable"),LabelText("攻击数据",SdfIconType.Box)]
-        public SAttackData attackData;
+        //[ShowIf("attackable"),LabelText("攻击数据",SdfIconType.Box)]
     }
     
     /// <summary>
     /// 生命数据配置
     /// </summary>
-    [Serializable]
+    [Serializable,LabelText("生命数据", SdfIconType.Box)]
     public struct SHealthyData
     {
         [LabelText("最大生命值")]
@@ -87,7 +89,7 @@ namespace GameFrame.Config
     /// <summary>
     /// 移动数据配置
     /// </summary>
-    [Serializable]
+    [Serializable,LabelText("移动数据", SdfIconType.Box)]
     public struct SMoveData
     {
         [LabelText("行走速度")]
@@ -109,7 +111,7 @@ namespace GameFrame.Config
     /// <summary>
     /// 冲刺数据配置
     /// </summary>
-    [Serializable]
+    [Serializable,LabelText("冲刺数据", SdfIconType.Box)]
     public struct SDashData
     {
         [LabelText("冲刺速度")]
@@ -123,7 +125,7 @@ namespace GameFrame.Config
     /// <summary>
     /// 跳跃数据配置
     /// </summary>
-    [Serializable]
+    [Serializable,LabelText("跳跃数据", SdfIconType.Box)]
     public struct SJumpData
     {
         [LabelText("跳跃高度")]
@@ -142,7 +144,7 @@ namespace GameFrame.Config
     /// <summary>
     /// 蹲伏数据配置
     /// </summary>
-    [Serializable]
+    [Serializable,LabelText("蹲伏数据", SdfIconType.Box)]
     public struct SCrouchData
     {
         [LabelText("蹲伏速度")]
@@ -154,29 +156,90 @@ namespace GameFrame.Config
         [LabelText("蹲伏检测层级")]
         public LayerMask crouchCheckLayerMask;
     }
-    
+
     /// <summary>
-    /// 攻击数据配置
+    /// 元素伤害配置--归属玩家的不可成长属性--是对其他物体或玩家造成的伤害
+    /// </summary>
+    [Serializable,LabelText("元素伤害配置--归属玩家的不可成长属性--是对其他物体或玩家造成的伤害", SdfIconType.Box)]
+    public class ElementDamageData
+    {
+        [LabelText("基础元素伤害")]
+        public float BasicElementDamage;
+        
+        [LabelText("最大元素可积累等级")]
+        public int MaxElementAccLevel;
+
+        [LabelText("每次升级增加的伤害比例(不包括第一级)")]
+        public List<float> ElementLevelUpAddedDamage;
+
+        [LabelText("元素造成伤害的间隔时间")]
+        public float BasicElementTriggerInterval;
+
+        [LabelText("每次升级减少造成伤害的间隔时间(不包括第一级)")]
+        public List<float> ElementLevelUpDesriggerInterval;
+        
+        private int curElementLevel=-1;
+
+        private float curElementTriggerDamage;
+        
+        private float curElementTriggerInterval;
+
+        private float lastTriggerTime;
+        
+        public virtual void SetBasicDamage(float damage)
+        {
+            this.BasicElementDamage = damage;
+            curElementTriggerDamage = BasicElementDamage;
+            curElementTriggerInterval = BasicElementTriggerInterval;
+        }
+
+        public void AddElementLevel()
+        {
+            curElementLevel++;
+            if (curElementLevel >= MaxElementAccLevel)
+            {
+                curElementLevel = MaxElementAccLevel;
+            }
+            
+            curElementTriggerDamage = BasicElementDamage * ElementLevelUpAddedDamage[curElementLevel];
+            curElementTriggerInterval = BasicElementTriggerInterval * ElementLevelUpDesriggerInterval[curElementLevel];
+        }
+
+        public float CaculateElementDamage()
+        {
+            return curElementTriggerDamage;
+        }
+
+        public bool CheckTriggerInterval()
+        {
+            if (Time.time - lastTriggerTime >= curElementTriggerInterval)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void Reset()
+        {
+            
+        }
+    }
+
+    /// <summary>
+    /// 元素属性配置--归属玩家的可成长数据
     /// </summary>
     [Serializable]
-    public struct SAttackData
+    public struct SElementPropertyData
     {
-        [LabelText("基础伤害")]
-        public float basicDamage;
+        [LabelText("元素伤害倍率")]
+        public float ElementBonusDamage;
         
-        [LabelText("暴击率"),Range(0,100)]
-        public float criticalRate;
-        
-        [LabelText("暴击伤害")]
-        public float criticalDamage;
-        
-        [LabelText("攻击距离")]
-        public float attackDistance;
+        [LabelText("元素伤害抗性")]
+        public float ElementResistance;
     }
     
     /// <summary>
     /// 物体的碰撞等级
-    /// 
     /// </summary>
     public enum EWorldObjCollisionType
     {
@@ -189,5 +252,6 @@ namespace GameFrame.Config
         [LabelText("特殊等级--")]
         SpecialLevel,
     }
+    
 }
 

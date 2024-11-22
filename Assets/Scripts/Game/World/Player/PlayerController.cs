@@ -49,7 +49,7 @@ namespace GameFrame.World
 
         protected override void InitMove()
         {
-            if (thisDataConfig.moveable)
+            if (thisDataConfig.Moveable)
             {
                 moveController = new MoveController_Player();
                 moveController.InitData(owner);
@@ -71,9 +71,9 @@ namespace GameFrame.World
 
         protected override void InitJump()
         {
-            if (thisDataConfig.jumpable)
+            if (thisDataConfig.Jumpable)
             {
-                moveController.InitJump(thisDataConfig.jumpData);
+                moveController.InitJump(thisDataConfig.JumpData);
                 this.RegisterEvent<SInputEvent_Jump>(moveData => { moveController.JumpCheck(); })
                     .AddToUnregisterList(this);
             }
@@ -81,9 +81,9 @@ namespace GameFrame.World
 
         protected override void InitCrouch()
         {
-            if (thisDataConfig.crouchable)
+            if (thisDataConfig.Crouchable)
             {
-                moveController.InitCrouch(thisDataConfig.crouchData);
+                moveController.InitCrouch(thisDataConfig.CrouchData);
                 this.RegisterEvent<SInputEvent_Crouch>(moveData => { moveController.CrouchCheck(moveData); })
                     .AddToUnregisterList(this);
             }
@@ -91,9 +91,9 @@ namespace GameFrame.World
 
         protected override void InitDash()
         {
-            if (thisDataConfig.dashable)
+            if (thisDataConfig.Dashable)
             {
-                moveController.InitDash(thisDataConfig.dashData);
+                moveController.InitDash(thisDataConfig.DashData);
                 this.RegisterEvent<SInputEvent_Dash>(moveData => { moveController.DashCheck(); })
                     .AddToUnregisterList(this);
             }

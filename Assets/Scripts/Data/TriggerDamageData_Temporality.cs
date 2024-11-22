@@ -8,6 +8,11 @@ namespace GameFrame.World
     public class TriggerDamageData_Temporality : TemporalityData_Pool
     {
         /// <summary>
+        /// 当前会造成的元素类型
+        /// </summary>
+        public EAction_Skill_ElementType curElementType;
+        
+        /// <summary>
         /// 当前会造成的伤害
         /// </summary>
         public float curBasicDamage;
@@ -48,6 +53,7 @@ namespace GameFrame.World
             bool isCritical = randomCriticalRate <= curCriticalRate;
             float willTriggerDamage = (isCritical ? curBasicDamage * curCriticalDamage : curBasicDamage) *
                                       damageAttenuationRate;
+            
             if (maxDamageAttenuationLevel > 0 && curDamageAttenuationLevel < maxDamageAttenuationLevel)
             {
                 willTriggerDamage *= damageAttenuationLevel[curDamageAttenuationLevel];
@@ -81,24 +87,23 @@ namespace GameFrame.World
             return SafeObjectPool<TriggerDamageData_Temporality>.Instance.Allocate();
         }
         
-        public virtual void RecycleData()
+        public override void OnRecycled()
+        {
+            DeInitData();
+        }
+        
+        public override void Recycle2Cache()
+        {
+            
+        }
+
+        public override void DeInitData()
         {
             curBasicDamage = 0;
             curCriticalDamage = 0;
             curCriticalRate = 0;
             curDamageAttenuationLevel = 0;
             maxDamageAttenuationLevel = 0;
-            
-        }
-        
-        public override void OnRecycled()
-        {
-            RecycleData();
-        }
-        
-        public override void Recycle2Cache()
-        {
-            
         }
     }
 }

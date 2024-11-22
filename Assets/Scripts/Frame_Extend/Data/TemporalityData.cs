@@ -6,9 +6,9 @@ namespace GameFrame
     /// <summary>
     /// 临时对象数据--非池
     /// </summary>
-    public class TemporalityData
+    public abstract class TemporalityData
     {
-        
+        public abstract void DeInitData();
     }
 
     /// <summary>

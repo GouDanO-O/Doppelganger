@@ -1,6 +1,7 @@
 using System;
 using GameFrame.Config;
 using QFramework;
+using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -23,6 +24,15 @@ namespace GameFrame.World
         /// </summary>
         public float maxFlyDistance;
 
+        /// <summary>
+        /// 当前飞行高度
+        /// </summary>
+        public float curFlyHeight;
+
+        /// <summary>
+        /// 飞行最高点
+        /// </summary>
+        public float maxFlyHeight;
         
         public static ProjectileTriggerDamageData_Temporality Allocate()
         {
@@ -30,7 +40,7 @@ namespace GameFrame.World
         }
     }
     
-    public class ProjectileController : MonoBehaviour
+    public class ProjectileController : NetworkBehaviour
     {
         [HideInInspector] public WorldObj owner;
         
@@ -58,36 +68,19 @@ namespace GameFrame.World
         {
             tempProjectileData = ProjectileTriggerDamageData_Temporality.Allocate();
 
-            if (persistenceProjectileData.IsExtendWeaponData)
-            {
-                ExtendWeaponData();
-            }
-            else
-            {
-                ExtendPerData();
-            }
+            ExtendData();
         }
 
         /// <summary>
-        /// 继承武器数据
+        /// 继承数据
         /// </summary>
-        protected virtual void ExtendWeaponData()
-        {
-            
-        }
-
-        /// <summary>
-        /// 继承配置数据
-        /// </summary>
-        protected virtual void ExtendPerData()
+        protected virtual void ExtendData()
         {
             tempProjectileData.damageAttenuationLevel = persistenceProjectileData.DamageAttenuations;
             tempProjectileData.maxDamageAttenuationLevel = persistenceProjectileData.DamageAttenuations.Count;
             tempProjectileData.curBasicDamage = persistenceProjectileData.BaiscDamage;
             tempProjectileData.curFlySpeed = persistenceProjectileData.FlySpeed;
             tempProjectileData.maxFlyDistance=persistenceProjectileData.MaxFlyDistance;
-            tempProjectileData.curCriticalDamage = persistenceProjectileData.CriticalDamage;
-            tempProjectileData.curCriticalRate= persistenceProjectileData.CriticalRate;
         }
         
         /// <summary>
@@ -173,13 +166,14 @@ namespace GameFrame.World
         /// </summary>
         protected virtual void FlyDistanceCheck()
         {
-            if (persistenceProjectileData.MaxFlyDistance > 0)
+            if (tempProjectileData.maxFlyDistance > 0)
             {
-                if (tempProjectileData.curFlyDistance >= persistenceProjectileData.MaxFlyDistance)
+                tempProjectileData.curFlyDistance += Time.deltaTime;
+                
+                if (tempProjectileData.curFlyDistance >= tempProjectileData.maxFlyDistance)
                 {
                     EndExecute();
                 }
-                tempProjectileData.curFlyDistance += Time.deltaTime;
             }
         }
 
@@ -189,7 +183,7 @@ namespace GameFrame.World
         /// <param name="curTriggerTarget"></param>
         protected virtual void TriggerDamage(WorldObj curTriggerTarget)
         {
-            curTriggerTarget.BeHarmed(tempProjectileData.CaculateDamage());
+            curTriggerTarget.BeHarmed(tempProjectileData.CaculateDamage(),tempProjectileData.curElementType);
         }
 
         /// <summary>
@@ -212,7 +206,7 @@ namespace GameFrame.World
             EAction_Projectile_CollisionType curCollisionType = persistenceProjectileData.CollisionTypes[index];
             switch (curCollisionType)
             {
-                case EAction_Projectile_CollisionType.ContinuteFly:
+                case EAction_Projectile_CollisionType.ContinueFly:
                     
                     break;
                 case EAction_Projectile_CollisionType.CollisionAndDestroy:
@@ -223,7 +217,6 @@ namespace GameFrame.World
                     break;
             }
         }
-        
         
         /// <summary>
         /// 反弹弹体
@@ -244,13 +237,18 @@ namespace GameFrame.World
             }
             else
             {
+                
                 Destroy(gameObject);
             }
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            
+            WorldObj otherWorldObj = other.GetComponent<WorldObj>();
+            if (otherWorldObj)
+            {
+                Trigger(otherWorldObj);
+            }
         }
 
         private void OnTriggerStay(Collider other)
@@ -263,7 +261,5 @@ namespace GameFrame.World
             
         }
     }
-    
-
 }
 

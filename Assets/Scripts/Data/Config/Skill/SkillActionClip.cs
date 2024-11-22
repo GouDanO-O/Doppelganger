@@ -88,12 +88,17 @@ namespace GameFrame.Config
 
         public override void OnRecycled()
         {
-            owner = null;
+            DeInitData();
         }
         
         public override void Recycle2Cache()
         {
             SafeObjectPool<SActionClipData_Temporality>.Instance.Recycle(this);
+        }
+
+        public override void DeInitData()
+        {
+            owner = null;
         }
     }
     

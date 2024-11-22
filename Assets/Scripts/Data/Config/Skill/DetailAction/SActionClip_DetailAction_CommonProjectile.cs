@@ -11,9 +11,6 @@ namespace GameFrame.Config
     [Serializable]
     public class SCommonProjectileData_Persistence : PersistentData
     {
-        [InfoBox("即以武器数据为准,且会计算来自玩家的增减益,而不是弹体自己的数据")] [LabelText("是否从武器上继承数据")]
-        public bool IsExtendWeaponData;
-
         [HideIf("@IsExtendWeaponData")] [LabelText("是否从对象池中进行加载")]
         public bool IsLoadFromPool;
 
@@ -26,14 +23,11 @@ namespace GameFrame.Config
         [HideIf("@IsExtendWeaponData")] [LabelText("发射次数"), MinValue(1)]
         public int FireCount = 1;
 
+        [Header("造成伤害的类型")]
+        public EAction_Skill_ElementType ElementType;
+        
         [HideIf("@IsExtendWeaponData")] [LabelText("基础伤害")]
         public float BaiscDamage;
-
-        [HideIf("@IsExtendWeaponData")] [LabelText("暴击率")]
-        public float CriticalRate;
-
-        [HideIf("@IsExtendWeaponData")] [LabelText("暴击伤害")]
-        public float CriticalDamage;
 
         [HideIf("@IsExtendWeaponData")] [LabelText("飞行速度"), MinValue(0)]
         public float FlySpeed;
@@ -59,56 +53,6 @@ namespace GameFrame.Config
         [HideIf("@IsExtendWeaponData || ShootProjectileType != EAction_Projectile_ShootType.Parabola")]
         [LabelText("抛物线最高点")]
         public float MaxParabolaHeight;
-
-        [HideIf("@IsExtendWeaponData")] 
-        public EAction_Skill_ElementType ElementType;
-
-        [HideIf("@IsExtendWeaponData || ElementType == EAction_Skill_ElementType.None")] [LabelText("最大元素可积累等级")]
-        public float MaxElementAccLevel;
-
-        [HideIf("@IsExtendWeaponData || ElementType == EAction_Skill_ElementType.None")] [LabelText("基础元素伤害")]
-        public float BasicElementDamage;
-
-        [HideIf("@IsExtendWeaponData || ElementType == EAction_Skill_ElementType.None")] [LabelText("每次升级增加的伤害比例")]
-        public List<float> ElementLevelUpAddedDamage;
-
-        [HideIf("@IsExtendWeaponData || ElementType == EAction_Skill_ElementType.None")] [LabelText("元素造成伤害的间隔时间")]
-        public float BasicElementTriggerInterval;
-
-        [HideIf("@IsExtendWeaponData || ElementType == EAction_Skill_ElementType.None")] [LabelText("每次升级减少造成伤害的间隔时间")]
-        public List<float> ElementLevelUpDesriggerInterval;
-
-        // 使用 OnValidate 来动态调整列表长度
-        private void OnValidate()
-        {
-            // 限制 elementLevelUpAddedDamage 列表长度
-            if (ElementLevelUpAddedDamage.Count > MaxElementAccLevel)
-            {
-                ElementLevelUpAddedDamage.RemoveRange((int)MaxElementAccLevel,
-                    ElementLevelUpAddedDamage.Count - (int)MaxElementAccLevel);
-            }
-            else
-            {
-                while (ElementLevelUpAddedDamage.Count < MaxElementAccLevel)
-                {
-                    ElementLevelUpAddedDamage.Add(0f); // 填充默认值
-                }
-            }
-
-            // 限制 elementLevelUpDesriggerInterval 列表长度
-            if (ElementLevelUpDesriggerInterval.Count > MaxElementAccLevel)
-            {
-                ElementLevelUpDesriggerInterval.RemoveRange((int)MaxElementAccLevel,
-                    ElementLevelUpDesriggerInterval.Count - (int)MaxElementAccLevel);
-            }
-            else
-            {
-                while (ElementLevelUpDesriggerInterval.Count < MaxElementAccLevel)
-                {
-                    ElementLevelUpDesriggerInterval.Add(0f); // 填充默认值
-                }
-            }
-        }
     }
     
     

@@ -12,38 +12,7 @@ using UnityEngine.Events;
 
 namespace GameFrame.World
 {
-    /// <summary>
-    /// 持久化的世界物体数据--生命周期内会一直存在
-    /// </summary>
-    public class SWorldObjData_Persistence : PersistentData
-    {
-        
-        public override void SaveData()
-        {
-            
-        }
-    }
 
-    /// <summary>
-    /// 临时性的世界物体数据--当变形或其他操作时会被初始化
-    /// </summary>
-    public class SWorldObjData_Temporality : TemporalityData_Pool
-    {
-        public static SWorldObjData_Temporality Allocate()
-        {
-            return SafeObjectPool<SWorldObjData_Temporality>.Instance.Allocate();
-        }
-        
-        public override void OnRecycled()
-        {
-            
-        }
-
-        public override void Recycle2Cache()
-        {
-            
-        }
-    }
 
     /// <summary>
     /// 世界物体基类--主要负责集中管理该物体
@@ -52,9 +21,7 @@ namespace GameFrame.World
     { 
         public WorldObjDataConfig thisDataConfig;
 
-        public SWorldObjData_Persistence worldObjData_Persistence;
-
-        public SWorldObjData_Temporality worldObjData_Temporality;
+        public WorldObjPropertyData_Temporality worldObjPropertyDataTemporality;
         
         public BaseController thisController { get;protected set; }
         
@@ -108,8 +75,7 @@ namespace GameFrame.World
         /// </summary>
         public override void DeInitData()
         {
-            worldObjData_Persistence.SaveData();
-            worldObjData_Temporality.Recycle2Cache();
+
         }
 
         /// <summary>
@@ -117,8 +83,7 @@ namespace GameFrame.World
         /// </summary>
         protected virtual void InitComponents()
         {
-            worldObjData_Persistence = new SWorldObjData_Persistence();
-            worldObjData_Temporality = new SWorldObjData_Temporality();
+            worldObjPropertyDataTemporality=new WorldObjPropertyData_Temporality();
             rigidbody = GetComponent<Rigidbody>();
             collider = GetComponent<Collider>();
             
@@ -226,9 +191,9 @@ namespace GameFrame.World
             thisController.Death(isDeath);
         }
 
-        public void BeHarmed(float harmedValue)
+        public void BeHarmed(float harmedValue,EAction_Skill_ElementType elementType)
         {
-            thisController.BeHarmed(harmedValue);
+            thisController.BeHarmed(harmedValue,elementType);
         }
 
         public void DoPlayAnimations(SAnimatorEvent animatorEvent)

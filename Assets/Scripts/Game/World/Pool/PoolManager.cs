@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GameFrame.Config;
 using GameFrame.UI;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace GameFrame.World
     public class PoolManager : MonoNetSingleton<PoolManager>
     {
         public SimpleObjectPool<HealthyStatusFollower> healthyStatusFollower_Pool;
+        
+        public Dictionary<EAction_Skill_ElementType,SimpleObjectPool<GameObject>> ElementHarmedParticleObjectPool;
         
         private void Awake()
         {
@@ -49,6 +52,11 @@ namespace GameFrame.World
             {
                 
             }, 30);
+        }
+
+        public void InitElementHarmedParticleObjectPool()
+        {
+            
         }
         
         public GameObject LoadObjFromPool(EObjectPoolType poolType)

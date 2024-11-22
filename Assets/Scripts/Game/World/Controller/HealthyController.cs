@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using GameFrame.Config;
@@ -20,7 +21,7 @@ namespace GameFrame.World
         
         public BindableProperty<float> maxArmor { get; set; }
 
-        public void Beharmed(float damage);
+        public void SufferHarmed(float damage, EAction_Skill_ElementType elementType);
 
         public void Becuring(float cureValue);
 
@@ -35,6 +36,8 @@ namespace GameFrame.World
         public WorldObj worldObj;
         
         public HealthyStatusFollower healthyStatusFollower;
+        
+        public TriggerElementDamageData_Temporality triggerElementDamageData_Temporality;
         
         public BindableProperty<bool> isDeath { get; set; }= new BindableProperty<bool>(false);
         
@@ -79,7 +82,7 @@ namespace GameFrame.World
                 this.healthyStatusFollower.ChangeArmor(curArmor.Value,data);
             }).AddToUnregisterList(this);
 
-            SHealthyData healthyData = worldObj.thisDataConfig.healthyData;
+            SHealthyData healthyData = worldObj.thisDataConfig.HealthyData;
             this.curHealthy.Value = healthyData.maxHealth;
             this.maxHealthy.Value = healthyData.maxHealth;    
             this.curArmor.Value = healthyData.maxArmor;
@@ -89,21 +92,65 @@ namespace GameFrame.World
             healthyStatusFollower.Show();
 
             healthyStatusFollower.InitFollowerStatus(worldObj,healthyData);
+
+            triggerElementDamageData_Temporality=new TriggerElementDamageData_Temporality();
+            worldObj.thisController.onBeHarmedEvent += SufferHarmed;
+            
+            
         }
         
         /// <summary>
-        /// 受伤
+        /// 受到伤害
         /// </summary>
-        /// <param name="damage"></param>
-        public void Beharmed(float damage)
+        /// <param name="elementType"></param>
+        public void SufferHarmed(float damage,EAction_Skill_ElementType elementType)
         {
             if(this.isDeath.Value)
                 return;
-            this.curHealthy.Value -= damage;
+
+            if (elementType != EAction_Skill_ElementType.None)
+            {
+                SufferElement(elementType);
+            }
+
+            ReduceHealthy(damage);
+        }
+
+        /// <summary>
+        /// 减少生命状态
+        /// </summary>
+        /// <param name="damage"></param>
+        public void ReduceHealthy(float damage)
+        {
+            float reCaculateDamage = damage * worldObj.worldObjPropertyDataTemporality.GetDamageReductionRatio();
+            float deepValue = curArmor.Value - reCaculateDamage;
+
+            if (deepValue >= 0)
+            {
+                curArmor.Value -= deepValue;
+                if (curArmor.Value < 0)
+                {
+                    curArmor.SetValueWithoutEvent(0);
+                }
+            }
+            else
+            {
+                curHealthy.Value += damage;
+            }
+            
             if (curHealthy.Value <= 0)
             {
                 Death();
             }
+        }
+
+        /// <summary>
+        /// 遭受元素伤害
+        /// </summary>
+        /// <param name="elementType"></param>
+        public void SufferElement(EAction_Skill_ElementType elementType)
+        {
+            triggerElementDamageData_Temporality.AddElement(elementType);
         }
 
         /// <summary>
@@ -131,6 +178,7 @@ namespace GameFrame.World
         public override void DeInitData()
         {
             this.UnRegisterAll();
+            worldObj.thisController.onBeHarmedEvent -= SufferHarmed;
         }
     }
 }

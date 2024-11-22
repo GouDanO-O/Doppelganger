@@ -69,7 +69,7 @@ namespace GameFrame.World
             base.InitData(owner);
             this.rigidbody = owner.rigidbody;
             this.collider= owner.collider;
-            this.gravity = owner.thisDataConfig.gravity;
+            this.gravity = owner.thisDataConfig.Gravity;
             
             if (collider is BoxCollider boxCollider)
             {
@@ -81,7 +81,7 @@ namespace GameFrame.World
             }
             this.curOwnerHeight=ownerHeight;
             
-            SMoveData moveData = owner.thisDataConfig.moveData;
+            SMoveData moveData = owner.thisDataConfig.MoveData;
             this.walkSpeed = moveData.walkSpeed;
             this.runSpeed = moveData.runSpeed;
             this.inAirMoveSpeed = moveData.inAirMoveSpeed;

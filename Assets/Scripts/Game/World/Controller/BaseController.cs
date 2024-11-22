@@ -4,6 +4,7 @@ using GameFrame.Config;
 using QFramework;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace GameFrame.World
 {
@@ -12,9 +13,9 @@ namespace GameFrame.World
     /// </summary>
     public abstract class BaseController : MonoNetController,IUnRegisterList
     {
-        public EasyEvent<bool> onDeathEvent;
+        public UnityAction<bool> onDeathEvent;
         
-        public EasyEvent<float> onBeHarmedEvent;
+        public UnityAction<float,EAction_Skill_ElementType> onBeHarmedEvent;
         
         public WorldObjDataConfig thisDataConfig { get; protected set; }
         
@@ -79,7 +80,7 @@ namespace GameFrame.World
         /// </summary>
         protected virtual void InitHealthy()
         {
-            if (thisDataConfig.healthyable)
+            if (thisDataConfig.Healthyable)
             {
                 healthyController = new HealthyController();
                 healthyController.InitData(owner);
@@ -153,12 +154,12 @@ namespace GameFrame.World
 
         public virtual void Death(bool isDeath)
         {
-            onDeathEvent?.Trigger(isDeath);
+            onDeathEvent?.Invoke(isDeath);
         }
 
-        public virtual void BeHarmed(float harmedValue)
+        public virtual void BeHarmed(float harmedValue, EAction_Skill_ElementType elementType)
         {
-            onBeHarmedEvent?.Trigger(harmedValue);
+            onBeHarmedEvent?.Invoke(harmedValue,elementType);
         }
 
         public virtual void DoPlayAnimations(SAnimatorEvent animatorEvent)

@@ -45,7 +45,7 @@ namespace GameFrame
     public enum EAction_Projectile_CollisionType
     {
         [LabelText("继续飞行")]
-        ContinuteFly,
+        ContinueFly,
         [LabelText("碰到就消失")]
         CollisionAndDestroy,
         [LabelText("碰到就反弹")]
@@ -55,12 +55,20 @@ namespace GameFrame
     [LabelText("元素伤害类型")]
     public enum EAction_Skill_ElementType
     {
-        [LabelText("无属性")]
+        [LabelText("无特殊属性")]
         None,
-        [LabelText("火属性")]
+        [LabelText("火属性--灼伤")]
         Fire,
-        [LabelText("雷属性")]
+        [LabelText("冰属性--减速")]
+        Ice,
+        [LabelText("毒属性--毒伤+破防")]
+        Poision,
+        [LabelText("雷属性--易伤")]
         Electricity,
+        [LabelText("光属性--达到层数时眩晕")]
+        Light,
+        [LabelText("暗属性--虚弱")]
+        Dark
     }
     
 }
