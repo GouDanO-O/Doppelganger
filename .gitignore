@@ -39,3 +39,8 @@
 /UnityEditor.UI.EditorTests.csproj
 /UnityEngine.UI.csproj
 /UnityEngine.UI.Tests.csproj
+/FPSAnimationFramework.Editor.csproj
+/FPSAnimationFramework.Runtime.csproj
+/KAnimationCore.Editor.csproj
+/KAnimationCore.Runtime.csproj
+/ScriptableWidget.Editor.csproj
