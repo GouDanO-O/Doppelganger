@@ -12,7 +12,7 @@ namespace GameFrame.Config
 {
 
     [CreateAssetMenu(fileName = "SkillTrack",menuName = "配置/技能/技能轨道配置")]
-    public class SkillTrack : SerializedScriptableObject
+    public class SkillTrackConfig : SerializedScriptableObject
     {
         [LabelText("轨道名称"), LabelWidth(60)]
         public string TrackName;

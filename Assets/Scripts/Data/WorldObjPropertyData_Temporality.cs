@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameFrame.Config;
+using GameFrame.World;
 
-namespace GameFrame.World
+namespace GameFrame
 {
     /// <summary>
     /// 物体当前对局数据
@@ -38,17 +39,17 @@ namespace GameFrame.World
         /// <summary>
         /// 元素伤害配置
         /// </summary>
-        public Dictionary<EAction_Skill_ElementType,ElementDamageData> ElementDamageData=new Dictionary<EAction_Skill_ElementType, ElementDamageData>();
+        public Dictionary<EElementType,ElementDamageData_Persistent> ElementDamageData=new Dictionary<EElementType, ElementDamageData_Persistent>();
         
         /// <summary>
         /// 元素伤害倍率
         /// </summary>
-        public Dictionary<EAction_Skill_ElementType,float> ElementBonusDamage=new Dictionary<EAction_Skill_ElementType, float>();
+        public Dictionary<EElementType,float> ElementBonusDamage=new Dictionary<EElementType, float>();
         
         /// <summary>
         /// 元素伤害抗性
         /// </summary>
-        public Dictionary<EAction_Skill_ElementType,float> ElementResistance=new Dictionary<EAction_Skill_ElementType, float>();
+        public Dictionary<EElementType,float> ElementResistance=new Dictionary<EElementType, float>();
 
         public float GetDamageReductionRatio()
         {

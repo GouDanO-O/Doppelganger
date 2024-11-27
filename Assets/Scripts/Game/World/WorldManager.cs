@@ -2,9 +2,32 @@
 
 namespace GameFrame.World
 {
-    public class WorldManager : MonoNetSingleton<WorldManager>
+    public class WorldManager : Singleton<WorldManager>,IController
     {
         public PlayerController playerController { get;private set; }
+
+        public ElementCaculateManager elementCaculateManager;
+
+        public override void OnSingletonInit()
+        {
+            base.OnSingletonInit();
+            InitData();
+        }
+
+        public IArchitecture GetArchitecture()
+        {
+            return Main.Interface;
+        }
+        
+        private void InitData()
+        {
+            elementCaculateManager=new ElementCaculateManager();
+        }
+
+        public void DeInitData()
+        {
+            
+        }
         
         public void SetPlayer(PlayerController player)
         {
@@ -17,7 +40,15 @@ namespace GameFrame.World
                 }
             })));
         }
-        
-        
+
+        public void UpdateWorldLogic()
+        {
+            UpdateElementCaculateManager();
+        }
+
+        private void UpdateElementCaculateManager()
+        {
+            elementCaculateManager.UpdateElementEffects(0.02f);
+        }
     }
 }

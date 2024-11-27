@@ -15,7 +15,7 @@ namespace GameFrame.World
     {
         public UnityAction<bool> onDeathEvent;
         
-        public UnityAction<float,EAction_Skill_ElementType> onBeHarmedEvent;
+        public UnityAction<float,EElementType> onBeHarmedEvent;
         
         public WorldObjDataConfig thisDataConfig { get; protected set; }
         
@@ -157,7 +157,7 @@ namespace GameFrame.World
             onDeathEvent?.Invoke(isDeath);
         }
 
-        public virtual void BeHarmed(float harmedValue, EAction_Skill_ElementType elementType)
+        public virtual void BeHarmed(float harmedValue, EElementType elementType)
         {
             onBeHarmedEvent?.Invoke(harmedValue,elementType);
         }

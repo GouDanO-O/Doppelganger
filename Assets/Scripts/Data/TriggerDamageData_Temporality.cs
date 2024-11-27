@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using QFramework;
 using Random = UnityEngine.Random;
 
-namespace GameFrame.World
+namespace GameFrame
 {
     public class TriggerDamageData_Temporality : TemporalityData_Pool
     {
         /// <summary>
         /// 当前会造成的元素类型
         /// </summary>
-        public EAction_Skill_ElementType curElementType;
+        public EElementType curElementType;
         
         /// <summary>
         /// 当前会造成的伤害
@@ -41,6 +41,11 @@ namespace GameFrame.World
         /// 伤害衰减等级
         /// </summary>
         public List<float> damageAttenuationLevel;
+        
+        public static TriggerDamageData_Temporality Allocate()
+        {
+            return SafeObjectPool<TriggerDamageData_Temporality>.Instance.Allocate();
+        }
 
         /// <summary>
         /// 计算当前伤害
@@ -80,11 +85,6 @@ namespace GameFrame.World
             if (maxDamageAttenuationLevel == 0)
                 return false;
             return curDamageAttenuationLevel >= maxDamageAttenuationLevel;
-        }
-
-        public static TriggerDamageData_Temporality Allocate()
-        {
-            return SafeObjectPool<TriggerDamageData_Temporality>.Instance.Allocate();
         }
         
         public override void OnRecycled()

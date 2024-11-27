@@ -1,66 +1,221 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameFrame.World;
 using QFramework;
+using UnityEngine;
 
-namespace GameFrame.World
+namespace GameFrame
 {
-    public class TriggerElementDamageData_Temporality : TemporalityData
+    public struct SElementTriggerTime
     {
-        public Dictionary<EAction_Skill_ElementType,int> elementLevelDic=new Dictionary<EAction_Skill_ElementType,int>();
+        private float maxDuration;
         
-        public Dictionary<EAction_Skill_ElementType,float> elementDamageDic=new Dictionary<EAction_Skill_ElementType,float>();
-        
-        public Dictionary<EAction_Skill_ElementType,float> lastElementDurationDic=new Dictionary<EAction_Skill_ElementType,float>();
+        private float lastInterval;
 
-        private bool isElementDisappear = false;
-        
-        public void AddElement(EAction_Skill_ElementType element)
+        private float intervalTime;
+
+        private float lastDuration;
+
+        public void SetElementTriggerTime(float duration, float intervalTime)
         {
-            if (elementLevelDic.ContainsKey(element))
+            this.maxDuration = duration;
+            this.lastDuration = duration;
+            this.lastInterval = intervalTime;
+            this.intervalTime = intervalTime;
+        }
+        
+        public void CaculateInterval(float deltaTime)
+        {
+            lastInterval -= deltaTime;
+            lastDuration -= deltaTime;
+            if (lastInterval <= 0)
             {
-                elementLevelDic[element]++;
-            }
-            else
-            {
-                elementLevelDic.Add(element, 1);
+                lastInterval = intervalTime;
             }
         }
 
-        /// <summary>
-        /// 所有的元素是否都计算完毕
-        /// </summary>
-        /// <returns></returns>
-        public bool IsElementDisappear()
+        public bool IsTimeOver()
         {
-            if (lastElementDurationDic.Count == 0)
+            return lastDuration <= 0;
+        }
+    }
+
+    public struct SElementLevel
+    {
+        public int curLevel;
+
+        public int maxLevel;
+
+        public void SetLevel(int maxLevel)
+        {
+            this.maxLevel = maxLevel;
+            this.curLevel = 0;
+        }
+        
+        public void AddLevel()
+        {
+            curLevel ++;
+            if (curLevel >= maxLevel)
             {
-                isElementDisappear = true;
+                curLevel = maxLevel;
             }
-            else
-            {
-                isElementDisappear = false;
-            }
+        }
+    }
+
+    public class TriggerElementDamageData_Temporality : TemporalityData_Pool,ICanSendCommand
+    {
+        /// <summary>
+        /// 当前元素等级
+        /// </summary>
+        private Dictionary<EElementType, SElementLevel> elementLevelDic =
+            new Dictionary<EElementType, SElementLevel>();
+
+        /// <summary>
+        /// 当前元素伤害
+        /// </summary>
+        private Dictionary<EElementType, float> elementDamageDic =
+            new Dictionary<EElementType, float>();
+
+        /// <summary>
+        /// 当前元素间隔剩余触发时长
+        /// </summary>
+        private Dictionary<EElementType, SElementTriggerTime> elementTimeDic =
+            new Dictionary<EElementType, SElementTriggerTime>();
+        
+        private Queue<EElementType> expiredElements = new Queue<EElementType>();
+
+        private HealthyController healthyController;
+        
+        public static TriggerElementDamageData_Temporality Allocate()
+        {
+            return SafeObjectPool<TriggerElementDamageData_Temporality>.Instance.Allocate();
+        }
+
+        /// <summary>
+        /// 设置所有者
+        /// </summary>
+        /// <param name="healthyController"></param>
+        public void SetOwner(HealthyController healthyController)
+        {
+            this.healthyController = healthyController;
             
-            return isElementDisappear;
+            ElementCaculateManager.onAddElementEffecterEvent.Invoke(this);
+        }
+        
+        /// <summary>
+        /// 添加元素效果（增加层数）
+        /// </summary>
+        /// <param name="element"></param>
+        public void AddElement(EElementType element, int maxLevel = 0)
+        {
+            if (elementLevelDic.TryGetValue(element, out var levelData))
+            {
+                levelData.AddLevel();
+                elementLevelDic[element] = levelData; 
+            }
+            else
+            {
+                SElementLevel newLevelData = new SElementLevel();
+                newLevelData.SetLevel(maxLevel);
+                elementLevelDic[element] = newLevelData;
+            }
         }
 
+        
         /// <summary>
-        /// 主动更新当前会造成的元素伤害
+        /// 添加元素效果（增加层数）
         /// </summary>
-        public void UpdateElementDuration()
+        /// <param name="element"></param>
+        public void AddElement(EElementType element,ElementDamageData_Persistent elementData)
+        {
+            if (elementLevelDic.TryGetValue(element, out var levelData))
+            {
+                levelData.AddLevel();
+                elementLevelDic[element] = levelData; 
+            }
+            else
+            {
+                SElementLevel newLevelData = new SElementLevel();
+                newLevelData.SetLevel(elementData.MaxElementAccLevel);
+                elementLevelDic[element] = newLevelData; 
+            }
+        }
+
+        // 主动更新当前元素的持续时间，计算伤害
+        public void UpdateElementDuration(float deltaTime)
         {
             if (elementLevelDic.Count > 0)
             {
-                
+                foreach (var pair in elementLevelDic)
+                {
+                    var element = pair.Key;
+                    var elementTime = elementTimeDic[element];
+                    
+                    elementTime.CaculateInterval(deltaTime);
+                    
+                    if (elementTime.IsTimeOver())
+                    {
+                        expiredElements.Enqueue(element);
+                        HandleElementExpire(element);
+                    }
+                    else
+                    {
+                        ApplyElementDamageToTarget(element);
+                    }
+                }
+
+                while (expiredElements.Count > 0)
+                {
+                    var element = expiredElements.Dequeue();
+                    elementLevelDic.Remove(element);
+                    elementDamageDic.Remove(element);
+                    elementTimeDic.Remove(element);
+                }
             }
         }
+
+        /// <summary>
+        /// 元素过期时的处理
+        /// 这里可以做一些额外的逻辑，比如播放特效、触发事件等
+        /// </summary>
+        /// <param name="element"></param>
+        private void HandleElementExpire(EElementType element)
+        {
+
+        }
+
+        /// <summary>
+        /// 处理伤害应用逻辑
+        /// </summary>
+        /// <param name="damage"></param>
+        private void ApplyElementDamageToTarget(EElementType element)
+        {
+
+            
+        }
+
         
         public override void DeInitData()
         {
             elementLevelDic.Clear();
             elementDamageDic.Clear();
-            lastElementDurationDic.Clear();
+            elementTimeDic.Clear();
         }
-        
+
+        public override void OnRecycled()
+        {
+            DeInitData();
+            ElementCaculateManager.onRemoveElementEffecterEvent.Invoke(this);
+        }
+
+        public override void Recycle2Cache()
+        {
+            SafeObjectPool<TriggerElementDamageData_Temporality>.Instance.Recycle(this);
+        }
+
+        public IArchitecture GetArchitecture()
+        {
+            return Main.Interface;
+        }
     }
 }

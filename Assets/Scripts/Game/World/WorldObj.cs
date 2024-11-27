@@ -191,7 +191,7 @@ namespace GameFrame.World
             thisController.Death(isDeath);
         }
 
-        public void BeHarmed(float harmedValue,EAction_Skill_ElementType elementType)
+        public void BeHarmed(float harmedValue,EElementType elementType)
         {
             thisController.BeHarmed(harmedValue,elementType);
         }

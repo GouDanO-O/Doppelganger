@@ -44,20 +44,20 @@ namespace GameFrame.World
     {
         [HideInInspector] public WorldObj owner;
         
-        private SCommonProjectileData_Persistence persistenceProjectileData;
+        private CommonProjectileData_Persistence persistenceProjectileData;
         
         /// <summary>
         /// 临时子弹数据
         /// </summary>
         protected ProjectileTriggerDamageData_Temporality tempProjectileData;
 
-        public void InitData(SCommonProjectileData_Persistence persistenceProjectileData)
+        public void InitData(CommonProjectileData_Persistence persistenceProjectileData)
         {
             this.persistenceProjectileData = persistenceProjectileData;
             SetTemData();
         }
         
-        public void InitData(WorldObj owner,SCommonProjectileData_Persistence persistenceProjectileData)
+        public void InitData(WorldObj owner,CommonProjectileData_Persistence persistenceProjectileData)
         {
             this.owner = owner;
             this.persistenceProjectileData = persistenceProjectileData;

@@ -18,8 +18,6 @@ namespace GameFrame.World
     {
         public SimpleObjectPool<HealthyStatusFollower> healthyStatusFollower_Pool;
         
-        public Dictionary<EAction_Skill_ElementType,SimpleObjectPool<GameObject>> ElementHarmedParticleObjectPool;
-        
         private void Awake()
         {
             InitSafePool();
@@ -27,7 +25,7 @@ namespace GameFrame.World
 
         public void InitSafePool()
         {
-            SafeObjectPool<SActionClipData_Temporality>.Instance.Init(50,30);
+            SafeObjectPool<ActionClipData_Temporality>.Instance.Init(50,30);
         }
 
         public void InitNormalPool()

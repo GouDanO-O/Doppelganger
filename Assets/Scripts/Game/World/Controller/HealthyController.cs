@@ -21,7 +21,7 @@ namespace GameFrame.World
         
         public BindableProperty<float> maxArmor { get; set; }
 
-        public void SufferHarmed(float damage, EAction_Skill_ElementType elementType);
+        public void SufferHarmed(float damage, EElementType elementType);
 
         public void Becuring(float cureValue);
 
@@ -92,23 +92,20 @@ namespace GameFrame.World
             healthyStatusFollower.Show();
 
             healthyStatusFollower.InitFollowerStatus(worldObj,healthyData);
-
-            triggerElementDamageData_Temporality=new TriggerElementDamageData_Temporality();
+            
             worldObj.thisController.onBeHarmedEvent += SufferHarmed;
-            
-            
         }
         
         /// <summary>
         /// 受到伤害
         /// </summary>
         /// <param name="elementType"></param>
-        public void SufferHarmed(float damage,EAction_Skill_ElementType elementType)
+        public void SufferHarmed(float damage,EElementType elementType)
         {
             if(this.isDeath.Value)
                 return;
 
-            if (elementType != EAction_Skill_ElementType.None)
+            if (elementType != EElementType.None)
             {
                 SufferElement(elementType);
             }
@@ -148,8 +145,13 @@ namespace GameFrame.World
         /// 遭受元素伤害
         /// </summary>
         /// <param name="elementType"></param>
-        public void SufferElement(EAction_Skill_ElementType elementType)
+        public void SufferElement(EElementType elementType)
         {
+            if (triggerElementDamageData_Temporality == null || triggerElementDamageData_Temporality.IsRecycled)
+            {
+                triggerElementDamageData_Temporality = TriggerElementDamageData_Temporality.Allocate();
+                triggerElementDamageData_Temporality.SetOwner(this);
+            }
             triggerElementDamageData_Temporality.AddElement(elementType);
         }
 
@@ -174,7 +176,6 @@ namespace GameFrame.World
             isDeath.Value = true;
         }
         
-
         public override void DeInitData()
         {
             this.UnRegisterAll();
