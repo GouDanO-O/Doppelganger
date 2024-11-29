@@ -41,10 +41,10 @@ namespace GameFrame
         public int MaxFlyDistance;
 
         [HideIf("@IsExtendWeaponData")] [LabelText("碰撞到不同碰撞等级物体时的处理(共有4种碰撞等级)")]
-        public List<EAction_Projectile_CollisionType> CollisionTypes = new List<EAction_Projectile_CollisionType>(4);
+        public List<EAction_Projectile_CollisionType> CollisionTypesList = new List<EAction_Projectile_CollisionType>(4);
 
         [HideIf("@IsExtendWeaponData")] [LabelText("伤害衰减比例(只有当碰到敌人时才会进行衰减,如果没有就代表没有衰减)")]
-        public List<float> DamageAttenuations;
+        public List<float> DamageAttenuationsList;
 
         [HideIf("@IsExtendWeaponData")] 
         public EAction_Projectile_ShootType ShootProjectileType;

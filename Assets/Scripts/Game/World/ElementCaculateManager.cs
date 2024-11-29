@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 namespace GameFrame.World
 {
-    public class ElementCaculateManager : IController
+    public class ElementCaculateManager
     {
         private List<TriggerElementDamageData_Temporality> activeElementData = new List<TriggerElementDamageData_Temporality>();
 
@@ -14,15 +14,15 @@ namespace GameFrame.World
         
         public static UnityAction<TriggerElementDamageData_Temporality> onRemoveElementEffecterEvent;
 
-        public IArchitecture GetArchitecture()
+        public ElementCaculateManager()
         {
-            return Main.Interface;
+            InitData();
         }
-
+        
         /// <summary>
         /// 初始化
         /// </summary>
-        public void InitData()
+        private void InitData()
         {
             onAddElementEffecterEvent += AddElementData;
             onRemoveElementEffecterEvent += RecycleElementData;

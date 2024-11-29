@@ -21,14 +21,13 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: ElementPropertyData
+    - Name: ElementPropertyDataDict
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[GameFrame.EAction_Skill_ElementType,
-        Assembly-CSharp],[GameFrame.Config.SElementPropertyData, Assembly-CSharp]],
-        mscorlib
+      Data: 0|System.Collections.Generic.Dictionary`2[[GameFrame.EElementType, Assembly-CSharp],[GameFrame.SElementPropertyData,
+        Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[GameFrame.EAction_Skill_ElementType,
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[GameFrame.EElementType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -41,70 +40,23 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 3
+      Data: 0
     - Name: 
-      Entry: 7
+      Entry: 13
       Data: 
-    - Name: $k
-      Entry: 3
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ElementDamageDataDict
+      Entry: 7
+      Data: 2|System.Collections.Generic.Dictionary`2[[GameFrame.EElementType, Assembly-CSharp],[GameFrame.ElementDamageData_Persistent,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 9
       Data: 1
-    - Name: $v
-      Entry: 7
-      Data: GameFrame.Config.SElementPropertyData, Assembly-CSharp
-    - Name: ElementBonusDamage
-      Entry: 4
+    - Name: 
+      Entry: 12
       Data: 0
-    - Name: ElementResistance
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 7
-      Data: GameFrame.Config.SElementPropertyData, Assembly-CSharp
-    - Name: ElementBonusDamage
-      Entry: 4
-      Data: 0
-    - Name: ElementResistance
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 2
-    - Name: $v
-      Entry: 7
-      Data: GameFrame.Config.SElementPropertyData, Assembly-CSharp
-    - Name: ElementBonusDamage
-      Entry: 4
-      Data: 0
-    - Name: ElementResistance
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: 
       Entry: 13
       Data: 
@@ -148,4 +100,8 @@ MonoBehaviour:
     crouchCheckLayerMask:
       serializedVersion: 2
       m_Bits: 0
-  WeaponAttackable: 0
+  WeaponAttackable: 1
+  PlayerWeaponData:
+    CriticalRate: 0
+    CriticalDamage: 0
+  InitalWeaponsList: []

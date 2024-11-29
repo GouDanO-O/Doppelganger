@@ -191,9 +191,9 @@ namespace GameFrame.World
             thisController.Death(isDeath);
         }
 
-        public void BeHarmed(float harmedValue,EElementType elementType)
+        public void BeHarmed(float harmedValue,WorldObj trigger,EElementType elementType=EElementType.None)
         {
-            thisController.BeHarmed(harmedValue,elementType);
+            thisController.BeHarmed(harmedValue,trigger,elementType);
         }
 
         public void DoPlayAnimations(SAnimatorEvent animatorEvent)

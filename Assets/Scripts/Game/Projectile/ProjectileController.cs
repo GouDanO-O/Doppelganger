@@ -76,8 +76,8 @@ namespace GameFrame.World
         /// </summary>
         protected virtual void ExtendData()
         {
-            tempProjectileData.damageAttenuationLevel = persistenceProjectileData.DamageAttenuations;
-            tempProjectileData.maxDamageAttenuationLevel = persistenceProjectileData.DamageAttenuations.Count;
+            tempProjectileData.damageAttenuationLevel = persistenceProjectileData.DamageAttenuationsList;
+            tempProjectileData.maxDamageAttenuationLevel = persistenceProjectileData.DamageAttenuationsList.Count;
             tempProjectileData.curBasicDamage = persistenceProjectileData.BaiscDamage;
             tempProjectileData.curFlySpeed = persistenceProjectileData.FlySpeed;
             tempProjectileData.maxFlyDistance=persistenceProjectileData.MaxFlyDistance;
@@ -183,7 +183,7 @@ namespace GameFrame.World
         /// <param name="curTriggerTarget"></param>
         protected virtual void TriggerDamage(WorldObj curTriggerTarget)
         {
-            curTriggerTarget.BeHarmed(tempProjectileData.CaculateDamage(),tempProjectileData.curElementType);
+            curTriggerTarget.BeHarmed(tempProjectileData.CaculateDamage(),owner,tempProjectileData.curElementType);
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace GameFrame.World
             EWorldObjCollisionType curObjCollisionType = curTriggerTarget.CollisionType;
             int index=(int)curObjCollisionType;
 
-            EAction_Projectile_CollisionType curCollisionType = persistenceProjectileData.CollisionTypes[index];
+            EAction_Projectile_CollisionType curCollisionType = persistenceProjectileData.CollisionTypesList[index];
             switch (curCollisionType)
             {
                 case EAction_Projectile_CollisionType.ContinueFly:

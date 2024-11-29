@@ -21,7 +21,7 @@ namespace GameFrame.World
         
         public BindableProperty<float> maxArmor { get; set; }
 
-        public void SufferHarmed(float damage, EElementType elementType);
+        public void SufferHarmed(float damage, WorldObj trigger, EElementType elementType = EElementType.None);
 
         public void Becuring(float cureValue);
 
@@ -100,14 +100,14 @@ namespace GameFrame.World
         /// 受到伤害
         /// </summary>
         /// <param name="elementType"></param>
-        public void SufferHarmed(float damage,EElementType elementType)
+        public void SufferHarmed(float damage,WorldObj trigger,EElementType elementType=EElementType.None)
         {
             if(this.isDeath.Value)
                 return;
 
             if (elementType != EElementType.None)
             {
-                SufferElement(elementType);
+                SufferElement(elementType,trigger);
             }
 
             ReduceHealthy(damage);
@@ -145,14 +145,14 @@ namespace GameFrame.World
         /// 遭受元素伤害
         /// </summary>
         /// <param name="elementType"></param>
-        public void SufferElement(EElementType elementType)
+        public void SufferElement(EElementType elementType,WorldObj trigger)
         {
             if (triggerElementDamageData_Temporality == null || triggerElementDamageData_Temporality.IsRecycled)
             {
                 triggerElementDamageData_Temporality = TriggerElementDamageData_Temporality.Allocate();
                 triggerElementDamageData_Temporality.SetOwner(this);
             }
-            triggerElementDamageData_Temporality.AddElement(elementType);
+            triggerElementDamageData_Temporality.AddElement(elementType,trigger.worldObjPropertyDataTemporality.GetElementDamageData(elementType));
         }
 
         /// <summary>

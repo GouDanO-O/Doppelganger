@@ -37,23 +37,60 @@ namespace GameFrame
         public float CriticalDamage;
         
         /// <summary>
-        /// 元素伤害配置
+        /// 元素伤害配置--归属玩家的不可成长属性--是对其他物体或玩家造成的伤害
         /// </summary>
-        public Dictionary<EElementType,ElementDamageData_Persistent> ElementDamageData=new Dictionary<EElementType, ElementDamageData_Persistent>();
+        public Dictionary<EElementType,ElementDamageData_Persistent> ElementDamageDataDict=new Dictionary<EElementType, ElementDamageData_Persistent>();
         
         /// <summary>
-        /// 元素伤害倍率
+        /// 元素属性配置--归属玩家的可成长数据
         /// </summary>
-        public Dictionary<EElementType,float> ElementBonusDamage=new Dictionary<EElementType, float>();
-        
-        /// <summary>
-        /// 元素伤害抗性
-        /// </summary>
-        public Dictionary<EElementType,float> ElementResistance=new Dictionary<EElementType, float>();
+        public Dictionary<EElementType,SElementPropertyData> ElementPropertyDataDict=new Dictionary<EElementType, SElementPropertyData>();
 
+        public void InitData(WorldObjDataConfig dataConfig)
+        {
+            this.MaxHealth = dataConfig.HealthyData.maxHealth;
+            this.MaxArmor = dataConfig.HealthyData.maxArmor;
+            this.DamageReductionRatio = dataConfig.HealthyData.damageReductionRatio;
+
+            this.CriticalDamage = dataConfig.PlayerWeaponData.CriticalDamage;
+            this.CriticalRate=dataConfig.PlayerWeaponData.CriticalRate;
+            
+            this.ElementDamageDataDict = dataConfig.ElementDamageDataDict;
+            this.ElementPropertyDataDict = dataConfig.ElementPropertyDataDict;
+        }
+        
         public float GetDamageReductionRatio()
         {
             return 1 - DamageReductionRatio;
+        }
+
+        public ElementDamageData_Persistent GetElementDamageData(EElementType element)
+        {
+            if (ElementDamageDataDict.ContainsKey(element))
+            {
+                return ElementDamageDataDict[element];
+            }
+            return null;
+        }
+
+        public float GetElementBonusDamage(EElementType element)
+        {
+            if (ElementPropertyDataDict.ContainsKey(element))
+            {
+                return ElementPropertyDataDict[element].ElementBonusDamage;
+            }
+
+            return 1;
+        }
+
+        public float GetElementDamageReductionRatio(EElementType element)
+        {
+            if (ElementPropertyDataDict.ContainsKey(element))
+            {
+                return ElementPropertyDataDict[element].ElementResistance;
+            }
+
+            return 0;
         }
 
         public override void DeInitData()

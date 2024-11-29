@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameFrame.World;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -31,7 +32,10 @@ namespace GameFrame.Config
         public SHealthyData HealthyData;
         
         [ShowIf("Healthyable"),LabelText("元素属性配置--归属玩家的可成长数据", SdfIconType.Box),DictionaryDrawerSettings()]
-        public Dictionary<EElementType,SElementPropertyData> ElementPropertyData= new Dictionary<EElementType,SElementPropertyData>();
+        public Dictionary<EElementType,SElementPropertyData> ElementPropertyDataDict = new Dictionary<EElementType,SElementPropertyData>();
+        
+        [ShowIf("Healthyable"),LabelText("元素伤害配置--归属玩家的不可成长属性--是对其他物体或玩家造成的伤害", SdfIconType.Box),DictionaryDrawerSettings()]
+        public Dictionary<EElementType,ElementDamageData_Persistent> ElementDamageDataDict = new Dictionary<EElementType,ElementDamageData_Persistent>();
 
         [Header("变身所需要的能量,x=>仅外貌, y=>完全变身")]
         [LabelText("")]
@@ -64,18 +68,14 @@ namespace GameFrame.Config
         [ShowIf("@Moveable && Crouchable")]
         public SCrouchData CrouchData;
         
-        [Space(3),LabelText("能否使用武器攻击")]
+        [Space(3),LabelText("是否有攻击模块")]
         public bool WeaponAttackable;
+
+        [ShowIf("@Healthyable && WeaponAttackable")]
+        public SPlayerWeaponData PlayerWeaponData;
         
-        //[ShowIf("attackable"),LabelText("攻击数据",SdfIconType.Box)]
+        [ShowIf("@Healthyable && WeaponAttackable"), LabelText("初始武器", SdfIconType.Box)]
+        public List<BasicWeaponDataConfig> InitalWeaponsList;
     }
-    
-
-
-    
-
-
-
-    
 }
 

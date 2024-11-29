@@ -6,8 +6,12 @@ using UnityEngine;
 
 namespace GameFrame
 {
-    public struct SElementTriggerTime
+    public struct SElementTriggerData
     {
+        public int curLevel;
+
+        public int maxLevel;
+        
         private float maxDuration;
         
         private float lastInterval;
@@ -23,6 +27,20 @@ namespace GameFrame
             this.lastInterval = intervalTime;
             this.intervalTime = intervalTime;
         }
+
+        public void UpdateIntervalTime(float intervalTime)
+        {
+            this.intervalTime = intervalTime;
+        }
+
+        public void UpdateDuration(float duration)
+        {
+            if (maxDuration < duration)
+            {
+                this.maxDuration = duration;
+                this.lastDuration = duration;
+            }
+        }
         
         public void CaculateInterval(float deltaTime)
         {
@@ -33,23 +51,18 @@ namespace GameFrame
                 lastInterval = intervalTime;
             }
         }
-
-        public bool IsTimeOver()
-        {
-            return lastDuration <= 0;
-        }
-    }
-
-    public struct SElementLevel
-    {
-        public int curLevel;
-
-        public int maxLevel;
-
+        
         public void SetLevel(int maxLevel)
         {
-            this.maxLevel = maxLevel;
-            this.curLevel = 0;
+            if (this.maxLevel < maxLevel)
+            {
+                this.maxLevel = maxLevel;
+            }
+
+            if (maxLevel == 0)
+            {
+                this.curLevel = 0;
+            }
         }
         
         public void AddLevel()
@@ -60,27 +73,25 @@ namespace GameFrame
                 curLevel = maxLevel;
             }
         }
+
+        public bool IsTimeOver()
+        {
+            return lastDuration <= 0;
+        }
     }
 
+    /// <summary>
+    /// 元素伤害计算块
+    /// 所有玩家施加的同类型元素不会进行叠加,伤害以最高伤害为基准,最高层数以被施加的最高层数为基准
+    /// 并刷新总持续时长(间隔时间不会刷新且当前累计层数也不会刷新)
+    /// </summary>
     public class TriggerElementDamageData_Temporality : TemporalityData_Pool,ICanSendCommand
     {
         /// <summary>
-        /// 当前元素等级
+        /// 当前元素数据
         /// </summary>
-        private Dictionary<EElementType, SElementLevel> elementLevelDic =
-            new Dictionary<EElementType, SElementLevel>();
-
-        /// <summary>
-        /// 当前元素伤害
-        /// </summary>
-        private Dictionary<EElementType, float> elementDamageDic =
-            new Dictionary<EElementType, float>();
-
-        /// <summary>
-        /// 当前元素间隔剩余触发时长
-        /// </summary>
-        private Dictionary<EElementType, SElementTriggerTime> elementTimeDic =
-            new Dictionary<EElementType, SElementTriggerTime>();
+        private Dictionary<EElementType, SElementTriggerData> elementDataDic =
+            new Dictionary<EElementType, SElementTriggerData>();
         
         private Queue<EElementType> expiredElements = new Queue<EElementType>();
 
@@ -98,7 +109,6 @@ namespace GameFrame
         public void SetOwner(HealthyController healthyController)
         {
             this.healthyController = healthyController;
-            
             ElementCaculateManager.onAddElementEffecterEvent.Invoke(this);
         }
         
@@ -106,50 +116,31 @@ namespace GameFrame
         /// 添加元素效果（增加层数）
         /// </summary>
         /// <param name="element"></param>
-        public void AddElement(EElementType element, int maxLevel = 0)
+        public void AddElement(EElementType element,ElementDamageData_Persistent elementDamageData)
         {
-            if (elementLevelDic.TryGetValue(element, out var levelData))
+            if (elementDataDic.TryGetValue(element, out var elementData))
             {
-                levelData.AddLevel();
-                elementLevelDic[element] = levelData; 
+                elementData.AddLevel();
+                elementDataDic[element] = elementData; 
             }
             else
             {
-                SElementLevel newLevelData = new SElementLevel();
-                newLevelData.SetLevel(maxLevel);
-                elementLevelDic[element] = newLevelData;
-            }
-        }
-
-        
-        /// <summary>
-        /// 添加元素效果（增加层数）
-        /// </summary>
-        /// <param name="element"></param>
-        public void AddElement(EElementType element,ElementDamageData_Persistent elementData)
-        {
-            if (elementLevelDic.TryGetValue(element, out var levelData))
-            {
-                levelData.AddLevel();
-                elementLevelDic[element] = levelData; 
-            }
-            else
-            {
-                SElementLevel newLevelData = new SElementLevel();
-                newLevelData.SetLevel(elementData.MaxElementAccLevel);
-                elementLevelDic[element] = newLevelData; 
+                SElementTriggerData newData = new SElementTriggerData();
+                newData.SetLevel(elementDamageData.MaxElementAccLevel);
+                newData.SetElementTriggerTime(elementDamageData.MaxElementDuration,elementDamageData.BasicElementTriggerInterval);
+                elementDataDic[element] = newData;
             }
         }
 
         // 主动更新当前元素的持续时间，计算伤害
         public void UpdateElementDuration(float deltaTime)
         {
-            if (elementLevelDic.Count > 0)
+            if (elementDataDic.Count > 0)
             {
-                foreach (var pair in elementLevelDic)
+                foreach (var pair in elementDataDic)
                 {
                     var element = pair.Key;
-                    var elementTime = elementTimeDic[element];
+                    var elementTime = pair.Value;
                     
                     elementTime.CaculateInterval(deltaTime);
                     
@@ -167,9 +158,7 @@ namespace GameFrame
                 while (expiredElements.Count > 0)
                 {
                     var element = expiredElements.Dequeue();
-                    elementLevelDic.Remove(element);
-                    elementDamageDic.Remove(element);
-                    elementTimeDic.Remove(element);
+                    elementDataDic.Remove(element);
                 }
             }
         }
@@ -197,9 +186,7 @@ namespace GameFrame
         
         public override void DeInitData()
         {
-            elementLevelDic.Clear();
-            elementDamageDic.Clear();
-            elementTimeDic.Clear();
+            elementDataDic.Clear();
         }
 
         public override void OnRecycled()
