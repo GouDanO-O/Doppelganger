@@ -22,4 +22,4 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   CustomFont: {fileID: 12800000, guid: 7eaeacad5bc7c5d49b0f077a706212a8, type: 3}
-  MouseSensitivity: 1
+  MouseSensitivity: 2

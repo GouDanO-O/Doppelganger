@@ -44,6 +44,7 @@ namespace GameFrame.World
             {
                 lastSkillUseTime = Time.time;
                 willEndTime = lastSkillUseTime + skillCooldown;
+                skillNodeDataConfig.TriggerSkill(owner, target);
             }
         }
         
@@ -65,12 +66,8 @@ namespace GameFrame.World
         /// </summary>
         public void LevelUp()
         {
-            curLevel++;
-            if (curLevel >= maxLevel)
-            {
-                curLevel = maxLevel;
-            }
-        }   
+            curLevel = Mathf.Min(curLevel + 1, maxLevel); 
+        }
         
         /// <summary>
         /// 检测是否是相同技能
@@ -79,18 +76,11 @@ namespace GameFrame.World
         /// <returns></returns>
         public bool CheckSkill(SkillNodeDataConfig skillNodeDataConfig)
         {
-            if (this.skillNodeDataConfig == skillNodeDataConfig)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return this.skillNodeDataConfig == skillNodeDataConfig;
         }
     }
     
-    public class SkillController : BasicController
+    public class SkillController : AbstractController
     {
         protected List<SkillNodeDataConfig> Skill_Inside = new List<SkillNodeDataConfig>();
         
@@ -242,14 +232,17 @@ namespace GameFrame.World
         /// <returns></returns>
         protected bool CheckIsSatisfySkill(SOwnedSkill skill)
         {
-            if(CheckHasSkill(skill.skillNodeDataConfig)!=-1)
-                return true;
-            
-            
-            
-            
+            if (CheckHasSkill(skill.skillNodeDataConfig) != -1)
+            {
+                SkillConditionConfig formula=skill.skillNodeDataConfig.SkillCondition;
+                if (formula == default)
+                    return true;
+
+
+            }
             return false;
-        }   
+        }
+        
         
         /// <summary>
         /// 使用技能
@@ -268,9 +261,9 @@ namespace GameFrame.World
         /// </summary>
         public void UseSkill()
         {
-            for (int i = 0; i < curOwnedSkills_Passive.Count; i++)
+            for (int i = 0; i < Skill_Outside.Count; i++)
             {
-                
+                Skill_Outside[i].TriggerSkill();
             }
         }
     }

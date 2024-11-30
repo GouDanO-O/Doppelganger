@@ -425,7 +425,7 @@ namespace GameFrame
         /// <param name="context"></param>
         private void HandleRun_Performed(InputAction.CallbackContext context)
         {
-            this.SendEvent<SInputEvent_Run>();
+            this.SendEvent<SInputEvent_Run>(new SInputEvent_Run(){runType = EInputType.Performed});
         }
         
         /// <summary>
@@ -434,7 +434,7 @@ namespace GameFrame
         /// <param name="context"></param>
         private void HandleRun_Cancel(InputAction.CallbackContext context)
         {
-            this.SendEvent<SInputEvent_Run>(); 
+            this.SendEvent<SInputEvent_Run>(new SInputEvent_Run(){runType = EInputType.Cancel});
         }
 #endregion
 

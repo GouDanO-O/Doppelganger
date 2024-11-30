@@ -21,34 +21,6 @@ namespace GameFrame.Config
     }
     
     /// <summary>
-    /// 作用目标对象类型
-    /// </summary>
-    [LabelText("作用目标对象类型")]
-    public enum ESkill_EffectTargetType
-    {
-        /// <summary>
-        /// 技能目标
-        /// </summary>        
-        [LabelText("技能目标")]
-        Target,
-        /// <summary>
-        /// 自身
-        /// </summary>        
-        [LabelText("自身")]
-        Self,
-        /// <summary>
-        /// 附身对象
-        /// </summary>        
-        [LabelText("附身对象")]
-        PossessionTarget,
-        /// <summary>
-        /// 其他
-        /// </summary>        
-        [LabelText("其他")]
-        Other
-    }
-    
-    /// <summary>
     /// 技能目标阵营
     /// </summary>
     [LabelText("技能目标阵营")]
@@ -62,7 +34,7 @@ namespace GameFrame.Config
         /// <summary>
         /// 己方
         /// </summary>
-        [LabelText("己方")]
+        [LabelText("己方--可包括自己")]
         SelfTeam = 1,
         /// <summary>
         /// 敌方
@@ -108,7 +80,7 @@ namespace GameFrame.Config
         PutIntoSkillSlots,
         [LabelText("当满足某些条件时自动执行")]
         ConditionalExecution,
-        [LabelText("定时执行")]
+        [LabelText("定时执行--即CD时间结束就执行")]
         TimedExecution,
     }
     

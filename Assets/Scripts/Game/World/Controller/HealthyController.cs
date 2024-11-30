@@ -26,7 +26,7 @@ namespace GameFrame.World
         public void Death();
     }
     
-    public class HealthyController : BasicController,IBiology_Healthy
+    public class HealthyController : AbstractController,IBiology_Healthy
     {
         public BindableProperty<bool> isDeath { get; set; }= new BindableProperty<bool>(false);
         

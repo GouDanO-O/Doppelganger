@@ -23,22 +23,9 @@ MonoBehaviour:
     SerializationNodes: []
   TrackName: 
   ActionClips:
-  - ActionType: 1
-    DetailAction: {fileID: 0}
-    AnimationData:
-      StartTime: 0
-      Duration: 1
-      AnimationClip: {fileID: 0}
-    AudioData:
-      StartTime: 0
-      Duration: 1
-      AudioClip: {fileID: 0}
-    ParticleEffectData:
-      StartTime: 0
-      Duration: 1
-      ParticleEffectPrefab: {fileID: 0}
   - ActionType: 0
-    DetailAction: {fileID: 11400000, guid: cf8402a83872769419cf1c8686a289b9, type: 2}
+    ActionDes: "\u91CA\u653E\u5F39\u4F53"
+    DetailAction: {fileID: 11400000, guid: a7d742952a99559458fd0a741fc5134f, type: 2}
     AnimationData:
       StartTime: 0
       Duration: 1

@@ -5,12 +5,11 @@ using UnityEngine;
 
 namespace GameFrame.World
 {
-    public class AttackController : BasicController
+    public class AttackController : AbstractController
     {
         public override void InitData(WorldObj owner)
         {
             base.InitData(owner);
-            
         }
 
         public override void DeInitData()

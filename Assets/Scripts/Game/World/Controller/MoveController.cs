@@ -6,11 +6,13 @@ using UnityEngine;
 
 namespace GameFrame.World
 {
-    public class MoveController : BasicController
+    public class MoveController : AbstractController
     {
         protected bool grounded = false;
         
         protected Transform transfrom;
+        
+        protected Collider collider;
         
         protected Rigidbody rigidbody;
         
@@ -23,6 +25,8 @@ namespace GameFrame.World
         public float runSpeed { get; set; }
 
         public float gravity { get; set; }
+        
+        public LayerMask groundLayMask { get; set; }
         
         public float jumpHeight { get; set; }
         
@@ -63,11 +67,25 @@ namespace GameFrame.World
         public override void InitData(WorldObj owner)
         {
             base.InitData(owner);
+            this.rigidbody = owner.rigidbody;
+            this.collider= owner.collider;
+            this.gravity = owner.thisDataConfig.gravity;
+            
+            if (collider is BoxCollider boxCollider)
+            {
+                this.ownerHeight = boxCollider.size.y;
+            }
+            else if (collider is CapsuleCollider capCollider)
+            {
+                this.ownerHeight = capCollider.height;
+            }
+            this.curOwnerHeight=ownerHeight;
+            
             SMoveData moveData = owner.thisDataConfig.moveData;
             this.walkSpeed = moveData.walkSpeed;
             this.runSpeed = moveData.runSpeed;
             this.inAirMoveSpeed = moveData.inAirMoveSpeed;
-
+            this.groundLayMask=moveData.groundLayerMask;
             this.temSpeed = GetTemSpeed();
         }
         
@@ -82,6 +100,8 @@ namespace GameFrame.World
         /// <param name="jumpData"></param>
         public virtual void InitJump(SJumpData jumpData)
         {
+            this.jumpHeight = jumpData.jumpHeight;
+            
             this.canDoubleJump=jumpData.canDoubleJump;
             this.doubleJumpHeight= jumpData.doubleJumpHeight;
             this.doubleJumpDeepTime = jumpData.doubleJumpDeepTime;  
@@ -95,6 +115,7 @@ namespace GameFrame.World
         {
             this.crouchSpeed=crouchData.crouchSpeed;
             this.crouchReduceRatio=crouchData.crouchReduceRatio;
+            this.crouchCheckLayerMask = crouchData.crouchCheckLayerMask;
         }
 
         /// <summary>
@@ -107,22 +128,13 @@ namespace GameFrame.World
             this.dashCD = dashData.dashCD;
         }
         
+        /// <summary>
+        /// 获取当前的速度
+        /// </summary>
+        /// <returns></returns>
         public float GetTemSpeed()
         {
             return grounded ? (crouching ? crouchSpeed : running ? runSpeed : walkSpeed) : inAirMoveSpeed;
-        }
-        
-        /// <summary>
-        /// 跳跃
-        /// </summary>
-        protected virtual void Jump()
-        {
-            if (grounded)
-            {
-                // 添加向上的力，实现跳跃
-                rigidbody.AddForce(Vector3.up * Mathf.Sqrt(jumpHeight * -2f * gravity), ForceMode.VelocityChange);
-                grounded = false;
-            }
         }
 
         /// <summary>
@@ -130,7 +142,16 @@ namespace GameFrame.World
         /// </summary>
         protected virtual void ChangeOwnerHeight()
         {
-            
+            if (collider is BoxCollider boxCollider)
+            {
+                boxCollider.size=new Vector3(boxCollider.size.x,curOwnerHeight,boxCollider.size.z);
+                boxCollider.center=new Vector3(boxCollider.center.x,curOwnerHeight/2,boxCollider.center.z);
+            }
+            else if (collider is CapsuleCollider capsuleCollider)
+            {
+                capsuleCollider.height = curOwnerHeight;
+                capsuleCollider.center=new Vector3(capsuleCollider.center.x,curOwnerHeight/2,capsuleCollider.center.z);
+            }
         }
         
         /// <summary>
@@ -138,7 +159,8 @@ namespace GameFrame.World
         /// </summary>
         protected bool StandUpCheck()
         {
-            return Physics.Raycast(transfrom.position, transfrom.up,ownerHeight, crouchCheckLayerMask);
+            bool canStand = Physics.Raycast(transfrom.position, transfrom.up, ownerHeight, crouchCheckLayerMask);
+            return canStand;
         }
         
         /// <summary>
@@ -148,9 +170,9 @@ namespace GameFrame.World
         {
             if (grounded)
             {
-                temSpeed = crouchSpeed;
-                curOwnerHeight = ownerHeight * crouchReduceRatio;
                 crouching = true;
+                curOwnerHeight = ownerHeight * crouchReduceRatio;
+                ChangeOwnerHeight();
             }
         }
         
@@ -161,6 +183,7 @@ namespace GameFrame.World
         {
             curOwnerHeight = ownerHeight;
             crouching = false;
+            ChangeOwnerHeight();
         }
         
         /// <summary>
@@ -169,7 +192,7 @@ namespace GameFrame.World
         public virtual void GroundCheck()
         {
             RaycastHit hit;
-            if (Physics.SphereCast(transfrom.position, 0.5f, Vector3.down, out hit, 1f))
+            if (Physics.SphereCast(transfrom.position+Vector3.up*0.1f, 0.5f, Vector3.down, out hit, 1f,groundLayMask))
             {
                 grounded = true;
                 curJumpCount = 0;
@@ -180,7 +203,7 @@ namespace GameFrame.World
                 grounded = false;
             }
         }
-        
+
         /// <summary>
         /// 跳跃检测
         /// </summary>
@@ -211,7 +234,7 @@ namespace GameFrame.World
                 {
                     if (canDoubleJump && curJumpCount==1 && curDoubleJumpDeepTime>=doubleJumpDeepTime)
                     {
-                        Jump();
+                         Jump();
                     }
                     else
                     {
@@ -221,6 +244,14 @@ namespace GameFrame.World
                     }
                 }
             }
+        }
+        
+        /// <summary>
+        /// 跳跃
+        /// </summary>
+        protected virtual void Jump()
+        {
+            rigidbody.AddForce(Vector3.up * Mathf.Sqrt(jumpHeight * -2f * gravity), ForceMode.VelocityChange);
         }
         
         protected virtual IEnumerator DoubleJumpTimeCheck()
