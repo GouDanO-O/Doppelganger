@@ -69,7 +69,7 @@ namespace GameFrame.Config
         #region 轨道列表
 
         [BoxGroup("技能行为轨道"),LabelText("技能行为轨道")]
-        public List<SkillTrack> SkillTracks = new List<SkillTrack>();
+        public List<SkillTrackConfig> SkillTracks = new List<SkillTrackConfig>();
         #endregion
 
         public void TriggerSkill(WorldObj owner=null, WorldObj target=null)

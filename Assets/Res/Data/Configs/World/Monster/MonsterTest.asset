@@ -20,47 +20,88 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
-  thisPrefab: {fileID: 0}
-  CollisionType: 0
-  hasSkill: 1
+    SerializationNodes:
+    - Name: ElementPropertyDataDict
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[GameFrame.EElementType, Assembly-CSharp],[GameFrame.SElementPropertyData,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[GameFrame.EElementType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ElementDamageDataDict
+      Entry: 7
+      Data: 2|System.Collections.Generic.Dictionary`2[[GameFrame.EElementType, Assembly-CSharp],[GameFrame.ElementDamageData_Persistent,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 9
+      Data: 1
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  ThisPrefab: {fileID: 6505841128741061604, guid: 07a6a9a6beb68094fa2a41800e37d7d4, type: 3}
+  CollisionType: 1
+  HasSkill: 0
   skillTree: {fileID: 11400000, guid: eafa574460d4de945b17b5faf60a2ce6, type: 2}
-  gravity: -9.8
-  healthyable: 1
-  healthyData:
+  Gravity: 0
+  Healthyable: 1
+  HealthyData:
     maxHealth: 0
     maxArmor: 0
     damageReductionRatio: 0
-  costDeformationEnergy: {x: 0, y: 0}
-  moveable: 1
-  moveData:
-    walkSpeed: 3
-    runSpeed: 5
-    inAirMoveSpeed: 3
-    maxPitchAngle: {x: -40, y: 60}
+  CostDeformationEnergy: {x: 0, y: 0}
+  Moveable: 0
+  MoveData:
+    walkSpeed: 0
+    runSpeed: 0
+    inAirMoveSpeed: 0
+    maxPitchAngle: {x: 0, y: 0}
     groundLayerMask:
       serializedVersion: 2
-      m_Bits: 8192
-  dashable: 1
-  dashData:
-    dashSpeed: 10
-    dashCD: 5
-  jumpable: 1
-  jumpData:
-    jumpHeight: 5
-    canDoubleJump: 1
-    doubleJumpDeepTime: 0.5
-    doubleJumpHeight: 3
-  crouchable: 1
-  crouchData:
-    crouchSpeed: 2
-    crouchReduceRatio: 0.5
+      m_Bits: 0
+  Dashable: 0
+  DashData:
+    dashSpeed: 0
+    dashCD: 0
+  Jumpable: 0
+  JumpData:
+    jumpHeight: 0
+    canDoubleJump: 0
+    doubleJumpDeepTime: 0
+    doubleJumpHeight: 0
+  Crouchable: 0
+  CrouchData:
+    crouchSpeed: 0
+    crouchReduceRatio: 0
     crouchCheckLayerMask:
       serializedVersion: 2
-      m_Bits: 245760
-  attackable: 1
-  attackData:
-    basicDamage: 0
-    criticalRate: 0
-    criticalDamage: 0
-    attackDistance: 0
+      m_Bits: 0
+  WeaponAttackable: 1
+  PlayerWeaponData:
+    CriticalRate: 0
+    CriticalDamage: 0
+  InitalWeaponsList: []

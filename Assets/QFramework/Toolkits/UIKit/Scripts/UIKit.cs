@@ -128,6 +128,26 @@ UIKit.OpenPanelAsync<UIHomePanel>().ToAction().Start(this);
 
             return retPanel;
         }
+        
+        public static T OpenPanel<T>(UILevel canvasLevel = UILevel.Common,Transform root=null, IUIData uiData = null,
+            string assetBundleName = null,
+            string prefabName = null) where T : UIPanel
+        {
+            var panelSearchKeys = PanelSearchKeys.Allocate();
+
+            panelSearchKeys.OpenType = PanelOpenType.Single;
+            panelSearchKeys.Level = canvasLevel;
+            panelSearchKeys.PanelType = typeof(T);
+            panelSearchKeys.AssetBundleName = assetBundleName;
+            panelSearchKeys.GameObjName = prefabName;
+            panelSearchKeys.UIData = uiData;
+
+            T retPanel = UIManager.Instance.OpenUI(panelSearchKeys) as T;
+
+            panelSearchKeys.Recycle2Cache();
+
+            return retPanel;
+        }
 
         public static T OpenPanel<T>(IUIData uiData, PanelOpenType panelOpenType = PanelOpenType.Single,
             string assetBundleName = null,

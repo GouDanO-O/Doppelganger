@@ -67,6 +67,16 @@ gameObjPool.Clear(gameObj=> Object.Destroy(gameObk));
                 mCacheStack.Push(mFactory.Create());
             }
         }
+        
+        public SimpleObjectPool(Func<T> factoryMethod,int initCount = 0)
+        {
+            mFactory = new CustomObjectFactory<T>(factoryMethod);
+
+            for (var i = 0; i < initCount; i++)
+            {
+                mCacheStack.Push(mFactory.Create());
+            }
+        }
 
         public override bool Recycle(T obj)
         {

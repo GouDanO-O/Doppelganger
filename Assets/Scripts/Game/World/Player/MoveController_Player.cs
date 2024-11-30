@@ -52,7 +52,7 @@ namespace GameFrame.World
         public override void InitData(WorldObj owner)
         {
             base.InitData(owner);
-            SMoveData moveData = owner.thisDataConfig.moveData;
+            SMoveData moveData = owner.thisDataConfig.MoveData;
             this.maxPitchAngle = moveData.maxPitchAngle;
             
             ResourcesModel resModel = owner.GetModel<ResourcesModel>();

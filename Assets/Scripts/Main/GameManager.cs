@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using GameFrame.Multilingual;
 using GameFrame.Net;
 using GameFrame.UI;
-using Unity.VisualScripting;
+using GameFrame.World;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -17,8 +17,9 @@ namespace GameFrame
         StartLoading,
         Loading,
         EndLoading,
-        Menu,
-        Gaming,
+        Playing,
+        Pause,
+        GameEnd,
     }
 
     /// <summary>
@@ -33,6 +34,8 @@ namespace GameFrame
         private ResourcesManager resourcesManager;
 
         private InputManager inputManager;
+        
+        private WorldManager worldManager;
         
         protected Font customFont;
 
@@ -98,6 +101,7 @@ namespace GameFrame
             if (IsGaming())
             {
                 inputManager.MovementCheck();
+                WorldManager.Instance.UpdateWorldLogic();
             }
         }
 
@@ -115,6 +119,7 @@ namespace GameFrame
         public void StartGame()
         {
             sceneLoader.onLoadScene.Invoke(ESceneName.GameScene);
+            PoolManager.Instance.InitNormalPool();
         }
 
         /// <summary>
@@ -155,12 +160,11 @@ namespace GameFrame
             curGameState = EGameState.EndLoading;
             if (sceneName == ESceneName.Menu)
             {
-                curGameState = EGameState.Menu;
                 GetArchitecture().GetSystem<UISupervisor>().EnterMenu();
             }
             else if(sceneName == ESceneName.GameScene)
             {
-                curGameState = EGameState.Gaming;
+                curGameState = EGameState.Playing;
                 GetArchitecture().GetSystem<UISupervisor>().EnterGame();
             }
             Debug.Log("加载场景结束");
@@ -173,7 +177,7 @@ namespace GameFrame
         /// <returns></returns>
         public bool IsGaming()
         {
-            return curGameState == EGameState.Gaming;
+            return curGameState == EGameState.Playing;
         }
 
         private void OnGUI()

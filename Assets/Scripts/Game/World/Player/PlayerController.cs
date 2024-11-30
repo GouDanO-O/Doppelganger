@@ -5,7 +5,6 @@ using GameFrame.Config;
 using GameFrame.World;
 using QFramework;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GameFrame.World
@@ -17,7 +16,15 @@ namespace GameFrame.World
     {
         public WorldObj worldObj;
 
-        public WorldObjDataConfig willDeformationConfig { get; }
+        public WorldObjDataConfig willDeformationConfig
+        {
+            get
+            {
+                if (worldObj == null)
+                    return null;
+                return worldObj.thisDataConfig;
+            }
+        }
 
         public Transform headCameraRootTransfrom { get; set; }
 
@@ -36,17 +43,13 @@ namespace GameFrame.World
         public override void InitData(WorldObj worldObj)
         {
             headCameraRootTransfrom = transform.Find("CameraRoot/HeadRoot");
+            WorldManager.Instance.SetPlayer(this);
             base.InitData(worldObj);
-        }
-
-        public override void DeInitData()
-        {
-            base.DeInitData();
         }
 
         protected override void InitMove()
         {
-            if (thisDataConfig.moveable)
+            if (thisDataConfig.Moveable)
             {
                 moveController = new MoveController_Player();
                 moveController.InitData(owner);
@@ -58,62 +61,19 @@ namespace GameFrame.World
                 this.RegisterEvent<SInputEvent_MouseDrag>(mouseData => { moveController.MouseRotate(mouseData); })
                     .AddToUnregisterList(this);
 
-                this.RegisterEvent<SInputEvent_Run>(moveData => { moveController.Running(moveData); });
+                this.RegisterEvent<SInputEvent_Run>(moveData => { moveController.Running(moveData); })
+                    .AddToUnregisterList(this);
 
-                ActionKit.OnFixedUpdate.Register(() => moveController.GroundCheck()).AddToUnregisterList(this);
-            }
-        }
-        
-        void OnDrawGizmos()
-        {
-            if (Application.isPlaying)
-            {
-                float radius = 0.5f; // 与您的 SphereCast 半径一致
-                float detectionDistance = 1f; // 与您的 SphereCast 距离一致
-                Vector3 origin = transform.position+Vector3.up*0.1f; // SphereCast 的起始位置
-                Vector3 direction = Vector3.down; // SphereCast 的方向
-
-                RaycastHit hit;
-
-                // 设置 Gizmos 的颜色
-                Gizmos.color = Color.red;
-
-                // 执行 SphereCast，用于获取命中点
-                if (Physics.SphereCast(origin, radius, direction, out hit, detectionDistance, 1<<13))
-                {
-                    // 绘制从起点到命中点的线
-                    Gizmos.DrawLine(origin, hit.point);
-
-                    // 在起点绘制一个球体
-                    Gizmos.DrawWireSphere(origin, radius);
-
-                    // 在命中点绘制一个球体
-                    Gizmos.DrawWireSphere(hit.point, radius);
-
-                    // 可选：在命中点绘制法线方向
-                    Gizmos.color = Color.green;
-                    Gizmos.DrawRay(hit.point, hit.normal * 0.5f);
-                }
-                else
-                {
-                    // // 如果未命中，绘制从起点到最大距离的线
-                    // Vector3 endPoint = origin + direction * detectionDistance;
-                    // Gizmos.DrawLine(origin, endPoint);
-                    //
-                    // // 在起点绘制一个球体
-                    // Gizmos.DrawWireSphere(origin, radius);
-                    //
-                    // // 在最大距离处绘制一个球体
-                    // Gizmos.DrawWireSphere(endPoint, radius);
-                }
+                ActionKit.OnUpdate.Register(() => moveController.GroundCheck())
+                    .AddToUnregisterList(this);
             }
         }
 
         protected override void InitJump()
         {
-            if (thisDataConfig.jumpable)
+            if (thisDataConfig.Jumpable)
             {
-                moveController.InitJump(thisDataConfig.jumpData);
+                moveController.InitJump(thisDataConfig.JumpData);
                 this.RegisterEvent<SInputEvent_Jump>(moveData => { moveController.JumpCheck(); })
                     .AddToUnregisterList(this);
             }
@@ -121,9 +81,9 @@ namespace GameFrame.World
 
         protected override void InitCrouch()
         {
-            if (thisDataConfig.crouchable)
+            if (thisDataConfig.Crouchable)
             {
-                moveController.InitCrouch(thisDataConfig.crouchData);
+                moveController.InitCrouch(thisDataConfig.CrouchData);
                 this.RegisterEvent<SInputEvent_Crouch>(moveData => { moveController.CrouchCheck(moveData); })
                     .AddToUnregisterList(this);
             }
@@ -131,19 +91,11 @@ namespace GameFrame.World
 
         protected override void InitDash()
         {
-            if (thisDataConfig.dashable)
+            if (thisDataConfig.Dashable)
             {
-                moveController.InitDash(thisDataConfig.dashData);
+                moveController.InitDash(thisDataConfig.DashData);
                 this.RegisterEvent<SInputEvent_Dash>(moveData => { moveController.DashCheck(); })
                     .AddToUnregisterList(this);
-            }
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                skillController.UseSkill();
             }
         }
     }

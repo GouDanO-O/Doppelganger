@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameFrame.World;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -10,184 +11,71 @@ namespace GameFrame.Config
     public class WorldObjDataConfig : SerializedScriptableObject
     {
         [Required(InfoMessageType.Error),LabelText("预制体")]
-        public GameObject thisPrefab;
+        public GameObject ThisPrefab;
         
         [LabelText("碰撞等级")]
         public EWorldObjCollisionType CollisionType;
         
         [Space(3),LabelText("是否有技能")]
-        public bool hasSkill;
+        public bool HasSkill;
         
-        [ShowIf("hasSkill"),LabelText("技能树")]
+        [ShowIf("HasSkill"),LabelText("技能树")]
         public SkillTreeConfig skillTree;
         
         [LabelText("重力"),Range(-20,0)]
-        public float gravity;
+        public float Gravity;
         
         [Space(3),LabelText("是否具有生命")]
-        public bool healthyable;
+        public bool Healthyable;
         
-        [ShowIf("healthyable"),LabelText("生命数据",SdfIconType.Box)]
-        public SHealthyData healthyData;
+        [ShowIf("Healthyable")]
+        public SHealthyData HealthyData;
+        
+        [ShowIf("Healthyable"),LabelText("元素属性配置--归属玩家的可成长数据", SdfIconType.Box),DictionaryDrawerSettings()]
+        public Dictionary<EElementType,SElementPropertyData> ElementPropertyDataDict = new Dictionary<EElementType,SElementPropertyData>();
+        
+        [ShowIf("Healthyable"),LabelText("元素伤害配置--归属玩家的不可成长属性--是对其他物体或玩家造成的伤害", SdfIconType.Box),DictionaryDrawerSettings()]
+        public Dictionary<EElementType,ElementDamageData_Persistent> ElementDamageDataDict = new Dictionary<EElementType,ElementDamageData_Persistent>();
 
         [Header("变身所需要的能量,x=>仅外貌, y=>完全变身")]
         [LabelText("")]
-        public Vector2 costDeformationEnergy;
+        public Vector2 CostDeformationEnergy;
         
         [LabelText("是否能够进行移动(不会接受输入数据,由物体本身控制移动)")]
-        public bool moveable;
+        public bool Moveable;
 
-        [ShowIf("moveable"), LabelText("移动数据", SdfIconType.Box)]
-        public SMoveData moveData;
-
-        [Space(3)]
-        [ShowIf("moveable"), LabelText("是否能够进行闪烁")]
-        public bool dashable;
-
-        [ShowIf("@moveable && dashable"), LabelText("闪烁数据", SdfIconType.Box)]
-        public SDashData dashData;
+        [ShowIf("Moveable")]
+        public SMoveData MoveData;
 
         [Space(3)]
-        [ShowIf("moveable"), LabelText("是否能够进行跳跃")]
-        public bool jumpable;
+        [ShowIf("Moveable"), LabelText("是否能够进行闪烁")]
+        public bool Dashable;
 
-        [ShowIf("@moveable && jumpable"), LabelText("跳跃数据", SdfIconType.Box)]
-        public SJumpData jumpData;
+        [ShowIf("@Moveable && Dashable")]
+        public SDashData DashData;
 
         [Space(3)]
-        [ShowIf("moveable"), LabelText("是否能够进行蹲伏")]
-        public bool crouchable;
+        [ShowIf("Moveable"), LabelText("是否能够进行跳跃")]
+        public bool Jumpable;
 
-        [ShowIf("@moveable && crouchable"), LabelText("蹲伏数据", SdfIconType.Box)]
-        public SCrouchData crouchData;
-        
-        [Space(3),LabelText("能否进行攻击")]
-        public bool attackable;
-        
-        [ShowIf("attackable"),LabelText("攻击数据",SdfIconType.Box)]
-        public SAttackData attackData;
-    }
-    
-    /// <summary>
-    /// 生命数据配置
-    /// </summary>
-    [Serializable]
-    public struct SHealthyData
-    {
-        [LabelText("最大生命值")]
-        public float maxHealth;
-        
-        [LabelText("最大护甲值")]
-        public float maxArmor;
-        
-        [LabelText("伤害减免率"),Range(0,1)]
-        public float damageReductionRatio;
-    }
-    
-    /// <summary>
-    /// 移动数据配置
-    /// </summary>
-    [Serializable]
-    public struct SMoveData
-    {
-        [LabelText("行走速度")]
-        public float walkSpeed;
-        
-        [LabelText("奔跑速度")]
-        public float runSpeed;
-        
-        [LabelText("空中移动速度")]
-        public float inAirMoveSpeed;
+        [ShowIf("@Moveable && Jumpable")]
+        public SJumpData JumpData;
 
-        [LabelText("最大上下转向角")]
-        public Vector2 maxPitchAngle;
-        
-        [LabelText("检测层级")]
-        public LayerMask groundLayerMask;
-    }
-    
-    /// <summary>
-    /// 冲刺数据配置
-    /// </summary>
-    [Serializable]
-    public struct SDashData
-    {
-        [LabelText("冲刺速度")]
-        public float dashSpeed;
+        [Space(3)]
+        [ShowIf("Moveable"), LabelText("是否能够进行蹲伏")]
+        public bool Crouchable;
 
-        [LabelText("冲刺CD")]
-        public float dashCD;
+        [ShowIf("@Moveable && Crouchable")]
+        public SCrouchData CrouchData;
         
-    }
-    
-    /// <summary>
-    /// 跳跃数据配置
-    /// </summary>
-    [Serializable]
-    public struct SJumpData
-    {
-        [LabelText("跳跃高度")]
-        public float jumpHeight;
-        
-        [LabelText("能否二段跳")]
-        public bool canDoubleJump;
+        [Space(3),LabelText("是否有攻击模块")]
+        public bool WeaponAttackable;
 
-        [ShowIf("canDoubleJump"),LabelText("二段跳间隔时间")]
-        public float doubleJumpDeepTime;
-
-        [ShowIf("canDoubleJump"),LabelText("二段跳高度")]
-        public float doubleJumpHeight;
-    }
-
-    /// <summary>
-    /// 蹲伏数据配置
-    /// </summary>
-    [Serializable]
-    public struct SCrouchData
-    {
-        [LabelText("蹲伏速度")]
-        public float crouchSpeed;
+        [ShowIf("@Healthyable && WeaponAttackable")]
+        public SPlayerWeaponData PlayerWeaponData;
         
-        [LabelText("蹲伏高度变化率"),Range(0,1)]
-        public float crouchReduceRatio;
-
-        [LabelText("蹲伏检测层级")]
-        public LayerMask crouchCheckLayerMask;
-    }
-    
-    /// <summary>
-    /// 攻击数据配置
-    /// </summary>
-    [Serializable]
-    public struct SAttackData
-    {
-        [LabelText("基础伤害")]
-        public float basicDamage;
-        
-        [LabelText("暴击率"),Range(0,100)]
-        public float criticalRate;
-        
-        [LabelText("暴击伤害")]
-        public float criticalDamage;
-        
-        [LabelText("攻击距离")]
-        public float attackDistance;
-    }
-    
-    /// <summary>
-    /// 物体的碰撞等级
-    /// 
-    /// </summary>
-    public enum EWorldObjCollisionType
-    {
-        [LabelText("正常等级--通常场景中的静态物体")]
-        NormalLevel,
-        [LabelText("中等等级--")]
-        MidLevel,
-        [LabelText("高等等级--")]
-        HighLevel,
-        [LabelText("特殊等级--")]
-        SpecialLevel,
+        [ShowIf("@Healthyable && WeaponAttackable"), LabelText("初始武器", SdfIconType.Box)]
+        public List<BasicWeaponDataConfig> InitalWeaponsList;
     }
 }
 

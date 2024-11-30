@@ -238,7 +238,7 @@ namespace GameFrame.World
                 if (formula == default)
                     return true;
 
-
+                
             }
             return false;
         }
@@ -263,7 +263,7 @@ namespace GameFrame.World
         {
             for (int i = 0; i < Skill_Outside.Count; i++)
             {
-                Skill_Outside[i].TriggerSkill();
+                Skill_Outside[i].TriggerSkill(owner);
             }
         }
     }

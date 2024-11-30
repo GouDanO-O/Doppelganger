@@ -22,6 +22,8 @@ namespace GameFrame
         
         public InputActionAsset InputActionAsset { get; set; }
         
+        public UIPrefabsDataConfig UIPrefabsDataConfig { get; set; }
+        
         protected override void OnInit()
         {
             

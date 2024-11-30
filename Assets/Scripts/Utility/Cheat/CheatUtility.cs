@@ -76,7 +76,6 @@ namespace GameFrame
                 {
                     cheat.Value.Execute();
                 }
-
                 GUILayout.EndHorizontal();
             }
 
