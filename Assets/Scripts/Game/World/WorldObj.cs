@@ -38,6 +38,8 @@ namespace GameFrame.World
         public Rigidbody rigidbody { get; set; }
         
         public Collider collider { get; set; }
+        
+        public Transform footRoot;
 
         private void Start()
         {
@@ -86,11 +88,34 @@ namespace GameFrame.World
             worldObjPropertyDataTemporality=new WorldObjPropertyData_Temporality();
             rigidbody = GetComponent<Rigidbody>();
             collider = GetComponent<Collider>();
-            
+            footRoot = transform.Find("FootRoot");
             if (thisDataConfig)
             {
                 InitController();
             }
+        }
+        
+        void OnDrawGizmos()
+        {
+            // 绘制球形区域
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(footRoot.position, 0.3f);
+
+            // 使用 OverlapSphere 检测是否有碰撞体
+            Collider[] hitColliders = Physics.OverlapSphere(footRoot.position, 0.3f, 1<<9);
+
+            // 如果有碰撞体，绘制不同颜色的球体
+            if (hitColliders.Length > 0)
+            {
+                Gizmos.color = Color.green; // 如果有碰撞体，球体为绿色
+            }
+            else
+            {
+                Gizmos.color = Color.red; // 如果没有碰撞体，球体为红色
+            }
+        
+            // 在场景视图中绘制球体
+            Gizmos.DrawWireSphere(footRoot.position, 0.3f);
         }
 
         /// <summary>
@@ -107,8 +132,10 @@ namespace GameFrame.World
                 else
                 {
                     playerController = gameObject.AddComponent<PlayerController>();
-                    playerController.InitData(this);
                     thisController = playerController;
+                    
+                    playerController.InitData(this);
+ 
                 }
 
                 if (aiController)
@@ -125,8 +152,9 @@ namespace GameFrame.World
                 else
                 {
                     aiController = gameObject.AddComponent<AIController>();
-                    aiController.InitData(this);
                     thisController = aiController;
+                    aiController.InitData(this);
+
                 }
 
                 if (playerController)

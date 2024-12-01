@@ -6,6 +6,8 @@ namespace GameFrame.World
     {
         public PlayerController playerController { get;private set; }
 
+        private WorldManager(){}
+        
         public ElementCaculateManager elementCaculateManager { get; set; }
 
         public override void OnSingletonInit()

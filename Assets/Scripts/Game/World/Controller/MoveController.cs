@@ -11,6 +11,8 @@ namespace GameFrame.World
         protected bool grounded = false;
         
         protected Transform transfrom;
+
+        protected Transform footRoot;
         
         protected Collider collider;
         
@@ -63,6 +65,8 @@ namespace GameFrame.World
         protected bool crouching = false;
         
         protected bool running = false;
+
+        protected bool isPressJump = false;
         
         public override void InitData(WorldObj owner)
         {
@@ -70,7 +74,7 @@ namespace GameFrame.World
             this.rigidbody = owner.rigidbody;
             this.collider= owner.collider;
             this.gravity = owner.thisDataConfig.Gravity;
-            
+            this.footRoot = owner.footRoot;
             if (collider is BoxCollider boxCollider)
             {
                 this.ownerHeight = boxCollider.size.y;
@@ -200,7 +204,7 @@ namespace GameFrame.World
         /// </summary>
         public virtual void GroundCheck()
         {
-            if (Physics.OverlapSphere(transfrom.position, 0.5f, groundLayMask).Length>0)
+            if (Physics.OverlapSphere(footRoot.position, 0.3f, groundLayMask).Length>0&&!isPressJump)
             {
                 grounded = true;
                 curJumpCount = 0;
@@ -210,6 +214,7 @@ namespace GameFrame.World
             {
                 grounded = false;
             }
+            Debug.Log(curJumpCount);
         }
 
         /// <summary>
@@ -217,11 +222,12 @@ namespace GameFrame.World
         /// </summary>
         public virtual void JumpCheck()
         {
+            isPressJump = true;
             if (crouching)
             {
                 if (!StandUpCheck())
                 {
-                    if (curJumpCount<2)
+                    if (curJumpCount < 2)
                     {
                         if (canDoubleJump && curJumpCount==1 && curDoubleJumpDeepTime>=doubleJumpDeepTime)
                         {
@@ -231,7 +237,6 @@ namespace GameFrame.World
                         else
                         {
                             Jump();
-                            curJumpCount++;
                             Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(DoubleJumpTimeCheck());
                             owner.DoPlayAnimations(new SAnimatorEvent() { animationType = EAnimationType.DoubleJumping });
                         }
@@ -250,7 +255,6 @@ namespace GameFrame.World
                     else
                     {
                         Jump();
-                        curJumpCount++;
                         Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(DoubleJumpTimeCheck());
                         owner.DoPlayAnimations(new SAnimatorEvent() { animationType = EAnimationType.DoubleJumping });
                     }
@@ -264,7 +268,7 @@ namespace GameFrame.World
         protected virtual void Jump()
         {
             rigidbody.AddForce(Vector3.up * Mathf.Sqrt(jumpHeight * -2f * gravity), ForceMode.VelocityChange);
-            
+            curJumpCount++;
         }
         
         protected virtual IEnumerator DoubleJumpTimeCheck()

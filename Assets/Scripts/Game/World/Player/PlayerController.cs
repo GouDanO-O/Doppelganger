@@ -14,15 +14,13 @@ namespace GameFrame.World
     /// </summary>
     public class PlayerController : BaseController
     {
-        public WorldObj worldObj;
-
         public WorldObjDataConfig willDeformationConfig
         {
             get
             {
-                if (worldObj == null)
+                if (owner == null)
                     return null;
-                return worldObj.thisDataConfig;
+                return owner.thisDataConfig;
             }
         }
 

@@ -65,41 +65,41 @@ MonoBehaviour:
       Data: 
   ThisPrefab: {fileID: 6505841128741061604, guid: 07a6a9a6beb68094fa2a41800e37d7d4, type: 3}
   CollisionType: 1
-  HasSkill: 0
+  HasSkill: 1
   skillTree: {fileID: 11400000, guid: eafa574460d4de945b17b5faf60a2ce6, type: 2}
-  Gravity: 0
+  Gravity: -9.8
   Healthyable: 1
   HealthyData:
-    maxHealth: 0
+    maxHealth: 100
     maxArmor: 0
     damageReductionRatio: 0
   CostDeformationEnergy: {x: 0, y: 0}
-  Moveable: 0
+  Moveable: 1
   MoveData:
-    walkSpeed: 0
-    runSpeed: 0
-    inAirMoveSpeed: 0
-    maxPitchAngle: {x: 0, y: 0}
+    walkSpeed: 3
+    runSpeed: 5
+    inAirMoveSpeed: 2.5
+    maxPitchAngle: {x: -40, y: 60}
     groundLayerMask:
       serializedVersion: 2
-      m_Bits: 0
-  Dashable: 0
+      m_Bits: 8192
+  Dashable: 1
   DashData:
-    dashSpeed: 0
-    dashCD: 0
-  Jumpable: 0
+    dashSpeed: 5
+    dashCD: 5
+  Jumpable: 1
   JumpData:
-    jumpHeight: 0
-    canDoubleJump: 0
-    doubleJumpDeepTime: 0
-    doubleJumpHeight: 0
-  Crouchable: 0
+    jumpHeight: 5
+    canDoubleJump: 1
+    doubleJumpDeepTime: 5
+    doubleJumpHeight: 4
+  Crouchable: 1
   CrouchData:
-    crouchSpeed: 0
-    crouchReduceRatio: 0
+    crouchSpeed: 2.5
+    crouchReduceRatio: 0.45
     crouchCheckLayerMask:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 253952
   WeaponAttackable: 1
   PlayerWeaponData:
     CriticalRate: 0

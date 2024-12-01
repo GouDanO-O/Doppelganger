@@ -56,6 +56,10 @@ namespace GameFrame.World
         public override void InitData(WorldObj worldObj)
         {
             base.InitData(worldObj);
+            
+            healthyStatusFollower = PoolManager.Instance.healthyStatusFollower_Pool.Allocate();
+            healthyStatusFollower.Show();
+            
             isDeath.Register((data) =>
             {
                 this.worldObj.Death(data);
@@ -87,9 +91,6 @@ namespace GameFrame.World
             this.maxHealthy.Value = healthyData.maxHealth;    
             this.curArmor.Value = healthyData.maxArmor;
             this.maxArmor.Value = healthyData.maxArmor;
-
-            healthyStatusFollower = PoolManager.Instance.healthyStatusFollower_Pool.Allocate();
-            healthyStatusFollower.Show();
 
             healthyStatusFollower.InitFollowerStatus(worldObj,healthyData);
             
