@@ -85,13 +85,14 @@ MonoBehaviour:
       m_Bits: 8192
   Dashable: 1
   DashData:
-    dashSpeed: 5
-    dashCD: 5
+    dashDuration: 0.3
+    dashDistance: 1
+    dashCD: 3
   Jumpable: 1
   JumpData:
     jumpHeight: 5
     canDoubleJump: 1
-    doubleJumpDeepTime: 5
+    doubleJumpDeepTime: 1
     doubleJumpHeight: 4
   Crouchable: 1
   CrouchData:

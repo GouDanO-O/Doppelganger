@@ -11,8 +11,8 @@ namespace GameFrame
     [Serializable,LabelText("元素伤害配置--归属玩家的不可成长属性--是对其他物体或玩家造成的伤害", SdfIconType.Box)]
     public class ElementDamageData_Persistent : PersistentData
     {
-        [LabelText("最大元素可积累等级")]
-        public int MaxElementAccLevel;
+        [LabelText("最大元素可积累等级"),MinValue(1)]
+        public int MaxElementAccLevel = 1;
         
         [LabelText("基础元素伤害")]
         public float BasicElementDamage;
@@ -29,7 +29,43 @@ namespace GameFrame
         [LabelText("元素造成伤害的间隔时间")]
         public float BasicElementTriggerInterval;
 
-        [LabelText("每次升级减少造成伤害的间隔时间(不包括第一级)")]
+        [LabelText("每次升级减少造成伤害的间隔时间比例(不包括第一级)")]
         public List<float> ElementLevelUpDesriggerInterval;
+
+        public float GetElementDamage(int level)
+        {
+            float finalDamage = BasicElementDamage;
+            if (level >= MaxElementAccLevel)
+            {
+                level = MaxElementAccLevel - 1;
+            }
+            
+            finalDamage *= ElementLevelUpAddedDamage[level];
+            return finalDamage;
+        }
+
+        public float GetElementDuration(int level)
+        {
+            float finalDurtaion = MaxElementDuration;
+            if (level >= MaxElementAccLevel)
+            {
+                level = MaxElementAccLevel - 1;
+            }
+            
+            finalDurtaion *= ElementLevelUpAddDurtaion[level];
+            return finalDurtaion;
+        }
+
+        public float GetElementTriggerInterval(int level)
+        {
+            float finalTriggerInterval = BasicElementTriggerInterval;
+            if (level >= MaxElementAccLevel)
+            {
+                level = MaxElementAccLevel - 1;
+            }
+            
+            finalTriggerInterval *= ElementLevelUpDesriggerInterval[level];
+            return finalTriggerInterval;
+        }
     }
 }

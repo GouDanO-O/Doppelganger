@@ -25,7 +25,7 @@ namespace GameFrame.World
 
         public void InitSafePool()
         {
-            SafeObjectPool<ActionClipData_Temporality>.Instance.Init(50,30);
+            SafeObjectPool<ActionClipData_TemporalityPoolable>.Instance.Init(50,30);
         }
 
         public void InitNormalPool()

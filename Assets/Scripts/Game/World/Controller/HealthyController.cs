@@ -21,23 +21,20 @@ namespace GameFrame.World
         
         public BindableProperty<float> maxArmor { get; set; }
 
-        public void SufferHarmed(float damage, WorldObj trigger, EElementType elementType = EElementType.None);
+        public void SufferHarmed(DamageData_TemporalityPoolable damageData);
 
         public void Becuring(float cureValue);
 
         public void Death();
     }
     
-    
     public class HealthyController : AbstractController,IBiology_Healthy,IUnRegisterList
     { 
         public List<IUnRegister> UnregisterList { get; } = new List<IUnRegister>();
         
-        public WorldObj worldObj;
-        
         public HealthyStatusFollower healthyStatusFollower;
         
-        public TriggerElementDamageData_Temporality triggerElementDamageData_Temporality;
+        public TriggerElementDamageData_TemporalityPoolable triggerElementDamageData_TemporalityPoolable;
         
         public BindableProperty<bool> isDeath { get; set; }= new BindableProperty<bool>(false);
         
@@ -48,6 +45,8 @@ namespace GameFrame.World
         public BindableProperty<float> curArmor { get; set; } = new BindableProperty<float>();
         
         public BindableProperty<float> maxArmor { get; set; } = new BindableProperty<float>();
+        
+        private bool isInvisible = false;
         
         /// <summary>
         /// 初始化
@@ -62,7 +61,7 @@ namespace GameFrame.World
             
             isDeath.Register((data) =>
             {
-                this.worldObj.Death(data);
+                this.owner.Death(data);
                 this.healthyStatusFollower.Death(data);
             }).AddToUnregisterList(this);
             
@@ -93,25 +92,31 @@ namespace GameFrame.World
             this.maxArmor.Value = healthyData.maxArmor;
 
             healthyStatusFollower.InitFollowerStatus(worldObj,healthyData);
-            
-            worldObj.thisController.onBeHarmedEvent += SufferHarmed;
+            controller.onBeHarmedEvent += SufferHarmed;
+            controller.onChangeInvincibleModEvent += ChangeInvincible;
+        }
+
+        public void ChangeInvincible(bool isInvincible)
+        {
+            this.isInvisible = isInvisible;
         }
         
         /// <summary>
         /// 受到伤害
         /// </summary>
         /// <param name="elementType"></param>
-        public void SufferHarmed(float damage,WorldObj trigger,EElementType elementType=EElementType.None)
+        public void SufferHarmed(DamageData_TemporalityPoolable damageData)
         {
-            if(this.isDeath.Value)
+            if(this.isDeath.Value || this.isInvisible)
                 return;
 
-            if (elementType != EElementType.None)
+            if (damageData.elementType != EElementType.None && damageData.willOverlayElementLevel)
             {
-                SufferElement(elementType,trigger);
+                SufferElement(damageData.elementType,damageData.enforcer);
             }
 
-            ReduceHealthy(damage);
+            ReduceHealthy(damageData.CaculateFinalDamage());
+            RecycleDamageData();
         }
 
         /// <summary>
@@ -120,9 +125,7 @@ namespace GameFrame.World
         /// <param name="damage"></param>
         public void ReduceHealthy(float damage)
         {
-            float reCaculateDamage = damage * worldObj.worldObjPropertyDataTemporality.GetDamageReductionRatio();
-            float deepValue = curArmor.Value - reCaculateDamage;
-
+            float deepValue = curArmor.Value - damage;
             if (deepValue >= 0)
             {
                 curArmor.Value -= deepValue;
@@ -146,14 +149,13 @@ namespace GameFrame.World
         /// 遭受元素伤害
         /// </summary>
         /// <param name="elementType"></param>
-        public void SufferElement(EElementType elementType,WorldObj trigger)
+        public void SufferElement(EElementType elementType,WorldObj enforcer)
         {
-            if (triggerElementDamageData_Temporality == null || triggerElementDamageData_Temporality.IsRecycled)
+            if (triggerElementDamageData_TemporalityPoolable == null || triggerElementDamageData_TemporalityPoolable.IsRecycled)
             {
-                triggerElementDamageData_Temporality = TriggerElementDamageData_Temporality.Allocate();
-                triggerElementDamageData_Temporality.SetOwner(this);
+                triggerElementDamageData_TemporalityPoolable = TriggerElementDamageData_TemporalityPoolable.Allocate();
             }
-            triggerElementDamageData_Temporality.AddElement(elementType,trigger.worldObjPropertyDataTemporality.GetElementDamageData(elementType));
+            triggerElementDamageData_TemporalityPoolable.UpdateSuffererAndEnforcer(enforcer,owner,elementType);
         }
 
         /// <summary>
@@ -176,11 +178,17 @@ namespace GameFrame.World
         {
             isDeath.Value = true;
         }
+
+        private void RecycleDamageData()
+        {
+            this.triggerElementDamageData_TemporalityPoolable.Recycle2Cache();
+        }
         
         public override void DeInitData()
         {
             this.UnRegisterAll();
-            worldObj.thisController.onBeHarmedEvent -= SufferHarmed;
+            controller.onBeHarmedEvent -= SufferHarmed;
+            controller.onChangeInvincibleModEvent -= ChangeInvincible;
         }
     }
 }

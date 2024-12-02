@@ -7,38 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace GameFrame.World
 {
-    public class ProjectileTriggerDamageData_Temporality : TriggerDamageData_Temporality
-    {
-        /// <summary>
-        /// 当前飞行速度
-        /// </summary>
-        public float curFlySpeed;
-
-        /// <summary>
-        /// 当前飞行距离
-        /// </summary>
-        public float curFlyDistance;
-        
-        /// <summary>
-        /// 最大飞行距离
-        /// </summary>
-        public float maxFlyDistance;
-
-        /// <summary>
-        /// 当前飞行高度
-        /// </summary>
-        public float curFlyHeight;
-
-        /// <summary>
-        /// 飞行最高点
-        /// </summary>
-        public float maxFlyHeight;
-        
-        public static ProjectileTriggerDamageData_Temporality Allocate()
-        {
-            return SafeObjectPool<ProjectileTriggerDamageData_Temporality>.Instance.Allocate();
-        }
-    }
+    
     
     public class ProjectileController : NetworkBehaviour
     {
@@ -49,7 +18,7 @@ namespace GameFrame.World
         /// <summary>
         /// 临时子弹数据
         /// </summary>
-        protected ProjectileTriggerDamageData_Temporality tempProjectileData;
+        protected ProjectileTriggerDamageData_TemporalityPoolable tempProjectileData;
 
         public void InitData(CommonProjectileData_Persistence persistenceProjectileData)
         {
@@ -66,7 +35,7 @@ namespace GameFrame.World
         
         protected virtual void SetTemData()
         {
-            tempProjectileData = ProjectileTriggerDamageData_Temporality.Allocate();
+            tempProjectileData = ProjectileTriggerDamageData_TemporalityPoolable.Allocate();
 
             ExtendData();
         }
@@ -97,8 +66,8 @@ namespace GameFrame.World
         }
 
         private void Update()
-        {   
-            
+        {
+            UpdateExecution();
         }
 
         public virtual void FixedUpdateExecuttion()
@@ -180,10 +149,15 @@ namespace GameFrame.World
         /// <summary>
         /// 造成伤害
         /// </summary>
-        /// <param name="curTriggerTarget"></param>
-        protected virtual void TriggerDamage(WorldObj curTriggerTarget)
+        /// <param name="sufferer"></param>
+        protected virtual void TriggerDamage(WorldObj sufferer)
         {
-            curTriggerTarget.BeHarmed(tempProjectileData.CaculateDamage(),owner,tempProjectileData.curElementType);
+            DamageData_TemporalityPoolable damageData=DamageData_TemporalityPoolable.Allocate();
+            damageData.UpdateEnforcer(owner);
+            damageData.UpdateSufferer(sufferer);
+            damageData.UpdateElementType(tempProjectileData.curElementType,true);
+            damageData.UpdateBasicDamage(tempProjectileData.CaculateDamage());
+            sufferer.BeHarmed(damageData);
         }
 
         /// <summary>
@@ -237,7 +211,6 @@ namespace GameFrame.World
             }
             else
             {
-                
                 Destroy(gameObject);
             }
         }

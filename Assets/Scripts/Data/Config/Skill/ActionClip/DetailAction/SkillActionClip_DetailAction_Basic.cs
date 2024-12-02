@@ -15,14 +15,14 @@ namespace GameFrame.Config
         [LabelText("行为延时的时间"),SerializeField]
         private float TimeDelayTime;
 
-        protected ActionClipData_Temporality clipDataTemporality;
+        protected ActionClipData_TemporalityPoolable clipDataTemporality;
         
         /// <summary>
         /// 开始行为前,进行前置检测(分配临时数据变量)
         /// </summary>
         public virtual void ExecuteCheck(WorldObj owner)
         {
-            clipDataTemporality = ActionClipData_Temporality.Allocate();
+            clipDataTemporality = ActionClipData_TemporalityPoolable.Allocate();
             clipDataTemporality.SetOwner(owner);
             CheckDelayTime();
         }

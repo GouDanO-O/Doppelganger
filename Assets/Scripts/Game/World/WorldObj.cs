@@ -95,29 +95,6 @@ namespace GameFrame.World
             }
         }
         
-        void OnDrawGizmos()
-        {
-            // 绘制球形区域
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(footRoot.position, 0.3f);
-
-            // 使用 OverlapSphere 检测是否有碰撞体
-            Collider[] hitColliders = Physics.OverlapSphere(footRoot.position, 0.3f, 1<<9);
-
-            // 如果有碰撞体，绘制不同颜色的球体
-            if (hitColliders.Length > 0)
-            {
-                Gizmos.color = Color.green; // 如果有碰撞体，球体为绿色
-            }
-            else
-            {
-                Gizmos.color = Color.red; // 如果没有碰撞体，球体为红色
-            }
-        
-            // 在场景视图中绘制球体
-            Gizmos.DrawWireSphere(footRoot.position, 0.3f);
-        }
-
         /// <summary>
         /// 初始化控制器
         /// </summary>
@@ -212,21 +189,26 @@ namespace GameFrame.World
 
         #endregion
 
-        #region
+        #region 事件和传参
 
         public void Death(bool isDeath)
         {
-            thisController.Death(isDeath);
+            thisController.onDeathEvent.Invoke(isDeath);
         }
 
-        public void BeHarmed(float harmedValue,WorldObj trigger,EElementType elementType=EElementType.None)
+        public void BeHarmed(DamageData_TemporalityPoolable damageData)
         {
-            thisController.BeHarmed(harmedValue,trigger,elementType);
+            thisController.onBeHarmedEvent.Invoke(damageData);
         }
 
         public void DoPlayAnimations(SAnimatorEvent animatorEvent)
         {
-            thisController.DoPlayAnimations(animatorEvent);
+            thisController.onPlayAnimationEvent.Invoke(animatorEvent);
+        }
+
+        public void ChangeInvincibleMod(bool isInvincible)
+        {
+            thisController.onChangeInvincibleModEvent.Invoke(isInvincible);
         }
 
         #endregion

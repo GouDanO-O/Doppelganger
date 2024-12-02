@@ -15,7 +15,11 @@ namespace GameFrame.World
     {
         public UnityAction<bool> onDeathEvent;
         
-        public UnityAction<float,WorldObj,EElementType> onBeHarmedEvent;
+        public UnityAction<DamageData_TemporalityPoolable> onBeHarmedEvent;
+        
+        public UnityAction<bool> onChangeInvincibleModEvent;
+        
+        public UnityAction<SAnimatorEvent> onPlayAnimationEvent;
         
         public WorldObjDataConfig thisDataConfig { get; protected set; }
         
@@ -150,21 +154,6 @@ namespace GameFrame.World
         public virtual void LongTickLogic()
         {
             
-        }
-
-        public virtual void Death(bool isDeath)
-        {
-            onDeathEvent?.Invoke(isDeath);
-        }
-
-        public virtual void BeHarmed(float harmedValue,WorldObj trigger, EElementType elementType=EElementType.None)
-        {
-            onBeHarmedEvent?.Invoke(harmedValue,trigger,elementType);
-        }
-
-        public virtual void DoPlayAnimations(SAnimatorEvent animatorEvent)
-        {
-            animatorController.onPlayAnimationEvent.Invoke(animatorEvent);
         }
     }
 }

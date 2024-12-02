@@ -40,7 +40,7 @@ namespace GameFrame.World
         public void InitPlayerController(PlayerController playerController)
         {
             this.playerController = playerController;
-            this.transfrom = playerController.transform;
+            this.transform = playerController.transform;
             this.headCameraRootTransfrom = playerController.headCameraRootTransfrom;
         }
 
@@ -72,7 +72,7 @@ namespace GameFrame.World
 
             if (isInFreeCameraMod)
             { 
-                movement = transfrom.right * input.x + transfrom.forward * input.z;
+                movement = transform.right * input.x + transform.forward * input.z;
             }
             else
             {

@@ -9,9 +9,12 @@ namespace GameFrame
     {
         public WorldObj owner;
         
+        public BaseController controller;
+        
         public virtual void InitData(WorldObj owner)
         {
             this.owner = owner;
+            this.controller = owner.thisController;
         }
 
         public abstract void DeInitData();

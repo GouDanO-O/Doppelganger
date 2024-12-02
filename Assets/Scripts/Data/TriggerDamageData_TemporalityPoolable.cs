@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 namespace GameFrame
 {
-    public class TriggerDamageData_Temporality : TemporalityData_Pool
+    public class TriggerDamageData_TemporalityPoolable : TemporalityData_Pool
     {
         /// <summary>
         /// 当前会造成的元素类型
@@ -42,9 +42,9 @@ namespace GameFrame
         /// </summary>
         public List<float> damageAttenuationLevel;
         
-        public static TriggerDamageData_Temporality Allocate()
+        public static TriggerDamageData_TemporalityPoolable Allocate()
         {
-            return SafeObjectPool<TriggerDamageData_Temporality>.Instance.Allocate();
+            return SafeObjectPool<TriggerDamageData_TemporalityPoolable>.Instance.Allocate();
         }
 
         /// <summary>

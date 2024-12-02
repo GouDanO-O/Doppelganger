@@ -3,7 +3,7 @@ using QFramework;
 
 namespace GameFrame
 {
- 	public class ActionClipData_Temporality : TemporalityData_Pool
+ 	public class ActionClipData_TemporalityPoolable : TemporalityData_Pool
     {
         public WorldObj owner;
 
@@ -11,9 +11,9 @@ namespace GameFrame
         
         public bool IsRecycled { get; set; }
 
-        public static ActionClipData_Temporality Allocate()
+        public static ActionClipData_TemporalityPoolable Allocate()
         {
-            return SafeObjectPool<ActionClipData_Temporality>.Instance.Allocate();
+            return SafeObjectPool<ActionClipData_TemporalityPoolable>.Instance.Allocate();
         }
 
         public void SetOwner(WorldObj owner)
@@ -28,7 +28,7 @@ namespace GameFrame
         
         public override void Recycle2Cache()
         {
-            SafeObjectPool<ActionClipData_Temporality>.Instance.Recycle(this);
+            SafeObjectPool<ActionClipData_TemporalityPoolable>.Instance.Recycle(this);
         }
 
         public override void DeInitData()

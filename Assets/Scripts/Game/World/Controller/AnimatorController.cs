@@ -31,13 +31,9 @@ namespace GameFrame.World
         public float blendValue;
     }
     
-    public delegate void PlayAnimationEvent(SAnimatorEvent data);
-    
     public class AnimatorController: AbstractController
     {
         private EAnimationType currentAnimationType = EAnimationType.Idle;
-
-        public PlayAnimationEvent onPlayAnimationEvent;
         
         public override void InitData(WorldObj owner)
         {
@@ -52,12 +48,12 @@ namespace GameFrame.World
 
         public void RegisterEvent()
         {
-            onPlayAnimationEvent += DisposeAnimations;
+            controller.onPlayAnimationEvent += DisposeAnimations;
         }
 
         public void UnRegisterEvent()
         {
-            onPlayAnimationEvent-= DisposeAnimations;
+            controller.onPlayAnimationEvent-= DisposeAnimations;
         }
 
         public void DisposeAnimations(SAnimatorEvent eventData)
