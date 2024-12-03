@@ -15,7 +15,7 @@ namespace GameFrame.World
     {
         public UnityAction<bool> onDeathEvent;
         
-        public UnityAction<DamageData_TemporalityPoolable> onBeHarmedEvent;
+        public UnityAction<TriggerDamageData_TemporalityPoolable> onBeHarmedEvent;
         
         public UnityAction<bool> onChangeInvincibleModEvent;
         

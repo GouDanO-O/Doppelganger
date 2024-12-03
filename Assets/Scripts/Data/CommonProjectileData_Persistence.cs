@@ -44,7 +44,7 @@ namespace GameFrame
         public List<EAction_Projectile_CollisionType> CollisionTypesList = new List<EAction_Projectile_CollisionType>(4);
 
         [HideIf("@IsExtendWeaponData")] [LabelText("伤害衰减比例(只有当碰到敌人时才会进行衰减,如果没有就代表没有衰减)")]
-        public List<float> DamageAttenuationsList;
+        public List<float> DamageAttenuationsList = new List<float>();
 
         [HideIf("@IsExtendWeaponData")] 
         public EAction_Projectile_ShootType ShootProjectileType;

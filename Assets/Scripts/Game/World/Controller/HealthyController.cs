@@ -21,7 +21,7 @@ namespace GameFrame.World
         
         public BindableProperty<float> maxArmor { get; set; }
 
-        public void SufferHarmed(DamageData_TemporalityPoolable damageData);
+        public void SufferHarmed(TriggerDamageData_TemporalityPoolable damageData);
 
         public void Becuring(float cureValue);
 
@@ -105,7 +105,7 @@ namespace GameFrame.World
         /// 受到伤害
         /// </summary>
         /// <param name="elementType"></param>
-        public void SufferHarmed(DamageData_TemporalityPoolable damageData)
+        public void SufferHarmed(TriggerDamageData_TemporalityPoolable damageData)
         {
             if(this.isDeath.Value || this.isInvisible)
                 return;

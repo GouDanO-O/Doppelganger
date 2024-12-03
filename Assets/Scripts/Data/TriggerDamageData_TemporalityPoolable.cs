@@ -1,109 +1,161 @@
 using System;
 using System.Collections.Generic;
+using GameFrame.World;
 using QFramework;
 using Random = UnityEngine.Random;
 
 namespace GameFrame
 {
+    /// <summary>
+    /// 造成的伤害块--用池子处理和回收
+    /// </summary>
     public class TriggerDamageData_TemporalityPoolable : TemporalityData_Pool
     {
-        /// <summary>
-        /// 当前会造成的元素类型
+       /// <summary>
+        /// 施加者
         /// </summary>
-        public EElementType curElementType;
+        public WorldObj enforcer { get; private set; }
+
+        /// <summary>
+        /// 受害者
+        /// </summary>
+        public WorldObj sufferer { get; private set; }
+
+        /// <summary>
+        /// 是否要进行叠加元素伤害
+        /// 如果是元素自身造成的伤害,则不会进行自我叠加
+        /// 如果是其他来源造成的元素伤害,则会进行叠加
+        /// </summary>
+        public bool willOverlayElementLevel { get; private set; }
         
         /// <summary>
-        /// 当前会造成的伤害
+        /// 收到的伤害的元素类型
         /// </summary>
-        public float curBasicDamage;
-
-        /// <summary>
-        /// 当前暴击率
-        /// </summary>
-        public float curCriticalRate;
-
-        /// <summary>
-        /// 当前暴击伤害
-        /// </summary>
-        public float curCriticalDamage;
-
-        /// <summary>
-        /// 当前伤害过敌人的数量
-        /// </summary>
-        public int curDamageAttenuationLevel;
-
-        /// <summary>
-        /// 最大伤害敌人数量
-        /// </summary>
-        public int maxDamageAttenuationLevel;
+        public EElementType elementType { get; private set; }
         
         /// <summary>
-        /// 伤害衰减等级
+        /// 基础伤害(没有计算抗性和倍率)
         /// </summary>
-        public List<float> damageAttenuationLevel;
-        
+        private float basicDamage;
+
         public static TriggerDamageData_TemporalityPoolable Allocate()
         {
-            return SafeObjectPool<TriggerDamageData_TemporalityPoolable>.Instance.Allocate();
+           return SafeObjectPool<TriggerDamageData_TemporalityPoolable>.Instance.Allocate();
         }
 
         /// <summary>
-        /// 计算当前伤害
+        /// 更新施加者
         /// </summary>
-        /// <param name="damageAttenuationRate"></param>
-        /// <returns></returns>
-        public float CaculateDamage(float damageAttenuationRate = 1)
+        /// <param name="enforcer"></param>
+        public void UpdateEnforcer(WorldObj enforcer)
         {
-            float randomCriticalRate = Random.Range(curCriticalRate, 100);
-            bool isCritical = randomCriticalRate <= curCriticalRate;
-            float willTriggerDamage = (isCritical ? curBasicDamage * curCriticalDamage : curBasicDamage) *
-                                      damageAttenuationRate;
-            
-            if (maxDamageAttenuationLevel > 0 && curDamageAttenuationLevel < maxDamageAttenuationLevel)
+            this.enforcer = enforcer;
+        }
+
+        /// <summary>
+        /// 更新伤害
+        /// </summary>
+        /// <param name="basicDamage"></param>
+        public void UpdateBasicDamage(float basicDamage)
+        {
+            this.basicDamage = basicDamage;
+        }
+
+        /// <summary>
+        /// 更新元素伤害
+        /// </summary>
+        /// <param name="curLevel"></param>
+        public void UpdateElementDamage(int curLevel)
+        {
+            ElementDamageData_Persistent elementData =
+                enforcer.worldObjPropertyDataTemporality.GetElementDamageData(elementType);
+
+            this.basicDamage = elementData.GetElementDamage(curLevel);
+        }
+
+        /// <summary>
+        /// 更新受害者
+        /// </summary>
+        /// <param name="sufferer"></param>
+        public void UpdateSufferer(WorldObj sufferer)
+        {
+            this.sufferer = sufferer;
+        }
+
+        /// <summary>
+        /// 更新元素类型和是否要进行叠加
+        /// </summary>
+        /// <param name="elementType"></param>
+        public void UpdateElementType(EElementType elementType,bool willAccElementLevel=false)
+        {
+            this.elementType = elementType;
+            this.willOverlayElementLevel = willAccElementLevel;
+        }
+
+        /// <summary>
+        /// 对受害者造成伤害
+        /// </summary>
+        /// <returns></returns>
+        public void HarmedSufferer()
+        {
+            sufferer.BeHarmed(this);
+        }
+
+        /// <summary>
+        /// 计算最终伤害
+        /// </summary>
+        /// <returns></returns>
+        public float CaculateFinalDamage()
+        {
+            if (elementType == EElementType.None)
             {
-                willTriggerDamage *= damageAttenuationLevel[curDamageAttenuationLevel];
+                return CaculateFinalDamage_Normal();
             }
-            
-            return willTriggerDamage;
+            else
+            {
+                return CaculateFinalDamage_Element();
+            }
         }
-
+        
         /// <summary>
-        /// 增加伤害衰减等级(要在造成伤害之后才计算)
-        /// </summary>
-        public void AddDamageAttenuationLevel()
-        {
-            if (maxDamageAttenuationLevel > 0)
-                curDamageAttenuationLevel++;
-        }
-
-        /// <summary>
-        /// 检查当前伤害衰减等级,从而计算是否要进行伤害衰减计算
+        /// 计算最终伤害--普通
         /// </summary>
         /// <returns></returns>
-        public virtual bool CheckDamageAttenuationLevel()
+        private float CaculateFinalDamage_Normal()
         {
-            if (maxDamageAttenuationLevel == 0)
-                return false;
-            return curDamageAttenuationLevel >= maxDamageAttenuationLevel;
+            float suffererElementResistance = sufferer.worldObjPropertyDataTemporality.GetDamageReductionRatio();
+            float enforcerElementRatio= enforcer.worldObjPropertyDataTemporality.GetDamageAddition(); 
+            return basicDamage * enforcerElementRatio / suffererElementResistance;
         }
-        
-        public override void OnRecycled()
+
+        /// <summary>
+        /// 计算最终伤害--元素类型
+        /// </summary>
+        /// <returns></returns>
+        private float CaculateFinalDamage_Element()
         {
-            DeInitData();
-        }
-        
-        public override void Recycle2Cache()
-        {
-            
+            float suffererElementResistance = sufferer.worldObjPropertyDataTemporality.GetElementDamageReductionRatio(elementType);
+            float enforcerElementRatio = enforcer.worldObjPropertyDataTemporality.GetElementDamageAddition(elementType); 
+            return basicDamage * enforcerElementRatio / suffererElementResistance;
         }
 
         public override void DeInitData()
         {
-            curBasicDamage = 0;
-            curCriticalDamage = 0;
-            curCriticalRate = 0;
-            curDamageAttenuationLevel = 0;
-            maxDamageAttenuationLevel = 0;
+            enforcer = null;
+            sufferer = null;
+            elementType = EElementType.None;
+            basicDamage = 0;
+            willOverlayElementLevel = false;
+        }
+
+        public override void OnRecycled()
+        {
+            DeInitData();
+        }
+
+        public override void Recycle2Cache()
+        {
+            SafeObjectPool<TriggerDamageData_TemporalityPoolable>.Instance.Recycle(this);
         }
     }
 }

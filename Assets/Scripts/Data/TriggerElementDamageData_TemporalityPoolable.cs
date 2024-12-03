@@ -26,8 +26,8 @@ namespace GameFrame
             return SafeObjectPool<TriggerElementDamageData_TemporalityPoolable>.Instance.Allocate();
         }
 
-        private Dictionary<EElementType, DamageData_TemporalityPoolable> elementDamageDataDict =
-            new Dictionary<EElementType, DamageData_TemporalityPoolable>();
+        private Dictionary<EElementType, TriggerDamageData_TemporalityPoolable> elementDamageDataDict =
+            new Dictionary<EElementType, TriggerDamageData_TemporalityPoolable>();
         
         /// <summary>
         /// 设置施加者和受害者
@@ -35,14 +35,14 @@ namespace GameFrame
         /// <param name="healthyController"></param>
         public void UpdateSuffererAndEnforcer(WorldObj enforcer,WorldObj sufferer,EElementType elementType)
         {
-            if (elementDamageDataDict.TryGetValue(elementType,out DamageData_TemporalityPoolable curDamageData))
+            if (elementDamageDataDict.TryGetValue(elementType,out TriggerDamageData_TemporalityPoolable curDamageData))
             { 
                 curDamageData = elementDamageDataDict[elementType];
                 curDamageData.UpdateEnforcer(enforcer);
             }
             else
             { 
-                curDamageData = DamageData_TemporalityPoolable.Allocate();
+                curDamageData = TriggerDamageData_TemporalityPoolable.Allocate();
                 curDamageData.UpdateElementType(elementType);
                 curDamageData.UpdateSufferer(sufferer);
                 curDamageData.UpdateEnforcer(enforcer);
@@ -123,7 +123,7 @@ namespace GameFrame
         /// <param name="damage"></param>
         private void ApplyElementDamageToTarget(EElementType element)
         {
-            if (elementDamageDataDict.TryGetValue(element, out DamageData_TemporalityPoolable curDamageData))
+            if (elementDamageDataDict.TryGetValue(element, out TriggerDamageData_TemporalityPoolable curDamageData))
             {
                 if (curDamageData.IsRecycled)
                 {
@@ -131,7 +131,7 @@ namespace GameFrame
                 }
                 else
                 {
-                    curDamageData.CaculateDamage();
+                    curDamageData.HarmedSufferer();
                 }
             }
             

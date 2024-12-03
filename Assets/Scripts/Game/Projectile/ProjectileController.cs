@@ -7,8 +7,6 @@ using Random = UnityEngine.Random;
 
 namespace GameFrame.World
 {
-    
-    
     public class ProjectileController : NetworkBehaviour
     {
         [HideInInspector] public WorldObj owner;
@@ -45,11 +43,11 @@ namespace GameFrame.World
         /// </summary>
         protected virtual void ExtendData()
         {
-            tempProjectileData.damageAttenuationLevel = persistenceProjectileData.DamageAttenuationsList;
-            tempProjectileData.maxDamageAttenuationLevel = persistenceProjectileData.DamageAttenuationsList.Count;
-            tempProjectileData.curBasicDamage = persistenceProjectileData.BaiscDamage;
-            tempProjectileData.curFlySpeed = persistenceProjectileData.FlySpeed;
-            tempProjectileData.maxFlyDistance=persistenceProjectileData.MaxFlyDistance;
+            tempProjectileData.UpdateEnforcer(owner);
+            tempProjectileData.UpdateDamageAttenuationLevel(persistenceProjectileData.DamageAttenuationsList);
+            tempProjectileData.UpdateBasicDamage(persistenceProjectileData.BaiscDamage);
+            tempProjectileData.UpdateFlySpeed(persistenceProjectileData.FlySpeed); ;
+            tempProjectileData.UpdateMaxFlyDistance(persistenceProjectileData.MaxFlyDistance);
         }
         
         /// <summary>
@@ -137,9 +135,9 @@ namespace GameFrame.World
         {
             if (tempProjectileData.maxFlyDistance > 0)
             {
-                tempProjectileData.curFlyDistance += Time.deltaTime;
+                tempProjectileData.AddFlyDistance(Time.deltaTime);
                 
-                if (tempProjectileData.curFlyDistance >= tempProjectileData.maxFlyDistance)
+                if (tempProjectileData.IsArriveMaxDistance())
                 {
                     EndExecute();
                 }
@@ -152,12 +150,10 @@ namespace GameFrame.World
         /// <param name="sufferer"></param>
         protected virtual void TriggerDamage(WorldObj sufferer)
         {
-            DamageData_TemporalityPoolable damageData=DamageData_TemporalityPoolable.Allocate();
-            damageData.UpdateEnforcer(owner);
-            damageData.UpdateSufferer(sufferer);
-            damageData.UpdateElementType(tempProjectileData.curElementType,true);
-            damageData.UpdateBasicDamage(tempProjectileData.CaculateDamage());
-            sufferer.BeHarmed(damageData);
+            tempProjectileData.UpdateSufferer(sufferer);
+            tempProjectileData.UpdateElementType(tempProjectileData.elementType,true);
+            tempProjectileData.UpdateBasicDamage(tempProjectileData.CaculateFinalDamage());
+            sufferer.BeHarmed(tempProjectileData);
         }
 
         /// <summary>
@@ -205,6 +201,7 @@ namespace GameFrame.World
         /// </summary>
         public virtual void EndExecute()
         {
+            tempProjectileData.Recycle2Cache();
             if (persistenceProjectileData.IsLoadFromPool)
             {
                 PoolManager.Instance.RecycleObj(persistenceProjectileData.ObjectPoolType,gameObject);

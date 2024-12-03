@@ -86,7 +86,7 @@ MonoBehaviour:
   Dashable: 1
   DashData:
     dashDuration: 0.3
-    dashDistance: 1
+    dashDistance: 0.5
     dashCD: 3
   Jumpable: 1
   JumpData:

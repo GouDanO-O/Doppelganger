@@ -196,7 +196,7 @@ namespace GameFrame.World
             thisController.onDeathEvent.Invoke(isDeath);
         }
 
-        public void BeHarmed(DamageData_TemporalityPoolable damageData)
+        public void BeHarmed(TriggerDamageData_TemporalityPoolable damageData)
         {
             thisController.onBeHarmedEvent.Invoke(damageData);
         }
