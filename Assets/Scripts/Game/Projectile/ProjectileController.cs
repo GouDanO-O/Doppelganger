@@ -10,9 +10,11 @@ namespace GameFrame.World
     public class ProjectileController : NetworkBehaviour
     {
         [HideInInspector] public WorldObj owner;
-        
+
         private CommonProjectileData_Persistence persistenceProjectileData;
-        
+
+        public bool willRecycle { get; protected set; }
+
         /// <summary>
         /// 临时子弹数据
         /// </summary>
@@ -23,18 +25,18 @@ namespace GameFrame.World
             this.persistenceProjectileData = persistenceProjectileData;
             SetTemData();
         }
-        
-        public void InitData(WorldObj owner,CommonProjectileData_Persistence persistenceProjectileData)
+
+        public void InitData(WorldObj owner, CommonProjectileData_Persistence persistenceProjectileData)
         {
             this.owner = owner;
             this.persistenceProjectileData = persistenceProjectileData;
             SetTemData();
         }
-        
+
         protected virtual void SetTemData()
         {
             tempProjectileData = ProjectileTriggerDamageData_TemporalityPoolable.Allocate();
-
+            willRecycle = false;
             ExtendData();
         }
 
@@ -46,16 +48,11 @@ namespace GameFrame.World
             tempProjectileData.UpdateEnforcer(owner);
             tempProjectileData.UpdateDamageAttenuationLevel(persistenceProjectileData.DamageAttenuationsList);
             tempProjectileData.UpdateBasicDamage(persistenceProjectileData.BaiscDamage);
-            tempProjectileData.UpdateFlySpeed(persistenceProjectileData.FlySpeed); ;
+            tempProjectileData.UpdateFlySpeed(persistenceProjectileData.FlySpeed);
             tempProjectileData.UpdateMaxFlyDistance(persistenceProjectileData.MaxFlyDistance);
-        }
-        
-        /// <summary>
-        /// 重设行为
-        /// </summary>
-        public virtual void ResetExecution()
-        {
-            tempProjectileData.Recycle2Cache();
+
+            tempProjectileData.UpdateFlyHeight(0f); // 初始飞行高度
+            tempProjectileData.UpdateMaxFlyHeight(persistenceProjectileData.ShootProjectileType,persistenceProjectileData.MaxParabolaHeight);
         }
 
         private void FixedUpdate()
@@ -70,14 +67,19 @@ namespace GameFrame.World
 
         public virtual void FixedUpdateExecuttion()
         {
+            if (willRecycle)
+                return;
             Fly();
         }
 
         public virtual void UpdateExecution()
         {
-            
+            if (willRecycle)
+                return;
+            // 这里可以更新飞行高度，例如：
+            // tempProjectileData.UpdateFlyHeight(transform.position.y);
         }
-        
+
         public virtual void Trigger()
         {
             CrossOneTarget();
@@ -86,7 +88,7 @@ namespace GameFrame.World
                 EndExecute();
             }
         }
-        
+
         public virtual void Trigger(WorldObj curTriggerTarget)
         {
             TriggerDamage(curTriggerTarget);
@@ -98,7 +100,7 @@ namespace GameFrame.World
                 EndExecute();
             }
         }
-        
+
         protected virtual void Fly()
         {
             if (persistenceProjectileData.ShootProjectileType == EAction_Projectile_ShootType.Line)
@@ -117,7 +119,10 @@ namespace GameFrame.World
         /// </summary>
         protected virtual void FlyWithLine()
         {
-            
+            Vector3 direction = transform.forward;
+            float distance = tempProjectileData.CurFlySpeed * Time.fixedDeltaTime;
+            transform.position += direction * distance;
+            tempProjectileData.AddFlyDistance(distance);
         }
 
         /// <summary>
@@ -125,18 +130,20 @@ namespace GameFrame.World
         /// </summary>
         protected virtual void FlyWithParabola()
         {
-            
+            Vector3 velocity = transform.forward * tempProjectileData.CurFlySpeed;
+            velocity += Physics.gravity * Time.fixedDeltaTime;
+            transform.position += velocity * Time.fixedDeltaTime;
+            tempProjectileData.AddFlyDistance(velocity.magnitude * Time.fixedDeltaTime);
+            tempProjectileData.UpdateFlyHeight(transform.position.y);
         }
-        
+
         /// <summary>
         /// 飞行距离检测
         /// </summary>
         protected virtual void FlyDistanceCheck()
         {
-            if (tempProjectileData.maxFlyDistance > 0)
+            if (tempProjectileData.MaxFlyDistance > 0)
             {
-                tempProjectileData.AddFlyDistance(Time.deltaTime);
-                
                 if (tempProjectileData.IsArriveMaxDistance())
                 {
                     EndExecute();
@@ -151,7 +158,7 @@ namespace GameFrame.World
         protected virtual void TriggerDamage(WorldObj sufferer)
         {
             tempProjectileData.UpdateSufferer(sufferer);
-            tempProjectileData.UpdateElementType(tempProjectileData.elementType,true);
+            tempProjectileData.UpdateElementType(tempProjectileData.elementType, true);
             tempProjectileData.UpdateBasicDamage(tempProjectileData.CaculateFinalDamage());
             sufferer.BeHarmed(tempProjectileData);
         }
@@ -171,13 +178,20 @@ namespace GameFrame.World
         protected virtual void CheckCollisionTarget(WorldObj curTriggerTarget)
         {
             EWorldObjCollisionType curObjCollisionType = curTriggerTarget.CollisionType;
-            int index=(int)curObjCollisionType;
+            int index = (int)curObjCollisionType;
+
+            // 确保索引在范围内
+            if (index < 0 || index >= persistenceProjectileData.CollisionTypesList.Count)
+            {
+                Debug.LogWarning("Collision type index out of range.");
+                return;
+            }
 
             EAction_Projectile_CollisionType curCollisionType = persistenceProjectileData.CollisionTypesList[index];
             switch (curCollisionType)
             {
                 case EAction_Projectile_CollisionType.ContinueFly:
-                    
+                    // 继续飞行，无需特殊处理
                     break;
                 case EAction_Projectile_CollisionType.CollisionAndDestroy:
                     EndExecute();
@@ -187,13 +201,19 @@ namespace GameFrame.World
                     break;
             }
         }
-        
+
         /// <summary>
         /// 反弹弹体
         /// </summary>
         protected virtual void ReboundProjectile()
         {
-            
+            // 示例实现：反转飞行方向
+            Vector3 currentDirection = transform.forward;
+            Vector3 reboundDirection = Vector3.Reflect(currentDirection, Vector3.up); // 假设反弹平面为水平面
+            transform.forward = reboundDirection.normalized;
+
+            // 可选：减少飞行速度或进行其他调整
+            tempProjectileData.UpdateFlySpeed(tempProjectileData.CurFlySpeed * 0.8f); // 示例：速度减少20%
         }
 
         /// <summary>
@@ -201,15 +221,21 @@ namespace GameFrame.World
         /// </summary>
         public virtual void EndExecute()
         {
-            tempProjectileData.Recycle2Cache();
+            DeInitData();
             if (persistenceProjectileData.IsLoadFromPool)
             {
-                PoolManager.Instance.RecycleObj(persistenceProjectileData.ObjectPoolType,gameObject);
+                PoolManager.Instance.RecycleObj(persistenceProjectileData.ObjectPoolType, gameObject);
             }
             else
             {
                 Destroy(gameObject);
             }
+        }
+
+        protected virtual void DeInitData()
+        {
+            tempProjectileData.Recycle2Cache();
+            willRecycle = true;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -232,4 +258,3 @@ namespace GameFrame.World
         }
     }
 }
-

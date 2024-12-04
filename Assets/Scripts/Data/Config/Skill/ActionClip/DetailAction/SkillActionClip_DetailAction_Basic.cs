@@ -10,7 +10,7 @@ namespace GameFrame.Config
     /// 基础行为--(具体行为方式在行为中定义)
     /// </summary>
     [Serializable]
-    public class SkillActionClip_DetailAction_Basic : SerializedScriptableObject
+    public class SkillActionClip_DetailAction_Basic : SkillActionClip_BasicData
     {
         [LabelText("行为延时的时间"),SerializeField]
         private float TimeDelayTime;

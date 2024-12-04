@@ -47,7 +47,7 @@ namespace GameFrame
         /// 更新施加者
         /// </summary>
         /// <param name="enforcer"></param>
-        public void UpdateEnforcer(WorldObj enforcer)
+        public virtual void UpdateEnforcer(WorldObj enforcer)
         {
             this.enforcer = enforcer;
         }
@@ -56,7 +56,7 @@ namespace GameFrame
         /// 更新伤害
         /// </summary>
         /// <param name="basicDamage"></param>
-        public void UpdateBasicDamage(float basicDamage)
+        public virtual void UpdateBasicDamage(float basicDamage)
         {
             this.basicDamage = basicDamage;
         }
@@ -65,7 +65,7 @@ namespace GameFrame
         /// 更新元素伤害
         /// </summary>
         /// <param name="curLevel"></param>
-        public void UpdateElementDamage(int curLevel)
+        public virtual void UpdateElementDamage(int curLevel)
         {
             ElementDamageData_Persistent elementData =
                 enforcer.worldObjPropertyDataTemporality.GetElementDamageData(elementType);
@@ -77,7 +77,7 @@ namespace GameFrame
         /// 更新受害者
         /// </summary>
         /// <param name="sufferer"></param>
-        public void UpdateSufferer(WorldObj sufferer)
+        public virtual void UpdateSufferer(WorldObj sufferer)
         {
             this.sufferer = sufferer;
         }
@@ -86,7 +86,7 @@ namespace GameFrame
         /// 更新元素类型和是否要进行叠加
         /// </summary>
         /// <param name="elementType"></param>
-        public void UpdateElementType(EElementType elementType,bool willAccElementLevel=false)
+        public virtual void UpdateElementType(EElementType elementType,bool willAccElementLevel=false)
         {
             this.elementType = elementType;
             this.willOverlayElementLevel = willAccElementLevel;
@@ -96,7 +96,7 @@ namespace GameFrame
         /// 对受害者造成伤害
         /// </summary>
         /// <returns></returns>
-        public void HarmedSufferer()
+        public virtual void HarmedSufferer()
         {
             sufferer.BeHarmed(this);
         }
@@ -105,7 +105,7 @@ namespace GameFrame
         /// 计算最终伤害
         /// </summary>
         /// <returns></returns>
-        public float CaculateFinalDamage()
+        public virtual float CaculateFinalDamage()
         {
             if (elementType == EElementType.None)
             {
@@ -121,7 +121,7 @@ namespace GameFrame
         /// 计算最终伤害--普通
         /// </summary>
         /// <returns></returns>
-        private float CaculateFinalDamage_Normal()
+        protected virtual float CaculateFinalDamage_Normal()
         {
             float suffererElementResistance = sufferer.worldObjPropertyDataTemporality.GetDamageReductionRatio();
             float enforcerElementRatio= enforcer.worldObjPropertyDataTemporality.GetDamageAddition(); 
@@ -132,7 +132,7 @@ namespace GameFrame
         /// 计算最终伤害--元素类型
         /// </summary>
         /// <returns></returns>
-        private float CaculateFinalDamage_Element()
+        protected virtual float CaculateFinalDamage_Element()
         {
             float suffererElementResistance = sufferer.worldObjPropertyDataTemporality.GetElementDamageReductionRatio(elementType);
             float enforcerElementRatio = enforcer.worldObjPropertyDataTemporality.GetElementDamageAddition(elementType); 

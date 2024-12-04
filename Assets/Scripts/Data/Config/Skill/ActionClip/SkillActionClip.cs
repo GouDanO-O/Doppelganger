@@ -19,33 +19,31 @@ namespace GameFrame.Config
         [LabelText("行为描述")]
         public string ActionDes;
 
-        [ShowIf("@ActionType ==EActionType.DetailAction"), LabelText("具体行为")]
-        public SkillActionClip_DetailAction_Basic DetailAction;
+        [LabelText("行为时间")]
+        public float Time;
         
-        [ShowIf("@ActionType ==EActionType.Animation"), LabelText("动画")]
-        public SkillActionClip_AnimationData AnimationData;
-        
-        [ShowIf("@ActionType ==EActionType.Audio"), LabelText("音效")]
-        public SkillActionClip_AudioData AudioData;
-        
-        [ShowIf("@ActionType ==EActionType.ParticleSystem"), LabelText("粒子特效")]
-        public SkillActionClip_ParticleEffectData ParticleEffectData;
+        [BoxGroup("行为参数")]
+        [SerializeReference]
+        public SkillActionClip_BasicData Parameters;
 
-        public void TriggerSkillAction(WorldObj owner =null,WorldObj target=null)
+        public void TriggerSkillAction(WorldObj owner = null, WorldObj target = null)
         {
             switch (ActionType)
             {
                 case EActionType.DetailAction:
-                    DetailAction?.ExecuteCheck(owner); // 检查并执行具体行为
+                    if (Parameters is SkillActionClip_DetailAction_Basic detailAction)
+                    {
+                        detailAction.ExecuteCheck(owner);
+                    }
                     break;
                 case EActionType.Animation:
-                    
+                    // 实现动画触发逻辑
                     break;
                 case EActionType.Audio:
-                    
+                    // 实现音效触发逻辑
                     break;
                 case EActionType.ParticleSystem:
-
+                    // 实现粒子特效触发逻辑
                     break;
             }
         }

@@ -150,7 +150,7 @@ namespace GameFrame
         public override void OnRecycled()
         {
             DeInitData();
-            ElementCaculateManager.onRemoveElementEffecterEvent.Invoke(this);
+            ElementCaculateManager.onRemoveElementEffecterEvent?.Invoke(this);
         }
 
         public override void Recycle2Cache()

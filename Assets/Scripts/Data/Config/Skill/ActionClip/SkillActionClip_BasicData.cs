@@ -4,7 +4,7 @@ using Sirenix.OdinInspector;
 namespace GameFrame.Config
 {
     [Serializable]
-    public class SkillActionClip_BasicData
+    public class SkillActionClip_BasicData : SerializedScriptableObject
     {
         [HorizontalGroup("Timing")]
         [LabelText("开始时间"), LabelWidth(60), MinValue(0)]

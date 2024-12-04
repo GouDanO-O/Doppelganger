@@ -64,7 +64,7 @@ namespace GameFrame.Config
             }
             else
             {
-                projectile = Instantiate(persistenceProjectileData.ObjectPrefab);
+                projectile = GameObject.Instantiate(persistenceProjectileData.ObjectPrefab);
             }
 
             if (projectile == null)
