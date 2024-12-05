@@ -1,12 +1,13 @@
-﻿using QFramework;
+﻿using System.Collections.Generic;
+using QFramework;
 
 namespace GameFrame.World
 {
     public class WorldManager : Singleton<WorldManager>,IController
     {
-        public PlayerController playerController { get;private set; }
-
         private WorldManager(){}
+        
+        public List<WorldObj> players = new List<WorldObj>();
         
         public ElementCaculateManager elementCaculateManager { get; set; }
 
@@ -31,15 +32,12 @@ namespace GameFrame.World
             elementCaculateManager.DeinitData();
         }
         
-        public void SetPlayer(PlayerController player)
+        public void SetPlayer(WorldObj player)
         {
-            this.playerController = player;
+            this.players.Add(player);
             this.SendCommand(new AddCheatCommand("使用技能树", (() =>
             {
-                if (playerController)
-                {
-                    playerController.skillController.UseSkill();
-                }
+                
             })));
         }
 

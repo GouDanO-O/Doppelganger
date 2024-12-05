@@ -14,12 +14,6 @@ namespace GameFrame.World
     public class Monster : WorldObj
     {
         public DeformationController deformationController { get;protected set; }
- 
-        public override void Init()
-        {
-            base.Init();
-            
-        }
     }
 }
 

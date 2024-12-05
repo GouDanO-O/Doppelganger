@@ -7,45 +7,19 @@ using UnityEngine;
 namespace GameFrame.World
 {
     /// <summary>
-    /// 变形
-    /// </summary>
-    public interface IDeformation
-    {
-        /// <summary>
-        /// 仅变化外貌,技能还是本体的技能
-        /// </summary>
-        /// <param name="deformationData"></param>
-        void TriggerDeformationAppearance(WorldObjDataConfig deformationData);
-        
-        /// <summary>
-        /// 完全变形,技能和外貌都以新物体为准
-        /// </summary>
-        /// <param name="deformationData"></param>
-        void TriggerDeformationCompletely(WorldObjDataConfig deformationData);
-    }
-
-    /// <summary>
     /// 变形控制器
     /// </summary>
-    public class DeformationController : IDeformation
+    public class DeformationController : AbstractController,IDeformation
     {
         public WorldObj owner;
 
         public float lastDeformationEnergy { get; set; }
 
         public float maxDeformationEnergy { get;protected set; }
-        
-        public DeformationController(WorldObj owner)
+
+        public override void InitData(WorldObj owner)
         {
-            this.owner = owner;
-            this.lastDeformationEnergy = 0;
-        }
-        
-        public DeformationController(WorldObj owner,float maxDeformationEnergy)
-        {
-            this.owner = owner;
-            this.lastDeformationEnergy = 0;
-            this.maxDeformationEnergy = maxDeformationEnergy;
+            base.InitData(owner);
         }
         
         /// <summary>
@@ -78,6 +52,11 @@ namespace GameFrame.World
             {
                 
             }
+        }
+
+        public override void DeInitData()
+        {
+            
         }
     } 
 }

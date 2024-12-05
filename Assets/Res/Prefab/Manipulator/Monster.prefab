@@ -259,9 +259,9 @@ GameObject:
   - component: {fileID: 5113101787010902565}
   - component: {fileID: 1586325214170012133}
   - component: {fileID: 5032258566179669021}
-  - component: {fileID: 8617225974207143992}
   - component: {fileID: 7035885030912549549}
   - component: {fileID: 3393543728952614129}
+  - component: {fileID: 3056800188681430936}
   m_Layer: 9
   m_Name: Monster
   m_TagString: Untagged
@@ -349,8 +349,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1170575448
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 2119139868
+  InScenePlacedSourceGlobalObjectIdHash: 1945298232
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -362,28 +362,6 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &8617225974207143992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6505841128741061604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04d13924cbca20047b18949d64e1d180, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  owner: {fileID: 0}
-  thisDataConfig: {fileID: 11400000, guid: a0f59e33ccca2254a97a028381ae9e7b, type: 2}
-  worldObjPropertyDataTemporality:
-    MaxHealth: 0
-    MaxArmor: 0
-    DamageReductionRatio: 0
-    CriticalRate: 0
-    CriticalDamage: 0
-  footRoot: {fileID: 0}
 --- !u!114 &7035885030912549549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,6 +415,29 @@ MonoBehaviour:
   UseRigidBodyForMotion: 0
   AutoUpdateKinematicState: 0
   AutoSetKinematicOnDespawn: 0
+--- !u!114 &3056800188681430936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6505841128741061604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7520d78c566a1de4b94c6147ff06da14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  owner: {fileID: 0}
+  thisDataConfig: {fileID: 0}
+  worldObjPropertyDataTemporality:
+    MaxHealth: 0
+    MaxArmor: 0
+    DamageAddition: 0
+    DamageReductionRatio: 0
+    CriticalRate: 0
+    CriticalDamage: 0
+  footRoot: {fileID: 0}
 --- !u!1 &7996683129357410315
 GameObject:
   m_ObjectHideFlags: 0

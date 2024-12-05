@@ -12,26 +12,41 @@ using UnityEngine.Events;
 
 namespace GameFrame.World
 {
-
-
     /// <summary>
     /// 世界物体基类--主要负责集中管理该物体
     /// </summary>
-    public abstract class WorldObj : MonoNetController
+    public abstract class WorldObj : MonoNetController ,IUnRegisterList
     { 
         public WorldObjDataConfig thisDataConfig;
 
-        public WorldObjPropertyData_Temporality worldObjPropertyDataTemporality;
-        
-        public BaseController thisController { get;protected set; }
-        
-        public PlayerController playerController { get; protected set; }
+        public WorldObjPropertyData_Temporality worldObjPropertyDataTemporality { get;private set; }
 
-        public AIController aiController { get; protected set; }
+        public UnityAction<bool> onChangePlayerControllingEvent;
+        
+        public UnityAction<bool> onDeathEvent;
+        
+        public UnityAction<TriggerDamageData_TemporalityPoolable> onBeHarmedEvent;
+        
+        public UnityAction<bool> onChangeInvincibleModEvent;
+        
+        public UnityAction<SPlayAnimationEvent> onPlayAnimationEvent;
+        
+        public List<IUnRegister> UnregisterList { get; } = new List<IUnRegister>();
+        
+        public HealthyController healthyController { get; protected set; }
+        
+        public SkillController skillController { get; set;}
+        
+        public AttackController attackController { get; set; }
+        
+        public AnimatorController animatorController { get; set; }
+        
+        public MoveController moveController { get; set; }
+        
 
         protected bool isInit = false;
 
-        public bool isPlayerSelecting { get; set; }
+        public bool isControlledByPlayer { get; set; }
         
         public EWorldObjCollisionType CollisionType { get; set; }
         
@@ -43,17 +58,7 @@ namespace GameFrame.World
 
         private void Start()
         {
-            ChangePlayerSelecting(true);
-        }
-
-        /// <summary>
-        /// 是否由玩家进行操作
-        /// </summary>
-        /// <param name="isPlayerSelecting"></param>
-        public void ChangePlayerSelecting(bool isPlayerSelecting)
-        {
-            this.isPlayerSelecting = isPlayerSelecting;
-            this.Init();
+            InitData();
         }
 
         #region Init
@@ -61,7 +66,7 @@ namespace GameFrame.World
         /// <summary>
         /// 初始化
         /// </summary>
-        public virtual void Init()
+        public virtual void InitData()
         {
             if (isInit)
             {
@@ -69,15 +74,27 @@ namespace GameFrame.World
             }
 
             InitComponents();
+            RegistEvent();
             isInit = true;
         }
 
+        /// <summary>
+        /// 注册事件
+        /// </summary>
+        protected virtual void RegistEvent()
+        {
+            this.onChangePlayerControllingEvent += ChangePlayerControlling;
+        } 
+        
         /// <summary>
         /// 注销
         /// </summary>
         public override void DeInitData()
         {
-
+            this.UnRegisterAll();
+            healthyController.DeInitData();
+            skillController.DeInitData();
+            attackController.DeInitData();
         }
 
         /// <summary>
@@ -89,57 +106,210 @@ namespace GameFrame.World
             rigidbody = GetComponent<Rigidbody>();
             collider = GetComponent<Collider>();
             footRoot = transform.Find("FootRoot");
-            if (thisDataConfig)
+
+
+            InitGeneralController();
+            if (isControlledByPlayer)
             {
-                InitController();
+                InitPlayer();
+            }
+            else
+            {
+                InitAI();
+            }
+        }
+
+        /// <summary>
+        /// 初始化通用控制器
+        /// </summary>
+        protected virtual void InitGeneralController()
+        {
+            InitHealthy();
+            InitAnimator();
+        }
+        
+        /// <summary>
+        /// 初始化生命
+        /// </summary>
+        protected virtual void InitHealthy()
+        {
+            if (thisDataConfig.Healthyable)
+            {
+                healthyController = new HealthyController();
+                healthyController.InitData(owner);
             }
         }
         
         /// <summary>
-        /// 初始化控制器
+        /// 初始化动画
         /// </summary>
-        protected virtual void InitController()
+        protected virtual void InitAnimator()
         {
-            if (isPlayerSelecting)
+            animatorController = new AnimatorController();
+            animatorController.InitData(owner);
+        }
+        #region InitPlayer
+
+        /// <summary>
+        /// 初始化玩家
+        /// </summary>
+        protected virtual void InitPlayer()
+        {
+            InitMovement_Player();
+            InitSkill_Player();
+        }
+        
+        /// <summary>
+        /// 初始化移动
+        /// </summary>
+        protected virtual void InitMovement_Player()
+        {
+            InitMove_Player();
+            InitJump_Player();
+            InitCrouch_Player();
+            InitDash_Player();
+        }
+
+        /// <summary>
+        /// 初始化技能
+        /// </summary>
+        protected virtual void InitSkill_Player()
+        {
+            if (thisDataConfig.skillTree)
             {
-                if (playerController)
-                {
-                    playerController.EnableLogic();
-                }
-                else
-                {
-                    playerController = gameObject.AddComponent<PlayerController>();
-                    thisController = playerController;
-                    
-                    playerController.InitData(this);
- 
-                }
-
-                if (aiController)
-                {
-                    aiController.DisableLogic();
-                }
-            }
-            else
-            {
-                if (aiController)
-                {
-                    aiController.EnableLogic();
-                }
-                else
-                {
-                    aiController = gameObject.AddComponent<AIController>();
-                    thisController = aiController;
-                    aiController.InitData(this);
-
-                }
-
-                if (playerController)
-                {
-                    playerController.DisableLogic();
-                }
+                skillController = new SkillController();
+                skillController.InitData(owner);
             }
         }
+        
+        protected virtual void InitMove_Player()
+        {
+            if (thisDataConfig.Moveable)
+            {
+                moveController = new MoveController_Player();
+                moveController.InitData(owner);
+
+                this.RegisterEvent<SInputEvent_Move>(moveData => { moveController.Move(moveData); })
+                    .AddToUnregisterList(this);
+
+                this.RegisterEvent<SInputEvent_MouseDrag>(mouseData => { moveController.MouseRotate(mouseData); })
+                    .AddToUnregisterList(this);
+
+                this.RegisterEvent<SInputEvent_Run>(moveData => { moveController.Running(moveData); })
+                    .AddToUnregisterList(this);
+
+                ActionKit.OnUpdate.Register(() => moveController.GroundCheck())
+                    .AddToUnregisterList(this);
+            }
+        }
+
+        /// <summary>
+        /// 初始化跳跃
+        /// </summary>
+        protected virtual void InitJump_Player()
+        {
+            if (thisDataConfig.Jumpable)
+            {
+                moveController.InitJump(thisDataConfig.JumpData);
+                this.RegisterEvent<SInputEvent_Jump>(moveData => { moveController.JumpCheck(); })
+                    .AddToUnregisterList(this);
+            }
+        }
+
+        /// <summary>
+        /// 初始化蹲伏
+        /// </summary>
+        protected virtual void InitCrouch_Player()
+        {
+            if (thisDataConfig.Crouchable)
+            {
+                moveController.InitCrouch(thisDataConfig.CrouchData);
+                this.RegisterEvent<SInputEvent_Crouch>(moveData => { moveController.CrouchCheck(moveData); })
+                    .AddToUnregisterList(this);
+            }
+        }
+
+        /// <summary>
+        /// 初始化冲刺
+        /// </summary>
+        protected virtual void InitDash_Player()
+        {
+            if (thisDataConfig.Dashable)
+            {
+                moveController.InitDash(thisDataConfig.DashData);
+                this.RegisterEvent<SInputEvent_Dash>(moveData => { moveController.DashCheck(); })
+                    .AddToUnregisterList(this);
+            }
+        }
+        #endregion
+
+        #region InitAI
+        
+        protected virtual void InitAI()
+        {
+            InitMovement_AI();
+            InitSkill_AI();
+        }
+
+        protected virtual void InitMovement_AI()
+        {
+            InitMove_AI();
+            InitJump_AI();
+            InitCrouch_AI();
+            InitDash_AI();
+        }
+
+        protected virtual void InitSkill_AI()
+        {
+            
+        }
+        
+        protected virtual void InitMove_AI()
+        {
+            if (thisDataConfig.Moveable)
+            {
+                moveController = new MoveController_AI();
+                moveController.InitData(owner);
+            }
+        }
+
+        /// <summary>
+        /// 初始化跳跃
+        /// </summary>
+        protected virtual void InitJump_AI()
+        {
+            if (thisDataConfig.Jumpable)
+            {
+                moveController.InitJump(thisDataConfig.JumpData);
+            }
+        }
+
+        /// <summary>
+        /// 初始化蹲伏
+        /// </summary>
+        protected virtual void InitCrouch_AI()
+        {
+            if (thisDataConfig.Crouchable)
+            {
+                moveController.InitCrouch(thisDataConfig.CrouchData);
+            }
+        }
+
+        /// <summary>
+        /// 初始化冲刺
+        /// </summary>
+        protected virtual void InitDash_AI()
+        {
+            if (thisDataConfig.Dashable)
+            {
+                moveController.InitDash(thisDataConfig.DashData);
+            }
+        }
+
+        #endregion
+
+        
+        
         #endregion
 
         #region 碰撞检测
@@ -190,33 +360,110 @@ namespace GameFrame.World
         #endregion
 
         #region 事件和传参
-
-        public void Death(bool isDeath)
+        
+        /// <summary>
+        /// 是否由玩家进行操作
+        /// </summary>
+        /// <param name="isPlayerSelecting"></param>
+        public virtual void ChangePlayerControlling(bool isControlledByPlayer)
         {
-            thisController.onDeathEvent.Invoke(isDeath);
+            this.isControlledByPlayer = isControlledByPlayer;
+            if (isControlledByPlayer)
+            {
+                PlayerControlling();
+            }
+            else
+            {
+                AIControlling();
+            }
         }
 
-        public void BeHarmed(TriggerDamageData_TemporalityPoolable damageData)
+        /// <summary>
+        /// 死亡
+        /// </summary>
+        /// <param name="isDeath"></param>
+        public virtual void Death(bool isDeath)
         {
-            thisController.onBeHarmedEvent.Invoke(damageData);
+            onDeathEvent.Invoke(isDeath);
         }
 
-        public void DoPlayAnimations(SAnimatorEvent animatorEvent)
+        /// <summary>
+        /// 受到伤害
+        /// </summary>
+        /// <param name="damageData"></param>
+        public virtual void BeHarmed(TriggerDamageData_TemporalityPoolable damageData)
         {
-            thisController.onPlayAnimationEvent.Invoke(animatorEvent);
+            onBeHarmedEvent.Invoke(damageData);
         }
 
-        public void ChangeInvincibleMod(bool isInvincible)
+        /// <summary>
+        /// 播放动画
+        /// </summary>
+        /// <param name="animatorEvent"></param>
+        public virtual void DoPlayAnimations(SPlayAnimationEvent animatorEvent)
         {
-            thisController.onChangeInvincibleModEvent.Invoke(isInvincible);
+            onPlayAnimationEvent.Invoke(animatorEvent);
+        }
+
+        /// <summary>
+        /// 改变无敌状态
+        /// </summary>
+        /// <param name="isInvincible"></param>
+        public virtual void ChangeInvincibleMod(bool isInvincible)
+        {
+            onChangeInvincibleModEvent.Invoke(isInvincible);
         }
 
         #endregion
 
-        public bool IsPlayer()
+        #region Tick
+
+        /// <summary>
+        /// 短tick逻辑
+        /// </summary>
+        public virtual void ShortTickLogic()
         {
-            return isPlayerSelecting;
+            
         }
+        
+        /// <summary>
+        /// 正常tick逻辑
+        /// </summary>
+        public virtual void MainLogic()
+        {
+            
+        }
+        
+        /// <summary>
+        /// 长tick逻辑
+        /// </summary>
+        public virtual void LongTickLogic()
+        {
+            
+        }
+
+        #endregion
+
+        #region 其他
+
+        /// <summary>
+        /// 由玩家接管
+        /// </summary>
+        protected virtual void PlayerControlling()
+        {
+            
+        }
+
+        /// <summary>
+        /// 由AI接管
+        /// </summary>
+        protected virtual void AIControlling()
+        {
+            
+        }
+        
+
+        #endregion
     }
 }
 

@@ -7,15 +7,8 @@ using UnityEngine.InputSystem;
 
 namespace GameFrame
 {
-    public interface IResourcesModel: IModel
+    public class ResourcesModel : AbstractModel
     {
-        
-    }
-
-
-    public class ResourcesModel : AbstractModel, IResourcesModel
-    {
-
         public GameSettingConfig SettingConfig { get; set; }
 
         public NetDataConfig NetDataConfig { get; set; }

@@ -74,6 +74,10 @@ namespace GameFrame.World
         public override void InitData(WorldObj owner)
         {
             base.InitData(owner);
+
+            this.transform = owner.transform;
+
+            
             this.rigidbody = owner.rigidbody;
             this.collider = owner.collider;
             this.gravity = owner.thisDataConfig.Gravity;
@@ -137,6 +141,26 @@ namespace GameFrame.World
             this.lastDashTime = -dashCD;
         }
 
+        public virtual void Move(SInputEvent_Move inputEvent_Move)
+        {
+            
+        }
+
+        public virtual void Running(SInputEvent_Run runData)
+        {
+            
+        }
+        
+        public virtual void MouseRotate(SInputEvent_MouseDrag inputEvent_Mouse)
+        {
+            
+        }
+
+        public virtual void CrouchCheck(SInputEvent_Crouch crouchData)
+        {
+            
+        }
+
         /// <summary>
         /// 获取当前的速度
         /// </summary>
@@ -165,11 +189,11 @@ namespace GameFrame.World
 
             if (crouching)
             {
-                owner.DoPlayAnimations(new SAnimatorEvent() { animationType = EAnimationType.Crouching });
+                owner.DoPlayAnimations(new SPlayAnimationEvent() { animationType = EAnimationType.Crouching });
             }
             else
             {
-                owner.DoPlayAnimations(new SAnimatorEvent() { animationType = EAnimationType.StandUp });
+                owner.DoPlayAnimations(new SPlayAnimationEvent() { animationType = EAnimationType.StandUp });
             }
         }
 
@@ -237,13 +261,13 @@ namespace GameFrame.World
                     if (canDoubleJump && curJumpCount == 1 && curDoubleJumpDeepTime >= doubleJumpDeepTime)
                     {
                         Jump(doubleJumpHeight);
-                        owner.DoPlayAnimations(new SAnimatorEvent() { animationType = EAnimationType.DoubleJumping });
+                        owner.DoPlayAnimations(new SPlayAnimationEvent() { animationType = EAnimationType.DoubleJumping });
                     }
                     else if (curJumpCount == 0)
                     {
                         Jump(jumpHeight);
                         Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(DoubleJumpTimeCheck());
-                        owner.DoPlayAnimations(new SAnimatorEvent() { animationType = EAnimationType.StartJumping });
+                        owner.DoPlayAnimations(new SPlayAnimationEvent() { animationType = EAnimationType.StartJumping });
                     }
                 }
             }
@@ -252,13 +276,13 @@ namespace GameFrame.World
                 if (canDoubleJump && curJumpCount == 1 && curDoubleJumpDeepTime >= doubleJumpDeepTime)
                 {
                     Jump(doubleJumpHeight);
-                    owner.DoPlayAnimations(new SAnimatorEvent() { animationType = EAnimationType.DoubleJumping });
+                    owner.DoPlayAnimations(new SPlayAnimationEvent() { animationType = EAnimationType.DoubleJumping });
                 }
                 else if (curJumpCount == 0)
                 {
                     Jump(jumpHeight);
                     Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(DoubleJumpTimeCheck());
-                    owner.DoPlayAnimations(new SAnimatorEvent() { animationType = EAnimationType.StartJumping });
+                    owner.DoPlayAnimations(new SPlayAnimationEvent() { animationType = EAnimationType.StartJumping });
                 }
             }
         }
@@ -303,7 +327,7 @@ namespace GameFrame.World
             Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(DashCoroutine());
 
             // 播放冲刺动画
-            owner.DoPlayAnimations(new SAnimatorEvent() { animationType = EAnimationType.Dashing });
+            owner.DoPlayAnimations(new SPlayAnimationEvent() { animationType = EAnimationType.Dashing });
         }
 
         // 冲刺协程，控制冲刺时间和距离，考虑障碍物

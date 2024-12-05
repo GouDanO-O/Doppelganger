@@ -9,25 +9,6 @@ using GameFrame.UI;
 
 namespace GameFrame.World
 {
-    public interface IBiology_Healthy
-    {
-        public BindableProperty<bool> isDeath { get; set; }
-        
-        public BindableProperty<float> curHealthy { get; set; }
-        
-        public BindableProperty<float> maxHealthy { get; set; }
-        
-        public BindableProperty<float> curArmor { get; set; }
-        
-        public BindableProperty<float> maxArmor { get; set; }
-
-        public void SufferHarmed(TriggerDamageData_TemporalityPoolable damageData);
-
-        public void Becuring(float cureValue);
-
-        public void Death();
-    }
-    
     public class HealthyController : AbstractController,IBiology_Healthy,IUnRegisterList
     { 
         public List<IUnRegister> UnregisterList { get; } = new List<IUnRegister>();
@@ -92,8 +73,8 @@ namespace GameFrame.World
             this.maxArmor.Value = healthyData.maxArmor;
 
             healthyStatusFollower.InitFollowerStatus(worldObj,healthyData);
-            controller.onBeHarmedEvent += SufferHarmed;
-            controller.onChangeInvincibleModEvent += ChangeInvincible;
+            owner.onBeHarmedEvent += SufferHarmed;
+            owner.onChangeInvincibleModEvent += ChangeInvincible;
         }
 
         public void ChangeInvincible(bool isInvincible)
@@ -187,8 +168,8 @@ namespace GameFrame.World
         public override void DeInitData()
         {
             this.UnRegisterAll();
-            controller.onBeHarmedEvent -= SufferHarmed;
-            controller.onChangeInvincibleModEvent -= ChangeInvincible;
+            owner.onBeHarmedEvent -= SufferHarmed;
+            owner.onChangeInvincibleModEvent -= ChangeInvincible;
         }
     }
 }

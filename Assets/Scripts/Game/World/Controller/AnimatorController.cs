@@ -4,33 +4,6 @@ using UnityEngine.Events;
 
 namespace GameFrame.World
 {
-    public enum EAnimationType
-    {
-        Idle,
-        StartWalking,
-        Walking,
-        EndWalking,
-        StartRunning,
-        Running,
-        EndRunning,
-        Crouching,
-        StandUp,
-        StartJumping,
-        DoubleJumping,
-        Falling,
-        Landing,
-        Hitted,
-        Death,
-        Dashing
-    }
-    
-    public struct SAnimatorEvent
-    {
-        public EAnimationType animationType;
-
-        public float blendValue;
-    }
-    
     public class AnimatorController: AbstractController
     {
         private EAnimationType currentAnimationType = EAnimationType.Idle;
@@ -48,15 +21,15 @@ namespace GameFrame.World
 
         public void RegisterEvent()
         {
-            controller.onPlayAnimationEvent += DisposeAnimations;
+            owner.onPlayAnimationEvent += DisposeAnimations;
         }
 
         public void UnRegisterEvent()
         {
-            controller.onPlayAnimationEvent-= DisposeAnimations;
+            owner.onPlayAnimationEvent-= DisposeAnimations;
         }
 
-        public void DisposeAnimations(SAnimatorEvent eventData)
+        public void DisposeAnimations(SPlayAnimationEvent eventData)
         {
             this.currentAnimationType = eventData.animationType;
         }

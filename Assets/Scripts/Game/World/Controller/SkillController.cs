@@ -6,80 +6,6 @@ using UnityEngine;
 
 namespace GameFrame.World
 {
-    public class SOwnedSkill
-    {
-        public SkillNodeDataConfig skillNodeDataConfig { get;protected set; }
-        
-        public int curLevel { get; set; }
-
-        public int maxLevel { get; set; }
-        
-        /// <summary>
-        /// 上一次使用技能的时间戳
-        /// </summary>
-        public float lastSkillUseTime { get; set; }
-        
-        /// <summary>
-        /// 检测是否正确抵达时间--防止本地和服务器的时间戳对不上
-        /// </summary>
-        public float willEndTime { get; set; }
-        
-        public float skillCooldown { get; set; }
-
-        public SOwnedSkill(SkillNodeDataConfig skillNodeDataConfig)
-        {
-            this.skillNodeDataConfig = skillNodeDataConfig;
-            this.curLevel = 0;
-            this.lastSkillUseTime = 0;
-            this.skillCooldown=skillNodeDataConfig.SkillCooldown;
-            this.maxLevel = skillNodeDataConfig.MaxLevel;
-        }
-
-        /// <summary>
-        /// 触发技能
-        /// </summary>
-        public void TriggerSkill(WorldObj owner=null,WorldObj target=null)
-        {
-            if (IsSkillReady())
-            {
-                lastSkillUseTime = Time.time;
-                willEndTime = lastSkillUseTime + skillCooldown;
-                skillNodeDataConfig.TriggerSkill(owner, target);
-            }
-        }
-        
-        /// <summary>
-        /// 如果当前时间 - 上次使用技能的时间 >= 冷却时间，技能就可以再次使用
-        /// </summary>
-        /// <returns></returns>
-        public bool IsSkillReady()
-        {
-            if (Time.time <= willEndTime)
-            {
-                return false;
-            }
-            return Time.time >= lastSkillUseTime + skillCooldown;
-        }
-        
-        /// <summary>
-        /// 升级
-        /// </summary>
-        public void LevelUp()
-        {
-            curLevel = Mathf.Min(curLevel + 1, maxLevel); 
-        }
-        
-        /// <summary>
-        /// 检测是否是相同技能
-        /// </summary>
-        /// <param name="skillNodeDataConfig"></param>
-        /// <returns></returns>
-        public bool CheckSkill(SkillNodeDataConfig skillNodeDataConfig)
-        {
-            return this.skillNodeDataConfig == skillNodeDataConfig;
-        }
-    }
-    
     public class SkillController : AbstractController
     {
         protected List<SkillNodeDataConfig> Skill_Inside = new List<SkillNodeDataConfig>();
@@ -99,17 +25,17 @@ namespace GameFrame.World
         /// <summary>
         /// 当前拥有的技能
         /// </summary>
-        public BindableList<SOwnedSkill> curOwnedSkillNodes { get;protected set; } = new BindableList<SOwnedSkill>();
+        public BindableList<SOwnedSkillData> curOwnedSkillNodes { get;protected set; } = new BindableList<SOwnedSkillData>();
         
         /// <summary>
         /// 主动技能
         /// </summary>
-        public BindableDictionary<int, SOwnedSkill> curOwnedSkills_Initiative { get;protected set; } = new BindableDictionary<int, SOwnedSkill>();
+        public BindableDictionary<int, SOwnedSkillData> curOwnedSkills_Initiative { get;protected set; } = new BindableDictionary<int, SOwnedSkillData>();
         
         /// <summary>
         /// 被动技能
         /// </summary>
-        public BindableList<SOwnedSkill> curOwnedSkills_Passive { get;protected set; } = new BindableList<SOwnedSkill>();
+        public BindableList<SOwnedSkillData> curOwnedSkills_Passive { get;protected set; } = new BindableList<SOwnedSkillData>();
         
         public IArchitecture GetArchitecture()
         {
@@ -141,7 +67,7 @@ namespace GameFrame.World
         /// <summary>
         /// 设置局外技能
         /// </summary>
-        protected void SetOutSideSkill()
+        protected virtual void SetOutSideSkill()
         {
             for (int i = 0; i < Skill_Outside.Count; i++)
             {
@@ -155,7 +81,7 @@ namespace GameFrame.World
         /// <summary>
         /// 升级
         /// </summary>
-        protected void LevelUp()
+        protected virtual void LevelUp()
         {
             curLevel.Value++;
             AddSkillPoint(1);
@@ -165,7 +91,7 @@ namespace GameFrame.World
         /// 增加技能点
         /// </summary>
         /// <param name="addCount"></param>
-        public void AddSkillPoint(int addCount)
+        public virtual void AddSkillPoint(int addCount)
         {
             this.curOwnedSkillPoint.Value += addCount;
         }
@@ -190,7 +116,7 @@ namespace GameFrame.World
         /// <summary>
         /// 获取技能
         /// </summary>
-        public void GetSkill(SkillNodeDataConfig skillNode)
+        public virtual void GetSkill(SkillNodeDataConfig skillNode)
         {
             int skillIndex = CheckHasSkill(skillNode);
             if (skillIndex!=-1)
@@ -201,7 +127,7 @@ namespace GameFrame.World
                 }
                 else
                 {
-                    curOwnedSkillNodes.Add(new SOwnedSkill(skillNode));
+                    curOwnedSkillNodes.Add(new SOwnedSkillData(skillNode));
                 }
             }
         }
@@ -230,7 +156,7 @@ namespace GameFrame.World
         /// 检查是否满足技能的施法条件
         /// </summary>
         /// <returns></returns>
-        protected bool CheckIsSatisfySkill(SOwnedSkill skill)
+        protected bool CheckIsSatisfySkill(SOwnedSkillData skill)
         {
             if (CheckHasSkill(skill.skillNodeDataConfig) != -1)
             {
@@ -245,10 +171,10 @@ namespace GameFrame.World
         
         
         /// <summary>
-        /// 使用技能
+        /// 使用指定技能
         /// </summary>
         /// <param name="skillNode"></param>
-        protected void UseSkill(SOwnedSkill skill)
+        public virtual void UseSkill(SOwnedSkillData skill)
         {
             if (CheckIsSatisfySkill(skill))
             {
@@ -259,7 +185,7 @@ namespace GameFrame.World
         /// <summary>
         /// 流程式使用技能
         /// </summary>
-        public void UseSkill()
+        public virtual void UseSkill()
         {
             for (int i = 0; i < Skill_Outside.Count; i++)
             {

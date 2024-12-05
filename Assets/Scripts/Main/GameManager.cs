@@ -11,17 +11,6 @@ using UnityEngine.Events;
 
 namespace GameFrame
 {
-    public enum EGameState : byte
-    {
-        None,
-        StartLoading,
-        Loading,
-        EndLoading,
-        Playing,
-        Pause,
-        GameEnd,
-    }
-
     /// <summary>
     /// 游戏全局管理
     /// </summary>
