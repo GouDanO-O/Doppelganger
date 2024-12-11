@@ -85,9 +85,9 @@
     <Compile Include="Assets\Plugins\YooAsset\Editor\AssetBundleReporter\AssetBundleInspector.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Editor\AssetBundleBuilder\ECompressOption.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Editor\AssetBundleBuilder\BuildSystem\BuildLogger.cs" />
+    <Compile Include="Assets\Plugins\YooAsset\Editor\AssetBundleBuilder\BuildPipeline\RawFileBuildPipeline\BuildTasks\TaskUpdateBundleInfo_RFBP.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Editor\AssetBundleBuilder\EBuildPipeline.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Editor\AssetBundleReporter\ReportIndependAsset.cs" />
-    <Compile Include="Assets\Plugins\YooAsset\Editor\AssetBundleBuilder\BuildPipeline\RawFileBuildPipeline\BuildTasks\TaskUpdateBundleInfo_RFBP.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Editor\AssetBundleDebugger\VisualViewers\DebuggerAssetListViewer.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Editor\AssetBundleBuilder\BuildPipeline\BuiltinBuildPipeline\BuildTasks\TaskGetBuildMap_BBP.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Editor\AssetBundleCollector\AssetBundleCollectorSetting.cs" />

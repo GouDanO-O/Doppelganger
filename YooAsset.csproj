@@ -84,8 +84,8 @@
     <Compile Include="Assets\Plugins\YooAsset\Runtime\OperationSystem\GameAsyncOperation.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Runtime\FileSystem\Operation\FSClearUnusedBundleFilesOperation.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Runtime\ResourcePackage\PlayMode\OfflinePlayModeImpl.cs" />
-    <Compile Include="Assets\Plugins\YooAsset\Runtime\ResourceManager\Operation\InstantiateOperation.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Runtime\FileSystem\Operation\FSQueryPackageVersionOperation.cs" />
+    <Compile Include="Assets\Plugins\YooAsset\Runtime\ResourceManager\Operation\InstantiateOperation.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Runtime\FileSystem\DefaultEditorFileSystem\Operation\internal\LoadEditorPackageManifestOperation.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Runtime\Services\IRemoteServices.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Runtime\ResourcePackage\PlayMode\EditorSimulateModeImpl.cs" />
@@ -152,9 +152,9 @@
     <Compile Include="Assets\Plugins\YooAsset\Runtime\ResourceManager\RawBundle.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Runtime\FileSystem\DefaultWebFileSystem\DefaultWebFileSystem.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Runtime\YooAssets.cs" />
-    <Compile Include="Assets\Plugins\YooAsset\Runtime\FileSystem\DefaultBuildinFileSystem\DefaultBuildinFileSystemBuild.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Runtime\FileSystem\DefaultCacheFileSystem\DefaultCacheFileSystem.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Runtime\Settings\YooAssetSettings.cs" />
+    <Compile Include="Assets\Plugins\YooAsset\Runtime\FileSystem\DefaultBuildinFileSystem\DefaultBuildinFileSystemBuild.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Runtime\FileSystem\DefaultCacheFileSystem\Operation\internal\SearchCacheFilesOperation.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Runtime\ResourceManager\Handle\SceneHandle.cs" />
     <Compile Include="Assets\Plugins\YooAsset\Runtime\ResourceManager\Loader\LoadBundleFileOperation.cs" />
