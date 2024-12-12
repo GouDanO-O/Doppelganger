@@ -14,23 +14,30 @@ namespace GameFrame
     public class TriggerElementDamageData_TemporalityPoolable : TemporalityData_Pool
     {
         /// <summary>
-        /// 当前元素数据
+        /// 当前元素配置数据
         /// </summary>
         private Dictionary<EElementType, SElementTriggerData> elementDataDict =
             new Dictionary<EElementType, SElementTriggerData>();
         
+        /// <summary>
+        /// 当前要消失的元素队列
+        /// </summary>
         private Queue<EElementType> expiredElementsQueue = new Queue<EElementType>();
+        
+        /// <summary>
+        /// 当前元素伤害数据
+        /// </summary>
+        private Dictionary<EElementType, TriggerDamageData_TemporalityPoolable> elementDamageDataDict =
+            new Dictionary<EElementType, TriggerDamageData_TemporalityPoolable>();
         
         public static TriggerElementDamageData_TemporalityPoolable Allocate()
         {
             return SafeObjectPool<TriggerElementDamageData_TemporalityPoolable>.Instance.Allocate();
         }
-
-        private Dictionary<EElementType, TriggerDamageData_TemporalityPoolable> elementDamageDataDict =
-            new Dictionary<EElementType, TriggerDamageData_TemporalityPoolable>();
         
         /// <summary>
         /// 设置施加者和受害者
+        /// 叠加元素类型
         /// </summary>
         /// <param name="healthyController"></param>
         public void UpdateSuffererAndEnforcer(WorldObj enforcer,WorldObj sufferer,EElementType elementType)
@@ -74,7 +81,11 @@ namespace GameFrame
             elementDamageDataDict[element].UpdateElementDamage(curLevel);
         }
         
-        // 主动更新当前元素的持续时间，计算伤害
+        /// <summary>
+        /// 由管理器更新当前元素的持续时间
+        /// 到达间隔时间就计算伤害
+        /// </summary>
+        /// <param name="deltaTime"></param>
         public void UpdateElementDuration(float deltaTime)
         {
             if (elementDataDict.Count > 0)
@@ -156,11 +167,6 @@ namespace GameFrame
         public override void Recycle2Cache()
         {
             SafeObjectPool<TriggerElementDamageData_TemporalityPoolable>.Instance.Recycle(this);
-        }
-
-        public IArchitecture GetArchitecture()
-        {
-            return Main.Interface;
         }
     }
 }

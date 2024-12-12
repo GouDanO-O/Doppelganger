@@ -77,6 +77,10 @@ namespace GameFrame.World
             owner.onChangeInvincibleModEvent += ChangeInvincible;
         }
 
+        /// <summary>
+        /// 改变无敌状态
+        /// </summary>
+        /// <param name="isInvincible"></param>
         public void ChangeInvincible(bool isInvincible)
         {
             this.isInvisible = isInvisible;
@@ -84,6 +88,9 @@ namespace GameFrame.World
         
         /// <summary>
         /// 受到伤害
+        /// 当死亡或处于无敌状态时不会受到伤害
+        /// 且当受到的伤害是来自元素本身造成的伤害时,不会再进行累计
+        /// 只有来自受到非元素本身造成的元素伤害时,才会进行累计元素
         /// </summary>
         /// <param name="elementType"></param>
         public void SufferHarmed(TriggerDamageData_TemporalityPoolable damageData)
@@ -128,6 +135,9 @@ namespace GameFrame.World
 
         /// <summary>
         /// 遭受元素伤害
+        /// 看当前是否有元素,如果没有,就进行分配
+        /// 元素伤害是由受害者持有一份
+        /// 由元素管理器去管理和维护元素生命周期
         /// </summary>
         /// <param name="elementType"></param>
         public void SufferElement(EElementType elementType,WorldObj enforcer)
@@ -160,6 +170,9 @@ namespace GameFrame.World
             isDeath.Value = true;
         }
 
+        /// <summary>
+        /// 回收伤害池
+        /// </summary>
         private void RecycleDamageData()
         {
             this.triggerElementDamageData_TemporalityPoolable.Recycle2Cache();

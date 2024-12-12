@@ -20,6 +20,11 @@ namespace GameFrame.Config
         [LabelText("行为片段列表")]
         public List<SkillActionClip> ActionClips =new List<SkillActionClip>();
 
+        /// <summary>
+        /// 执行当前时间轨道轴里面的行为
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <param name="target"></param>
         public void Trigger(WorldObj owner=null, WorldObj target=null)
         {
             for (int i = 0; i < ActionClips.Count; i++)

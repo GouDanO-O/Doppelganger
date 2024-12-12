@@ -83,7 +83,8 @@ namespace GameFrame.Config
         }
 
         /// <summary>
-        ///  触发(可以多次触发,直到生命周期结束)--所有者发出,但是无目标自触发(例如每几秒在飞行路径上生成一个毒坑)
+        ///  触发(可以多次触发,直到生命周期结束)
+        /// --所有者发出,但是无目标自触发(例如每几秒在飞行路径上生成一个毒坑)
         /// </summary>
         /// <param name="curTriggerTarget"></param>
         public virtual void Trigger(WorldObj owner)

@@ -38,6 +38,10 @@ namespace GameFrame
         /// </summary>
         private float basicDamage;
 
+        /// <summary>
+        /// 从池子中进行分配
+        /// </summary>
+        /// <returns></returns>
         public static TriggerDamageData_TemporalityPoolable Allocate()
         {
            return SafeObjectPool<TriggerDamageData_TemporalityPoolable>.Instance.Allocate();
@@ -104,7 +108,7 @@ namespace GameFrame
         /// <summary>
         /// 计算最终伤害
         /// </summary>
-        /// <returns></returns>
+        /// <returns>根据元素类型来计算伤害值</returns>
         public virtual float CaculateFinalDamage()
         {
             if (elementType == EElementType.None)
@@ -120,7 +124,7 @@ namespace GameFrame
         /// <summary>
         /// 计算最终伤害--普通
         /// </summary>
-        /// <returns></returns>
+        /// <returns>基础伤害(这个基础伤害是由当前层数的伤害倍率*基础伤害) * 施加者的伤害伤害倍率 / 受害者的伤害抗性</returns>
         protected virtual float CaculateFinalDamage_Normal()
         {
             float suffererElementResistance = sufferer.worldObjPropertyDataTemporality.GetDamageReductionRatio();
@@ -131,7 +135,7 @@ namespace GameFrame
         /// <summary>
         /// 计算最终伤害--元素类型
         /// </summary>
-        /// <returns></returns>
+        /// <returns>基础伤害(这个基础伤害是由当前层数的元素伤害倍率*基础伤害) * 施加者的元素伤害倍率 / 受害者的元素抗性(可以在上面再叠加一层伤害抗性)</returns>
         protected virtual float CaculateFinalDamage_Element()
         {
             float suffererElementResistance = sufferer.worldObjPropertyDataTemporality.GetElementDamageReductionRatio(elementType);

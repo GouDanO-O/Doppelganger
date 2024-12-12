@@ -9,52 +9,76 @@ namespace GameFrame.World
 {
     public class ProjectileController : NetworkBehaviour
     {
+        public bool willRecycle { get; protected set; }
+        
         [HideInInspector] public WorldObj owner;
 
         private CommonProjectileData_Persistence persistenceProjectileData;
-
-        public bool willRecycle { get; protected set; }
-
+        
         /// <summary>
         /// 临时子弹数据
         /// </summary>
         protected ProjectileTriggerDamageData_TemporalityPoolable tempProjectileData;
 
-        public void InitData(CommonProjectileData_Persistence persistenceProjectileData)
-        {
-            this.persistenceProjectileData = persistenceProjectileData;
-            SetTemData();
-        }
-
+        /// <summary>
+        /// 弹体控制器初始化
+        /// 发射者可以世界中任意物体,但不能为空
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <param name="persistenceProjectileData"></param>
         public void InitData(WorldObj owner, CommonProjectileData_Persistence persistenceProjectileData)
         {
             this.owner = owner;
             this.persistenceProjectileData = persistenceProjectileData;
             SetTemData();
+            OnCreate();
         }
-
+        
+        /// <summary>
+        /// 设置临时数据
+        /// 读取配置中的数据转成自己当前生命周期中的临时数据
+        /// </summary>
         protected virtual void SetTemData()
         {
-            tempProjectileData = ProjectileTriggerDamageData_TemporalityPoolable.Allocate();
             willRecycle = false;
-            ExtendData();
-        }
-
-        /// <summary>
-        /// 继承数据
-        /// </summary>
-        protected virtual void ExtendData()
-        {
+            
+            tempProjectileData = ProjectileTriggerDamageData_TemporalityPoolable.Allocate();
             tempProjectileData.UpdateEnforcer(owner);
             tempProjectileData.UpdateDamageAttenuationLevel(persistenceProjectileData.DamageAttenuationsList);
             tempProjectileData.UpdateBasicDamage(persistenceProjectileData.BaiscDamage);
             tempProjectileData.UpdateFlySpeed(persistenceProjectileData.FlySpeed);
             tempProjectileData.UpdateMaxFlyDistance(persistenceProjectileData.MaxFlyDistance);
 
-            tempProjectileData.UpdateFlyHeight(0f); // 初始飞行高度
+            tempProjectileData.UpdateFlyHeight(0);
             tempProjectileData.UpdateMaxFlyHeight(persistenceProjectileData.ShootProjectileType,persistenceProjectileData.MaxParabolaHeight);
         }
+        
+        /// <summary>
+        /// 当创建时
+        /// 在初始化后才进行调用
+        /// </summary>
+        public virtual void OnCreate()
+        {
+            
+        }
 
+        /// <summary>
+        /// 当碰撞到其他物体时
+        /// </summary>
+        /// <param name="otherWorldObj"></param>
+        public virtual void OnHit(WorldObj otherWorldObj)
+        {
+            Trigger(otherWorldObj);
+        }
+
+        /// <summary>
+        /// 当生命周期即将结束时
+        /// </summary>
+        public virtual void OnRemove()
+        {
+            EndExecute();
+        }
+        
         private void FixedUpdate()
         {
             FixedUpdateExecuttion();
@@ -76,19 +100,27 @@ namespace GameFrame.World
         {
             if (willRecycle)
                 return;
-            // 这里可以更新飞行高度，例如：
-            // tempProjectileData.UpdateFlyHeight(transform.position.y);
+
+             tempProjectileData.UpdateFlyHeight(transform.position.y);
         }
 
+        /// <summary>
+        /// 无具体的作用对象时的触发
+        /// 一般作用于计时形行为的触发
+        /// </summary>
         public virtual void Trigger()
         {
             CrossOneTarget();
             if (tempProjectileData.CheckDamageAttenuationLevel())
             {
-                EndExecute();
+                OnRemove();
             }
         }
 
+        /// <summary>
+        /// 有具体的作用对象时的触发
+        /// </summary>
+        /// <param name="curTriggerTarget"></param>
         public virtual void Trigger(WorldObj curTriggerTarget)
         {
             TriggerDamage(curTriggerTarget);
@@ -97,10 +129,14 @@ namespace GameFrame.World
             CheckCollisionTarget(curTriggerTarget);
             if (tempProjectileData.CheckDamageAttenuationLevel())
             {
-                EndExecute();
+                OnRemove();
             }
         }
 
+        /// <summary>
+        /// 弹体飞行
+        /// 可以用Tween配置的形式去做飞行动画和位移
+        /// </summary>
         protected virtual void Fly()
         {
             if (persistenceProjectileData.ShootProjectileType == EAction_Projectile_ShootType.Line)
@@ -134,11 +170,11 @@ namespace GameFrame.World
             velocity += Physics.gravity * Time.fixedDeltaTime;
             transform.position += velocity * Time.fixedDeltaTime;
             tempProjectileData.AddFlyDistance(velocity.magnitude * Time.fixedDeltaTime);
-            tempProjectileData.UpdateFlyHeight(transform.position.y);
         }
 
         /// <summary>
         /// 飞行距离检测
+        /// 当抵达了最大飞行距离就会销毁
         /// </summary>
         protected virtual void FlyDistanceCheck()
         {
@@ -146,7 +182,7 @@ namespace GameFrame.World
             {
                 if (tempProjectileData.IsArriveMaxDistance())
                 {
-                    EndExecute();
+                    OnRemove();
                 }
             }
         }
@@ -183,7 +219,7 @@ namespace GameFrame.World
             // 确保索引在范围内
             if (index < 0 || index >= persistenceProjectileData.CollisionTypesList.Count)
             {
-                Debug.LogWarning("Collision type index out of range.");
+                Debug.LogWarning("越界");
                 return;
             }
 
@@ -191,10 +227,10 @@ namespace GameFrame.World
             switch (curCollisionType)
             {
                 case EAction_Projectile_CollisionType.ContinueFly:
-                    // 继续飞行，无需特殊处理
+                    // 继续飞行
                     break;
                 case EAction_Projectile_CollisionType.CollisionAndDestroy:
-                    EndExecute();
+                    OnRemove();
                     break;
                 case EAction_Projectile_CollisionType.CollisionAndRebound:
                     ReboundProjectile();
@@ -211,15 +247,12 @@ namespace GameFrame.World
             Vector3 currentDirection = transform.forward;
             Vector3 reboundDirection = Vector3.Reflect(currentDirection, Vector3.up); // 假设反弹平面为水平面
             transform.forward = reboundDirection.normalized;
-
-            // 可选：减少飞行速度或进行其他调整
-            tempProjectileData.UpdateFlySpeed(tempProjectileData.CurFlySpeed * 0.8f); // 示例：速度减少20%
         }
 
         /// <summary>
         /// 结束生命周期
         /// </summary>
-        public virtual void EndExecute()
+        protected virtual void EndExecute()
         {
             DeInitData();
             if (persistenceProjectileData.IsLoadFromPool)
@@ -243,7 +276,7 @@ namespace GameFrame.World
             WorldObj otherWorldObj = other.GetComponent<WorldObj>();
             if (otherWorldObj)
             {
-                Trigger(otherWorldObj);
+                OnHit(otherWorldObj);
             }
         }
 

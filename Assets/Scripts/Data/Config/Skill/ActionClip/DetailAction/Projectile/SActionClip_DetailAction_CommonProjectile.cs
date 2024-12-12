@@ -10,6 +10,7 @@ namespace GameFrame.Config
 {
     /// <summary>
     /// 普通弹体类型
+    /// 行为:发射一枚弹体
     /// </summary>
     [CreateAssetMenu(fileName = "CommonProjectile", menuName = "配置/技能/行为/弹体/普通弹体")]
     public class SActionClip_DetailAction_CommonProjectile : SkillActionClip_DetailAction_Basic

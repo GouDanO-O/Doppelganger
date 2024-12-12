@@ -35,13 +35,13 @@ namespace GameFrame.World
         
         public HealthyController healthyController { get; protected set; }
         
-        public SkillController skillController { get; set;}
+        public SkillController skillController { get;protected set;}
         
-        public AttackController attackController { get; set; }
+        public AttackController attackController { get;protected set; }
         
-        public AnimatorController animatorController { get; set; }
+        public AnimatorController animatorController { get;protected set; }
         
-        public MoveController moveController { get; set; }
+        public MoveController moveController { get;protected set; }
         
 
         protected bool isInit = false;

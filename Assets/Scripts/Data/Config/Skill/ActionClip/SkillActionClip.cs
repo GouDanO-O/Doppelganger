@@ -26,6 +26,11 @@ namespace GameFrame.Config
         [SerializeReference]
         public SkillActionClip_BasicData Parameters;
 
+        /// <summary>
+        /// 触发具体的行为逻辑
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <param name="target"></param>
         public void TriggerSkillAction(WorldObj owner = null, WorldObj target = null)
         {
             switch (ActionType)
