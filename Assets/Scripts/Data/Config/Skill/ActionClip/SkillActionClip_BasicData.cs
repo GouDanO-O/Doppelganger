@@ -1,21 +1,28 @@
 ﻿using System;
+using GameFrame.World;
 using Sirenix.OdinInspector;
 
 namespace GameFrame.Config
 {
     [Serializable]
-    public class SkillActionClip_BasicData : SerializedScriptableObject
+    public abstract class SkillActionClip_BasicData : SerializedScriptableObject,IExecuteLogic,ITriggerLogic_NoTarget,ITriggerLogic_HasTarget
     {
-        [HorizontalGroup("Timing")]
-        [LabelText("开始时间"), LabelWidth(60), MinValue(0)]
-        public float StartTime;
+        public WorldObj ownerObj { get; set; }
 
-        [HorizontalGroup("Timing")]
-        [LabelText("持续时间"), LabelWidth(60)]
-        public float Duration = 1f;
+        public abstract void InitExecution(WorldObj owner);
 
-        [HorizontalGroup("Timing")]
-        [LabelText("结束时间"), LabelWidth(60), ReadOnly]
-        public float EndTime => StartTime + Duration;
+        public abstract void StartExecute();
+
+        public abstract void EndExecute();
+
+        public abstract void ResetExecute();
+        
+        public abstract void OnTriggerStart();
+
+        public abstract void OnTriggerEnd();
+
+        public abstract void OnTriggerStart(WorldObj suffer);
+
+        public abstract void OnTriggerEnd(WorldObj suffer);
     }
 }

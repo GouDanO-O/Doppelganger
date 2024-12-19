@@ -1,4 +1,5 @@
 ﻿using System;
+using GameFrame.World;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -18,5 +19,45 @@ namespace GameFrame.Config
         
         [LabelText("播放次数(如果为-1,就代表循环播放)")]
         public int PlayCount = 1;
+        
+        public override void InitExecution(WorldObj owner)
+        {
+            
+        }
+
+        public override void StartExecute()
+        {
+            
+        }
+
+        public override void OnTriggerStart()
+        {
+            
+        }
+
+        public override void OnTriggerStart(WorldObj suffer)
+        {
+            
+        }
+
+        public override void OnTriggerEnd()
+        {
+            
+        }
+
+        public override void OnTriggerEnd(WorldObj suffer)
+        {
+            
+        }
+
+        public override void EndExecute()
+        {
+            
+        }
+
+        public override void ResetExecute()
+        {
+            
+        }
     }
 }

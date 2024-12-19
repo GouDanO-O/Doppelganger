@@ -20,12 +20,10 @@ namespace GameFrame.Config
         public override void StartExecute()
         {
             base.StartExecute();
-            Trigger(clipDataTemporality.owner);
         }
 
-        public override void Trigger(WorldObj owner)
+        public override void OnTriggerStart()
         {
-            base.Trigger(owner);
             ShootProjectileCheck();
         }
 

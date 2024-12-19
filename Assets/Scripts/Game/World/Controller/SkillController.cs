@@ -127,7 +127,9 @@ namespace GameFrame.World
                 }
                 else
                 {
-                    curOwnedSkillNodes.Add(new SOwnedSkillData(skillNode));
+                    SOwnedSkillData newSkill = SOwnedSkillData.Allocate();
+                    newSkill.InitData(skillNode);
+                    curOwnedSkillNodes.Add(newSkill);
                 }
             }
         }
