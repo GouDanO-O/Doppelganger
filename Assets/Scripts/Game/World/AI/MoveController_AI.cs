@@ -6,7 +6,7 @@ namespace GameFrame.World
 {
     public class MoveController_AI : MoveController
     {
-         protected AIController owner;
+
         
          
     }

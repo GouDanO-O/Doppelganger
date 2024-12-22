@@ -10,11 +10,7 @@ namespace GameFrame.World
 {
     public class MoveController_Player :  MoveController
     {
-        protected PlayerController playerController;
-        
         protected Transform cameraTransform;
-
-        protected Transform headCameraRootTransfrom;
         
         public float mouseSensitivity { get; set; }
 
@@ -34,17 +30,6 @@ namespace GameFrame.World
         }
         
         /// <summary>
-        /// 初始化拥有者
-        /// </summary>
-        /// <param name="owner"></param>
-        public void InitPlayerController(PlayerController playerController)
-        {
-            this.playerController = playerController;
-            this.transfrom = playerController.transform;
-            this.headCameraRootTransfrom = playerController.headCameraRootTransfrom;
-        }
-
-        /// <summary>
         /// 初始化移动
         /// </summary>
         /// <param name="owner"></param>
@@ -52,6 +37,7 @@ namespace GameFrame.World
         public override void InitData(WorldObj owner)
         {
             base.InitData(owner);
+            
             SMoveData moveData = owner.thisDataConfig.MoveData;
             this.maxPitchAngle = moveData.maxPitchAngle;
             
@@ -72,7 +58,7 @@ namespace GameFrame.World
 
             if (isInFreeCameraMod)
             { 
-                movement = transfrom.right * input.x + transfrom.forward * input.z;
+                movement = transform.right * input.x + transform.forward * input.z;
             }
             else
             {

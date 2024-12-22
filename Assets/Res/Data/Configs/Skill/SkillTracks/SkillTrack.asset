@@ -25,16 +25,5 @@ MonoBehaviour:
   ActionClips:
   - ActionType: 0
     ActionDes: "\u91CA\u653E\u5F39\u4F53"
-    DetailAction: {fileID: 11400000, guid: a7d742952a99559458fd0a741fc5134f, type: 2}
-    AnimationData:
-      StartTime: 0
-      Duration: 1
-      AnimationClip: {fileID: 0}
-    AudioData:
-      StartTime: 0
-      Duration: 1
-      AudioClip: {fileID: 0}
-    ParticleEffectData:
-      StartTime: 0
-      Duration: 1
-      ParticleEffectPrefab: {fileID: 0}
+    Time: 0
+    Parameters: {fileID: 11400000, guid: a7d742952a99559458fd0a741fc5134f, type: 2}

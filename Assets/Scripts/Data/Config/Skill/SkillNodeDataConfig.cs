@@ -29,14 +29,6 @@ namespace GameFrame.Config
         public ESkill_NodeTreeType SkillNodeType;
 
         [BoxGroup("技能基本信息")]
-        [LabelText("技能触发类型\n主动--会添加到主动技能列表中(当玩家互动且满足使用条件时会释放)\n被动--当满足使用条件时会自动释放", true)]
-        public ETriggerType SkillSpellType;
-
-        [BoxGroup("技能基本信息")]
-        [LabelText("主动技能释放方式"), ShowIf("@SkillSpellType == ETriggerType.ExecuteTrigger")]
-        public ESkill_TriggerConditionType SkillTriggerConditionType;
-
-        [BoxGroup("技能基本信息")]
         [LabelText("所需等级(-1表示无等级限制)")]
         public int RequiredLevel;
 
@@ -68,15 +60,25 @@ namespace GameFrame.Config
 
         #region 轨道列表
 
-        [BoxGroup("技能行为轨道"),LabelText("技能行为轨道")]
+        [BoxGroup("技能行为轨道"),LabelText("具体的技能逻辑由这条轨道中的行为各自去决定")]
         public List<SkillTrackConfig> SkillTracks = new List<SkillTrackConfig>();
         #endregion
 
-        public void TriggerSkill(WorldObj owner=null, WorldObj target=null)
+        /// <summary>
+        /// 这是一个技能
+        /// 一个技能里面可能会有多条轨道
+        /// 分别执行每条行为轨道里面的行为
+        /// 且每条轨道总时序必须保持一致
+        /// 目前的做法是每条轨道里面的时序由自己触发
+        /// 而非由一个总轴去执行
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <param name="target"></param>
+        public void TriggerSkill(WorldObj owner=null)
         {
             for (int i = 0; i < SkillTracks.Count; i++)
             {
-                SkillTracks[i].Trigger(owner, target);
+                SkillTracks[i].Trigger(owner);
             }
         }
     }

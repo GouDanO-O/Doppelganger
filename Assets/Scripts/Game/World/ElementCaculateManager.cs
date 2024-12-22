@@ -8,11 +8,11 @@ namespace GameFrame.World
 {
     public class ElementCaculateManager
     {
-        private List<TriggerElementDamageData_Temporality> activeElementData = new List<TriggerElementDamageData_Temporality>();
+        private List<TriggerElementDamageData_TemporalityPoolable> activeElementData = new List<TriggerElementDamageData_TemporalityPoolable>();
 
-        public static UnityAction<TriggerElementDamageData_Temporality> onAddElementEffecterEvent;
+        public static UnityAction<TriggerElementDamageData_TemporalityPoolable> onAddElementEffecterEvent;
         
-        public static UnityAction<TriggerElementDamageData_Temporality> onRemoveElementEffecterEvent;
+        public static UnityAction<TriggerElementDamageData_TemporalityPoolable> onRemoveElementEffecterEvent;
 
         public ElementCaculateManager()
         {
@@ -40,7 +40,7 @@ namespace GameFrame.World
         /// 添加元素块
         /// </summary>
         /// <param name="data"></param>
-        private void AddElementData(TriggerElementDamageData_Temporality elementData)
+        private void AddElementData(TriggerElementDamageData_TemporalityPoolable elementData)
         {
             if (!activeElementData.Contains(elementData))
             {
@@ -52,7 +52,7 @@ namespace GameFrame.World
         /// 回收元素块
         /// </summary>
         /// <param name="elementData"></param>
-        private void RecycleElementData(TriggerElementDamageData_Temporality elementData)
+        private void RecycleElementData(TriggerElementDamageData_TemporalityPoolable elementData)
         {
             if (activeElementData.Contains(elementData))
             {

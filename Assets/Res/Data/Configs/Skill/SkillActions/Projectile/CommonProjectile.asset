@@ -21,28 +21,21 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  StartTime: 0
+  Duration: 1
   TimeDelayTime: 0
   persistenceProjectileData:
-    IsExtendWeaponData: 0
     IsLoadFromPool: 0
     ObjectPoolType: 0
     ObjectPrefab: {fileID: 7165454379647766587, guid: b764c26439433324db7b607c18be511b, type: 3}
     FireCount: 1
-    BaiscDamage: 0
-    CriticalRate: 0
-    CriticalDamage: 0
-    FlySpeed: 0
+    ElementType: 0
+    BaiscDamage: 10
+    FlySpeed: 10
     FireDelayTime: 0
     FireFurcationAngle: 0
-    MaxFlyDistance: 5000
-    CollisionTypes: 00000000000000000000000000000000
-    DamageAttenuations: []
+    MaxFlyDistance: 25
+    CollisionTypesList: 
+    DamageAttenuationsList: []
     ShootProjectileType: 0
     MaxParabolaHeight: 0
-    ElementType: 0
-    MaxElementAccLevel: 0
-    ElementDamage: 0
-    MaxElementDamage: 0
-    ElementLevelUpAddedDamage: []
-    ElementTriggerInterval: 0
-    ElementLevelUpDesriggerInterval: []

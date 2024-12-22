@@ -9,35 +9,13 @@ using GameFrame.UI;
 
 namespace GameFrame.World
 {
-    public interface IBiology_Healthy
-    {
-        public BindableProperty<bool> isDeath { get; set; }
-        
-        public BindableProperty<float> curHealthy { get; set; }
-        
-        public BindableProperty<float> maxHealthy { get; set; }
-        
-        public BindableProperty<float> curArmor { get; set; }
-        
-        public BindableProperty<float> maxArmor { get; set; }
-
-        public void SufferHarmed(float damage, WorldObj trigger, EElementType elementType = EElementType.None);
-
-        public void Becuring(float cureValue);
-
-        public void Death();
-    }
-    
-    
     public class HealthyController : AbstractController,IBiology_Healthy,IUnRegisterList
     { 
         public List<IUnRegister> UnregisterList { get; } = new List<IUnRegister>();
         
-        public WorldObj worldObj;
-        
         public HealthyStatusFollower healthyStatusFollower;
         
-        public TriggerElementDamageData_Temporality triggerElementDamageData_Temporality;
+        public TriggerElementDamageData_TemporalityPoolable triggerElementDamageData_TemporalityPoolable;
         
         public BindableProperty<bool> isDeath { get; set; }= new BindableProperty<bool>(false);
         
@@ -48,6 +26,8 @@ namespace GameFrame.World
         public BindableProperty<float> curArmor { get; set; } = new BindableProperty<float>();
         
         public BindableProperty<float> maxArmor { get; set; } = new BindableProperty<float>();
+        
+        private bool isInvisible = false;
         
         /// <summary>
         /// 初始化
@@ -62,7 +42,7 @@ namespace GameFrame.World
             
             isDeath.Register((data) =>
             {
-                this.worldObj.Death(data);
+                this.owner.Death(data);
                 this.healthyStatusFollower.Death(data);
             }).AddToUnregisterList(this);
             
@@ -93,25 +73,38 @@ namespace GameFrame.World
             this.maxArmor.Value = healthyData.maxArmor;
 
             healthyStatusFollower.InitFollowerStatus(worldObj,healthyData);
-            
-            worldObj.thisController.onBeHarmedEvent += SufferHarmed;
+            owner.onBeHarmedEvent += SufferHarmed;
+            owner.onChangeInvincibleModEvent += ChangeInvincible;
+        }
+
+        /// <summary>
+        /// 改变无敌状态
+        /// </summary>
+        /// <param name="isInvincible"></param>
+        public void ChangeInvincible(bool isInvincible)
+        {
+            this.isInvisible = isInvisible;
         }
         
         /// <summary>
         /// 受到伤害
+        /// 当死亡或处于无敌状态时不会受到伤害
+        /// 且当受到的伤害是来自元素本身造成的伤害时,不会再进行累计
+        /// 只有来自受到非元素本身造成的元素伤害时,才会进行累计元素
         /// </summary>
         /// <param name="elementType"></param>
-        public void SufferHarmed(float damage,WorldObj trigger,EElementType elementType=EElementType.None)
+        public void SufferHarmed(TriggerDamageData_TemporalityPoolable damageData)
         {
-            if(this.isDeath.Value)
+            if(this.isDeath.Value || this.isInvisible)
                 return;
 
-            if (elementType != EElementType.None)
+            if (damageData.elementType != EElementType.None && damageData.willOverlayElementLevel)
             {
-                SufferElement(elementType,trigger);
+                SufferElement(damageData.elementType,damageData.enforcer);
             }
 
-            ReduceHealthy(damage);
+            ReduceHealthy(damageData.CaculateFinalDamage());
+            RecycleDamageData();
         }
 
         /// <summary>
@@ -120,9 +113,7 @@ namespace GameFrame.World
         /// <param name="damage"></param>
         public void ReduceHealthy(float damage)
         {
-            float reCaculateDamage = damage * worldObj.worldObjPropertyDataTemporality.GetDamageReductionRatio();
-            float deepValue = curArmor.Value - reCaculateDamage;
-
+            float deepValue = curArmor.Value - damage;
             if (deepValue >= 0)
             {
                 curArmor.Value -= deepValue;
@@ -144,16 +135,18 @@ namespace GameFrame.World
 
         /// <summary>
         /// 遭受元素伤害
+        /// 看当前是否有元素,如果没有,就进行分配
+        /// 元素伤害是由受害者持有一份
+        /// 由元素管理器去管理和维护元素生命周期
         /// </summary>
         /// <param name="elementType"></param>
-        public void SufferElement(EElementType elementType,WorldObj trigger)
+        public void SufferElement(EElementType elementType,WorldObj enforcer)
         {
-            if (triggerElementDamageData_Temporality == null || triggerElementDamageData_Temporality.IsRecycled)
+            if (triggerElementDamageData_TemporalityPoolable == null || triggerElementDamageData_TemporalityPoolable.IsRecycled)
             {
-                triggerElementDamageData_Temporality = TriggerElementDamageData_Temporality.Allocate();
-                triggerElementDamageData_Temporality.SetOwner(this);
+                triggerElementDamageData_TemporalityPoolable = TriggerElementDamageData_TemporalityPoolable.Allocate();
             }
-            triggerElementDamageData_Temporality.AddElement(elementType,trigger.worldObjPropertyDataTemporality.GetElementDamageData(elementType));
+            triggerElementDamageData_TemporalityPoolable.UpdateSuffererAndEnforcer(enforcer,owner,elementType);
         }
 
         /// <summary>
@@ -176,11 +169,20 @@ namespace GameFrame.World
         {
             isDeath.Value = true;
         }
+
+        /// <summary>
+        /// 回收伤害池
+        /// </summary>
+        private void RecycleDamageData()
+        {
+            this.triggerElementDamageData_TemporalityPoolable.Recycle2Cache();
+        }
         
         public override void DeInitData()
         {
             this.UnRegisterAll();
-            worldObj.thisController.onBeHarmedEvent -= SufferHarmed;
+            owner.onBeHarmedEvent -= SufferHarmed;
+            owner.onChangeInvincibleModEvent -= ChangeInvincible;
         }
     }
 }

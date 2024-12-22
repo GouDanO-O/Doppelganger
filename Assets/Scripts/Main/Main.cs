@@ -21,8 +21,7 @@ namespace GameFrame
             Regiest_Utility();
             Regiest_Model();
             Regiest_System();
-
-
+            
             Regiest_Event();
 
             UIRoot.Instance.OnSingletonInit();
