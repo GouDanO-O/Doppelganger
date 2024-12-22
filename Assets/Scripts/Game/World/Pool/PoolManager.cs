@@ -11,7 +11,7 @@ namespace GameFrame.World
     [LabelText("对象池所属类型")]
     public enum EObjectPoolType
     {
-                
+        
     }
     
     public class PoolManager : MonoNetSingleton<PoolManager>

@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace GameFrame.World
 {
+    /// <summary>
+    /// 攻击控制器
+    /// </summary>
     public class AttackController : AbstractController
     {
         public WeaponController weaponController;

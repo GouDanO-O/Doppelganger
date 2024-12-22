@@ -99,9 +99,7 @@ namespace GameFrame
             autoScroll = true; // 每次添加新日志后，自动滚动
         }
         
-         
-
-protected override void DrawGUI()
+        protected override void DrawGUI()
 {
     // 如果日志系统不显示，直接返回
     if (!isShowing)
@@ -216,10 +214,7 @@ protected override void DrawGUI()
         }
     }
 }
-
-
-
-
+        
         // 更新累计日志列表
         private void UpdateCollapsedLogs()
         {

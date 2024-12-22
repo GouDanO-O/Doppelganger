@@ -43,7 +43,6 @@ namespace GameFrame.World
         
         public MoveController moveController { get;protected set; }
         
-
         protected bool isInit = false;
 
         public bool isControlledByPlayer { get; set; }

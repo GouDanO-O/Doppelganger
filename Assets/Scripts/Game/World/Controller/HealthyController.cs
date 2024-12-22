@@ -9,6 +9,10 @@ using GameFrame.UI;
 
 namespace GameFrame.World
 {
+    /// <summary>
+    /// 健康控制器
+    /// 用来管理健康系统
+    /// </summary>
     public class HealthyController : AbstractController,IBiology_Healthy,IUnRegisterList
     { 
         public List<IUnRegister> UnregisterList { get; } = new List<IUnRegister>();

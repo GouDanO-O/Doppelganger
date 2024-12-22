@@ -4,6 +4,9 @@ using UnityEngine.Events;
 
 namespace GameFrame.World
 {
+    /// <summary>
+    /// 动画控制器
+    /// </summary>
     public class AnimatorController: AbstractController
     {
         private EAnimationType currentAnimationType = EAnimationType.Idle;

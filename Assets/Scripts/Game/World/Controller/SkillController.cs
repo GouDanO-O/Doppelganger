@@ -1,15 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameFrame.Config;
+using GameFrame.World;
 using QFramework;
 using UnityEngine;
 
 namespace GameFrame.World
 {
+    /// <summary>
+    /// 技能控制器
+    /// </summary>
     public class SkillController : AbstractController
     {
+        /// <summary>
+        /// 当前拥有的局内技能
+        /// </summary>
         protected List<SkillNodeDataConfig> Skill_Inside = new List<SkillNodeDataConfig>();
         
+        /// <summary>
+        /// 当前拥有的局外技能
+        /// </summary>
         protected List<SkillNodeDataConfig> Skill_Outside = new List<SkillNodeDataConfig>();
 
         /// <summary>
@@ -23,24 +33,26 @@ namespace GameFrame.World
         public BindableProperty<int> curOwnedSkillPoint { get;protected set; } = new BindableProperty<int>();
         
         /// <summary>
-        /// 当前拥有的技能
+        /// 当前拥有的所有技能--所有的技能
+        /// 这些技能仅代表--当前玩家获得了这些技能,并不代表他们要使用这些技能
+        /// 需要玩家主动添加到技能列表中,才会激活
+        /// 仅用来查询,不能进行使用
         /// </summary>
-        public BindableList<SOwnedSkillData> curOwnedSkillNodes { get;protected set; } = new BindableList<SOwnedSkillData>();
+        public BindableList<OwnedSkillModel> curOwnedSkillNodes { get;protected set; } = new BindableList<OwnedSkillModel>();
         
         /// <summary>
         /// 主动技能
+        /// 只有添加到主动列表中的技能,才会添加进列表
+        /// 如果仅激活技能,但是没有放进主动列表中,则不会添加进列表
         /// </summary>
-        public BindableDictionary<int, SOwnedSkillData> curOwnedSkills_Initiative { get;protected set; } = new BindableDictionary<int, SOwnedSkillData>();
+        public BindableDictionary<int, OwnedSkillModel> curOwnedSkills_Initiative { get;protected set; } = new BindableDictionary<int, OwnedSkillModel>();
         
         /// <summary>
         /// 被动技能
+        /// 只有添加到被动列表中的技能,才会添加进列表
+        /// 如果仅获得技能,但是没有放进被动列表中,则不会添加进列表
         /// </summary>
-        public BindableList<SOwnedSkillData> curOwnedSkills_Passive { get;protected set; } = new BindableList<SOwnedSkillData>();
-        
-        public IArchitecture GetArchitecture()
-        {
-            return Main.Interface;
-        }
+        public BindableList<OwnedSkillModel> curOwnedSkills_Passive { get;protected set; } = new BindableList<OwnedSkillModel>();
         
         /// <summary>
         /// 初始化
@@ -127,11 +139,49 @@ namespace GameFrame.World
                 }
                 else
                 {
-                    SOwnedSkillData newSkill = SOwnedSkillData.Allocate();
-                    newSkill.InitData(skillNode);
+                    OwnedSkillModel newSkill = OwnedSkillModel.Allocate();
+                    newSkill.InitData(owner,skillNode);
                     curOwnedSkillNodes.Add(newSkill);
                 }
             }
+        }
+
+        /// <summary>
+        /// 激活主动技能--即添加到主动技能列表
+        /// </summary>
+        public virtual void ActivateSkill_Initiative()
+        {
+            
+        }
+
+        /// <summary>
+        /// 激活被动技能--即添加到被动技能列表
+        /// </summary>
+        public virtual void ActivateSkill_Passivity()
+        {
+            
+        }
+
+        /// <summary>
+        /// 注销主动技能
+        /// 从主动技能列表中移除
+        /// 并不代表将这个技能从拥有的技能中移除
+        /// 玩家后续仍可以再次激活这个技能
+        /// </summary>
+        public virtual void UnActivateSkill_Initiative()
+        {
+            
+        }
+        
+        /// <summary>
+        /// 注销被动技能
+        /// 从被动技能列表中移除
+        /// 并不代表将这个技能从拥有的技能中移除
+        /// 玩家后续仍可以再次激活这个技能
+        /// </summary>
+        public virtual void UnActivateSkill_Passivity()
+        {
+            
         }
         
         /// <summary>
@@ -158,7 +208,7 @@ namespace GameFrame.World
         /// 检查是否满足技能的施法条件
         /// </summary>
         /// <returns></returns>
-        protected bool CheckIsSatisfySkill(SOwnedSkillData skill)
+        protected bool CheckIsSatisfySkill(OwnedSkillModel skill)
         {
             if (CheckHasSkill(skill.skillNodeDataConfig) != -1)
             {
@@ -176,11 +226,11 @@ namespace GameFrame.World
         /// 使用指定技能
         /// </summary>
         /// <param name="skillNode"></param>
-        public virtual void UseSkill(SOwnedSkillData skill)
+        public virtual void UseSkill(OwnedSkillModel skill)
         {
             if (CheckIsSatisfySkill(skill))
             {
-                skill.TriggerSkill(owner);
+                skill.ExcuateSkillCheck();
             }
         }
 
@@ -191,7 +241,7 @@ namespace GameFrame.World
         {
             for (int i = 0; i < Skill_Outside.Count; i++)
             {
-                Skill_Outside[i].TriggerSkill(owner);
+                
             }
         }
     }

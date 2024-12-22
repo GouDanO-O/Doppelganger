@@ -11,7 +11,7 @@ using UnityEngine;
 namespace GameFrame.Config
 {
     [Serializable]
-    public class SkillActionClip : IExecuteLogic
+    public class SkillActionClip
     {
         [LabelText("行为类型")]
         public EActionType ActionType;
@@ -34,54 +34,5 @@ namespace GameFrame.Config
         [BoxGroup("行为参数")]
         [SerializeReference]
         public SkillActionClip_BasicData Parameters;
-
-        public WorldObj ownerObj { get; set; }
-        
-        public void InitExecution(WorldObj owner)
-        {
-           this.ownerObj = owner;
-        }
-
-        public void StartExecute()
-        {
-            
-        }
-
-        public void EndExecute()
-        {
-            
-        }
-
-        public void ResetExecute()
-        {
-            ownerObj = null;
-        }
-        
-        /// <summary>
-        /// 触发具体的行为逻辑
-        /// </summary>
-        /// <param name="owner"></param>
-        /// <param name="target"></param>
-        private void TriggerSkillAction(WorldObj target = null)
-        {
-            switch (ActionType)
-            {
-                case EActionType.DetailAction:
-                    if (Parameters is SkillActionClip_DetailAction_Basic detailAction)
-                    {
-                        detailAction.InitExecution(ownerObj);
-                    }
-                    break;
-                case EActionType.Animation:
-                    // 实现动画触发逻辑
-                    break;
-                case EActionType.Audio:
-                    // 实现音效触发逻辑
-                    break;
-                case EActionType.ParticleSystem:
-                    // 实现粒子特效触发逻辑
-                    break;
-            }
-        }
     }
 }

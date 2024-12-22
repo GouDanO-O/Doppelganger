@@ -21,9 +21,10 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  TrackName: 
+  TrackName: "\u53D1\u5C04\u5F39\u4F53"
   ActionClips:
   - ActionType: 0
     ActionDes: "\u91CA\u653E\u5F39\u4F53"
-    Time: 0
+    StartTime: 0
+    Duration: 1
     Parameters: {fileID: 11400000, guid: a7d742952a99559458fd0a741fc5134f, type: 2}
