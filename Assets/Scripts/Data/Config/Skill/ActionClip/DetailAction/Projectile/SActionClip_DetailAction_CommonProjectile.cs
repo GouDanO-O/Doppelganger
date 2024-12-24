@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameFrame.World;
+using QFramework;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -15,16 +16,20 @@ namespace GameFrame.Config
     [CreateAssetMenu(fileName = "CommonProjectile", menuName = "配置/技能/行为/弹体/普通弹体")]
     public class SActionClip_DetailAction_CommonProjectile : SkillActionClip_DetailAction_Basic
     {
-        [LabelText("弹体数据")] public CommonProjectileData_Persistence persistenceProjectileData;
+        [LabelText("弹体数据")] 
+        public CommonProjectileData_Persistence persistenceProjectileData;
 
-        public override void StartExecute()
+        protected override void StartExecute()
         {
             base.StartExecute();
+            ShootProjectileCheck();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void OnTriggerStart()
         {
-            ShootProjectileCheck();
         }
 
         /// <summary>
@@ -34,9 +39,10 @@ namespace GameFrame.Config
         {
             for (int i = 0; i < persistenceProjectileData.FireCount; i++)
             {
-                if (persistenceProjectileData.FireDelayTime > 0)
+                float delayTime = persistenceProjectileData.FireDelayTime;
+                if (delayTime > 0)
                 {
-                    Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(FireTimeDelay());
+                    Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(FireTimeDelay(i * delayTime));
                 }
                 else
                 {
@@ -45,9 +51,9 @@ namespace GameFrame.Config
             }
         }
 
-        IEnumerator FireTimeDelay()
+        IEnumerator FireTimeDelay(float delayTime)
         {
-            yield return new WaitForSeconds(persistenceProjectileData.FireDelayTime);
+            yield return new WaitForSeconds(delayTime);
             ShootProjectile();
         }
 
@@ -56,6 +62,7 @@ namespace GameFrame.Config
         /// </summary>
         protected virtual void ShootProjectile()
         {
+            //Debug.Log("发射"+Time.time);
             GameObject projectile = null;
             if (persistenceProjectileData.IsLoadFromPool)
             {
@@ -69,8 +76,9 @@ namespace GameFrame.Config
             if (projectile == null)
                 return;
 
+            projectile.Show();
             ProjectileController projectileController = projectile.GetComponent<ProjectileController>();
-            projectileController.InitData(clipDataTemporality.owner, persistenceProjectileData);
+            projectileController.InitData(persistenceProjectileData);
         }
     }
 }

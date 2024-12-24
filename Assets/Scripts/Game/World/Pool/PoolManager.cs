@@ -17,6 +17,10 @@ namespace GameFrame.World
     public class PoolManager : MonoNetSingleton<PoolManager>
     {
         public SimpleObjectPool<HealthyStatusFollower> healthyStatusFollower_Pool;
+
+        public GameObject TestObj;
+        
+        private SimpleObjectPool<GameObject> TestPool;
         
         private void Awake()
         {
@@ -29,6 +33,8 @@ namespace GameFrame.World
             SafeObjectPool<TriggerDamageData_TemporalityPoolable>.Instance.Init(100, 50);
             SafeObjectPool<TriggerElementDamageData_TemporalityPoolable>.Instance.Init(50, 30);
             SafeObjectPool<ProjectileTriggerDamageData_TemporalityPoolable>.Instance.Init(50, 30);
+
+            TestPool = SpawnDetailPool(TestObj, transform, 100);
         }
 
         public void InitNormalPool()
@@ -62,12 +68,12 @@ namespace GameFrame.World
         
         public GameObject LoadObjFromPool(EObjectPoolType poolType)
         {
-            return null;
+            return TestPool.Allocate();
         }
 
         public void RecycleObj(EObjectPoolType poolType,GameObject targetObj)
         {
-            
+            TestPool.Recycle(targetObj);
         }
         
         private SimpleObjectPool<GameObject> SpawnDetailPool(GameObject prefab,Transform father,int count=30)

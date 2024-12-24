@@ -12,17 +12,12 @@ namespace GameFrame.Config
     [Serializable]
     public class SkillActionClip_DetailAction_Basic : SkillActionClip_BasicData
     {
-        protected ActionClipData_TemporalityPoolable clipDataTemporality;
-        
-        public override void InitExecution(WorldObj owner)
+        public override void InitExecution()
         {
-            this.ownerObj = owner;
-            clipDataTemporality = ActionClipData_TemporalityPoolable.Allocate();
-            clipDataTemporality.SetOwner(owner);
             StartExecute();
         }
 
-        public override void StartExecute()
+        protected override void StartExecute()
         {
             
         }

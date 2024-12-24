@@ -5,13 +5,11 @@ using Sirenix.OdinInspector;
 namespace GameFrame.Config
 {
     [Serializable]
-    public abstract class SkillActionClip_BasicData : SerializedScriptableObject,IExecuteLogic,ITriggerLogic_NoTarget,ITriggerLogic_HasTarget
+    public abstract class SkillActionClip_BasicData : SerializedScriptableObject,ITriggerLogic_NoTarget,ITriggerLogic_HasTarget
     {
-        public WorldObj ownerObj { get; set; }
+        public abstract void InitExecution();
 
-        public abstract void InitExecution(WorldObj owner);
-
-        public abstract void StartExecute();
+        protected abstract void StartExecute();
 
         public abstract void EndExecute();
 

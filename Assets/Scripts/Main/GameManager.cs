@@ -107,7 +107,7 @@ namespace GameFrame
         /// </summary>
         public void StartGame()
         {
-            sceneLoader.onLoadScene.Invoke(ESceneName.GameScene);
+            sceneLoader.onLoadScene.Invoke(ESceneName.TestScene);
             PoolManager.Instance.InitNormalPool();
         }
 

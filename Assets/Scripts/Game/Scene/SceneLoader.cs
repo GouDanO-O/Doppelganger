@@ -15,7 +15,8 @@ namespace GameFrame
     public enum ESceneName : byte
     {
         Menu=1,
-        GameScene=2
+        GameScene=2,
+        TestScene=3
     }
 
     public class SceneLoader : AbstractSystem

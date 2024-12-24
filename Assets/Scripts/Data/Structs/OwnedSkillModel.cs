@@ -49,8 +49,6 @@ namespace GameFrame
         /// </summary>
         public float skillCooldown { get; set; }
 
-        private SkillExecuter_TemporalityPoolable curSkillExecuter;
-
         public static OwnedSkillModel Allocate()
         {
             return SafeObjectPool<OwnedSkillModel>.Instance.Allocate();
@@ -96,6 +94,7 @@ namespace GameFrame
             {
                 lastSkillUseTime = Time.time;
                 willEndTime = lastSkillUseTime + skillCooldown;
+                ExcuateSkill();
             }
             else
             {
@@ -110,8 +109,7 @@ namespace GameFrame
         {
             if (skillNodeDataConfig)
             {
-                curSkillExecuter=SkillExecuter_TemporalityPoolable.Allocate();
-                curSkillExecuter.InitData(this);
+                SkillExecuteManager.Instance.onAddSkillExecuter?.Invoke(this);
             }
         }
         
@@ -129,10 +127,6 @@ namespace GameFrame
             
             //当前本地时间是否到达结束时间
             if (Time.time <= willEndTime)
-                return false;
-            
-            //当前技能执行器是否结束循环
-            if (!curSkillExecuter.IsRecycled)
                 return false;
             
             //判断当前技能是否有执行条件,如果有执行条件则需要判断执行条件(后续添加)

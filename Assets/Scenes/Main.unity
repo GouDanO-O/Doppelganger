@@ -309,6 +309,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   owner: {fileID: 0}
+  TestObj: {fileID: 7165454379647766587, guid: b764c26439433324db7b607c18be511b, type: 3}
 --- !u!1 &397286456
 GameObject:
   m_ObjectHideFlags: 0

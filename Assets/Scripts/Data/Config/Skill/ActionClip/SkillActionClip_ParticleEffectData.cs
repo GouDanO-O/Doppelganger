@@ -11,12 +11,12 @@ namespace GameFrame.Config
         [LabelText("特效预制体")]
         public GameObject ParticleEffectPrefab;
         
-        public override void InitExecution(WorldObj owner)
+        public override void InitExecution()
         {
             
         }
 
-        public override void StartExecute()
+        protected override void StartExecute()
         {
             
         }

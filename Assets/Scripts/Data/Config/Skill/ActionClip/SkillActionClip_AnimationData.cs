@@ -12,12 +12,12 @@ namespace GameFrame.Config
         [LabelText("动画Clip")]
         public AnimationClip AnimationClip;
 
-        public override void InitExecution(WorldObj owner)
+        public override void InitExecution()
         {
             
         }
 
-        public override void StartExecute()
+        protected override void StartExecute()
         {
             
         }
