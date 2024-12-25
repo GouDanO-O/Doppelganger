@@ -16,7 +16,7 @@ namespace GameFrame.World
     
     public class PoolManager : MonoNetSingleton<PoolManager>
     {
-        public SimpleObjectPool<HealthyStatusFollower> healthyStatusFollower_Pool;
+        public SimpleObjectPool<HealthyStatusFollower_View> healthyStatusFollower_Pool;
 
         public GameObject TestObj;
         
@@ -48,11 +48,11 @@ namespace GameFrame.World
                 this.GetModel<ResourcesData_Model>().UIPrefabsDataConfig.HealthyStatusFollowPrefab;
             
             Transform statusRoot=UIRoot.Instance.Common.Find("HealthyStatusFollowerRoot");
-            healthyStatusFollower_Pool =  new SimpleObjectPool<HealthyStatusFollower>(() =>
+            healthyStatusFollower_Pool =  new SimpleObjectPool<HealthyStatusFollower_View>(() =>
             {
                 GameObject obj = healthyStatusFollowerObj.InstantiateWithParent(statusRoot);
                 obj.Hide();
-                HealthyStatusFollower follower=obj.GetComponent<HealthyStatusFollower>();
+                HealthyStatusFollower_View follower=obj.GetComponent<HealthyStatusFollower_View>();
                 follower.Init();
                 return follower;
             }, (spawnedObj) =>

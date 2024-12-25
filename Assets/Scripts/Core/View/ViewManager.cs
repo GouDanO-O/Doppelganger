@@ -9,7 +9,7 @@ namespace GameFrame.UI
     /// <summary>
     /// UI管理类
     /// </summary>
-    public class UISupervisor : AbstractSystem
+    public class ViewManager : AbstractSystem
     {
         protected override void OnInit()
         {
@@ -21,7 +21,7 @@ namespace GameFrame.UI
         /// </summary>
         public void EnterMenu()
         {
-            Main.Interface.GetUtility<CoroutineUtility>().SpawnUI_Async<UI_MenuPanel>();
+            Main.Interface.GetUtility<Coroutine_Utility>().SpawnUI_Async<MenuPanel_View>();
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace GameFrame.UI
         /// </summary>
         public void EnterGame()
         {
-            UIKit.ClosePanel<UI_MenuPanel>();
+            UIKit.ClosePanel<MenuPanel_View>();
         }
     }
 }

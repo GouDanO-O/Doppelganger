@@ -105,8 +105,7 @@ namespace GameFrame.World
             rigidbody = GetComponent<Rigidbody>();
             collider = GetComponent<Collider>();
             footRoot = transform.Find("FootRoot");
-
-
+            
             InitGeneralController();
             if (isControlledByPlayer)
             {

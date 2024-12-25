@@ -2,11 +2,11 @@
 
 namespace GameFrame
 {
-    public class RemoveCheatCommand : AbstractCommand
+    public class RemoveCheat_Command : AbstractCommand
     {
         protected string Name;
 
-        public RemoveCheatCommand(string name)
+        public RemoveCheat_Command(string name)
         {
             Name = name;
         }

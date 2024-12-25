@@ -23,11 +23,9 @@ namespace GameFrame
             Regiest_System();
             
             Regiest_Event();
-
             UIRoot.Instance.OnSingletonInit();
         }
-
-
+        
         /// <summary>
         /// 注册System
         /// </summary>
@@ -35,7 +33,7 @@ namespace GameFrame
         {
             this.RegisterSystem(new ResourcesManager());
             this.RegisterSystem(new SceneLoader());
-            this.RegisterSystem(new UISupervisor());
+            this.RegisterSystem(new ViewManager());
             this.RegisterSystem(new MultilingualManager());
             this.RegisterSystem(new InputManager());
         }
@@ -46,6 +44,7 @@ namespace GameFrame
         protected void Regiest_Model()
         {
             this.RegisterModel(new ResourcesData_Model());
+            this.RegisterModel(new CheatData_Model());
         }
 
         /// <summary>
@@ -53,10 +52,9 @@ namespace GameFrame
         /// </summary>
         protected void Regiest_Utility()
         {
-            this.RegisterUtility(new ResoucesUtility());
+            this.RegisterUtility(new Resouces_Utility());
         }
         
-
         /// <summary>
         /// 注册事件
         /// </summary>

@@ -33,7 +33,7 @@ namespace GameFrame.World
                 for (int i = 0; i < skillExecuterList.Count; i++)
                 {
                     SkillExecuter_TemporalityPoolable skillExecuter = skillExecuterList[i];
-                    skillExecuter.TimeCheck();
+                    skillExecuter.TimeCheck(deltaTime);
                 }
             }
         }
@@ -45,7 +45,7 @@ namespace GameFrame.World
         public void AddSkillExecuter(OwnedSkillData_TemporalityPoolable skillDataTemporalityPoolable)
         {
             SkillExecuter_TemporalityPoolable skillExecuter = SkillExecuter_TemporalityPoolable.Allocate();
-            skillExecuter.InitData(skillDataTemporalityPoolable);
+            skillExecuter.InitData(this,skillDataTemporalityPoolable);
             skillExecuterList.Add(skillExecuter);
         }
 
@@ -54,9 +54,12 @@ namespace GameFrame.World
         /// 当技能执行完毕后就移除这个技能
         /// </summary>
         /// <param name="skillDataTemporalityPoolable"></param>
-        public void RemoveSkillExecuter(OwnedSkillData_TemporalityPoolable skillDataTemporalityPoolable)
+        public void RemoveSkillExecuter(SkillExecuter_TemporalityPoolable skillExecuterTemporalityPoolable)
         {
-            
+            if (skillExecuterList.Contains(skillExecuterTemporalityPoolable))
+            {
+                skillExecuterList.Remove(skillExecuterTemporalityPoolable);
+            }
         }
     }
 }

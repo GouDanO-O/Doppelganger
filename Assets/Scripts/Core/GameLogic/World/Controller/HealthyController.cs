@@ -17,7 +17,7 @@ namespace GameFrame.World
     { 
         public List<IUnRegister> UnregisterList { get; } = new List<IUnRegister>();
         
-        public HealthyStatusFollower healthyStatusFollower;
+        public HealthyStatusFollower_View healthyStatusFollower;
         
         public TriggerElementDamageData_TemporalityPoolable triggerElementDamageData_TemporalityPoolable;
         

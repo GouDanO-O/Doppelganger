@@ -6,7 +6,7 @@ using QFramework;
 namespace GameFrame.UI
 {
 	// Generate Id:99c899e6-a2f6-4d31-9de7-f1e6d3846083
-	public partial class UI_MenuPanel
+	public partial class MenuPanel_View
 	{
 		public const string Name = "UI_MenuPanel";
 		

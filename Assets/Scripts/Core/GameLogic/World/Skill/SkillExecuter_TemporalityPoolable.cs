@@ -13,22 +13,30 @@ namespace GameFrame.World
     /// </summary>
     public class SkillExecuter_TemporalityPoolable : TemporalityData_Pool
     {
+        public SkillExecuteManager skillExecuteManager;
+        
         private OwnedSkillData_TemporalityPoolable _skillDataTemporalityPoolable;
 
-        private List<SkillActionClip> curWillExecuteActions=new List<SkillActionClip>();
+        private List<SkillExcuterData_TemporalityPoolable> curWillExecuteActions = new List<SkillExcuterData_TemporalityPoolable>();
+        
+        private float curExecuteTime = 0;
 
         public static SkillExecuter_TemporalityPoolable Allocate()
         {
             return SafeObjectPool<SkillExecuter_TemporalityPoolable>.Instance.Allocate();
         }
         
-        public void InitData(OwnedSkillData_TemporalityPoolable skillDataTemporalityPoolable)
+        public void InitData(SkillExecuteManager skillExecuteManager,OwnedSkillData_TemporalityPoolable skillDataTemporalityPoolable)
         {
             this._skillDataTemporalityPoolable = skillDataTemporalityPoolable;
-
+            this.skillExecuteManager = skillExecuteManager;
             ExtuateSkillCheck();
         }
 
+        /// <summary>
+        /// 执行技能检测
+        /// 将每条轴里面的行为添加到list中
+        /// </summary>
         private void ExtuateSkillCheck()
         {
             if (_skillDataTemporalityPoolable.skillNodeDataConfig)
@@ -42,8 +50,6 @@ namespace GameFrame.World
                         AddAction(detailSkillTrackConfig.ActionClips[j]);
                     }
                 }
-
-                StartExcute();
             }
         }
 
@@ -53,60 +59,32 @@ namespace GameFrame.World
         /// <param name="actionClip"></param>
         private void AddAction(SkillActionClip actionClip)
         {
-            curWillExecuteActions.Add(actionClip);
-        }
-        
-        /// <summary>
-        /// 开始执行
-        /// </summary>
-        private void StartExcute()
-        {
-            for (int i = 0; i < curWillExecuteActions.Count; i++)
-            {
-                
-            }
+            SkillExcuterData_TemporalityPoolable skillData = SkillExcuterData_TemporalityPoolable.Allocate();
+            skillData.InitData(actionClip);
+            curWillExecuteActions.Add(skillData);
         }
 
         /// <summary>
         /// 由技能管理器去轮循这个技能的时间
         /// </summary>
-        public void TimeCheck()
+        public void TimeCheck(float deltaTime)
         {
-            
-        }
-
-        /// <summary>
-        /// 行为开始时间检测
-        /// 必须要保证每个行为的时间轴都是同步的
-        /// </summary>
-        private void TimeDelayCheck()
-        {
-            
-        }
-
-        /// <summary>
-        /// 技能行为检测
-        /// </summary>
-        /// <param name="clipData"></param>
-        private void ActionTypeCheck(SkillActionClip clipData)
-        {
-            switch (clipData.ActionType)
+            curExecuteTime += deltaTime;
+            int curEndCount = 0;
+            int curSkillCount = curWillExecuteActions.Count;
+            for (int i = 0; i < curSkillCount; i++)
             {
-                case EActionType.DetailAction:
-                    if (clipData.Parameters is SkillActionClip_DetailAction_Basic detailAction)
-                    {
-                        
-                    }
-                    break;
-                case EActionType.Animation:
-                    // 实现动画触发逻辑
-                    break;
-                case EActionType.Audio:
-                    // 实现音效触发逻辑
-                    break;
-                case EActionType.ParticleSystem:
-                    // 实现粒子特效触发逻辑
-                    break;
+                SkillExcuterData_TemporalityPoolable curData=curWillExecuteActions[i];
+                if (curData.CheckTime(curExecuteTime))
+                {
+                    curData.StartExecute();
+                    curEndCount++;
+                }
+            }
+
+            if (curEndCount == curSkillCount)
+            {
+                Recycle2Cache();
             }
         }
         
@@ -122,7 +100,12 @@ namespace GameFrame.World
 
         public override void Recycle2Cache()
         {
-            
+            for (int i = 0; i < curWillExecuteActions.Count; i++)
+            {
+                curWillExecuteActions[i].Recycle2Cache();
+            }
+            curWillExecuteActions.Clear();
+            skillExecuteManager.RemoveSkillExecuter(this);
         }
     }
 }

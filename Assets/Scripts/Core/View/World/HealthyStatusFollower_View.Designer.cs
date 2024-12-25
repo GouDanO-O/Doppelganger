@@ -6,7 +6,7 @@ using QFramework;
 namespace GameFrame.UI
 {
 	// Generate Id:3fd438c2-e2a6-4460-ba7d-5539122b4d8f
-	public partial class HealthyStatusFollower
+	public partial class HealthyStatusFollower_View
 	{
 		public const string Name = "HealthyStatusFollower";
 		

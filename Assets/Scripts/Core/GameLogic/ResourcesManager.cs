@@ -17,13 +17,13 @@ namespace GameFrame
 
         private int maxLoadCount = 4;
 
-        ResoucesUtility loader;
+        Resouces_Utility loader;
 
         ResourcesData_Model _resourcesDataModel;
 
         protected override void OnInit()
         {
-            loader = this.GetUtility<ResoucesUtility>();
+            loader = this.GetUtility<Resouces_Utility>();
             loader.InitLoader();
             _resourcesDataModel=this.GetModel<ResourcesData_Model>();
         }

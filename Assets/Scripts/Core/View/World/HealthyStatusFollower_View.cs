@@ -12,7 +12,7 @@ namespace GameFrame.UI
 	{
 		
 	}
-	public partial class HealthyStatusFollower : UIPanel
+	public partial class HealthyStatusFollower_View : UIPanel
 	{
 		protected WorldObj worldObj;
 

@@ -19,6 +19,8 @@ namespace GameFrame
         protected SceneLoader sceneLoader;
 
         protected EGameState curGameState=EGameState.None;
+        
+        protected GameData_Model gameDataModel; 
 
         private ResourcesManager resourcesManager;
 
@@ -149,12 +151,12 @@ namespace GameFrame
             curGameState = EGameState.EndLoading;
             if (sceneName == ESceneName.Menu)
             {
-                GetArchitecture().GetSystem<UISupervisor>().EnterMenu();
+                GetArchitecture().GetSystem<ViewManager>().EnterMenu();
             }
             else if(sceneName == ESceneName.GameScene)
             {
                 curGameState = EGameState.Playing;
-                GetArchitecture().GetSystem<UISupervisor>().EnterGame();
+                GetArchitecture().GetSystem<ViewManager>().EnterGame();
             }
             Debug.Log("加载场景结束");
         }

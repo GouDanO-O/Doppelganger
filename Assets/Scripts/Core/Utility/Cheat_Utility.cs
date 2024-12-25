@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GameFrame
 {
-    public class CheatUtility : BasicToolUtility_Mono
+    public class Cheat_Utility : BasicTool_Utility_Mono
     {
         private CheatData_Model _cheatDataModel;
 
@@ -16,8 +16,7 @@ namespace GameFrame
         protected override void InitUtility()
         {
             Main.Interface.RegisterUtility(this);
-            _cheatDataModel = new CheatData_Model();
-            Main.Interface.RegisterModel(_cheatDataModel);
+            _cheatDataModel = Main.Interface.GetModel<CheatData_Model>();
         }
 
         protected override void DrawGUI()

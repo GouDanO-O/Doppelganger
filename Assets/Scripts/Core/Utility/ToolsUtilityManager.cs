@@ -16,13 +16,13 @@ namespace GameFrame
         
         private bool canShowGUI = false;
         
-        private CheatUtility cheatUtility;
+        private Cheat_Utility cheatUtility;
         
-        private LogUtility logUtility;
+        private Log_Utility logUtility;
         
-        private CoroutineUtility coroutineUtility;
+        private Coroutine_Utility coroutineUtility;
 
-        private TimeUtility timeUtility;
+        private Time_Utility timeUtility;
         
         public IArchitecture GetArchitecture()
         {
@@ -34,23 +34,27 @@ namespace GameFrame
             InitData();
         }
 
+        /// <summary>
+        /// 初始化
+        /// 根据所选项来选择性注册工具
+        /// </summary>
         protected void InitData()
         {
             if (willShowLogWindow)
             {
-                logUtility = gameObject.AddComponent<LogUtility>();
+                logUtility = gameObject.AddComponent<Log_Utility>();
                 canShowGUI = true;
             }
             
             if (willShowCheatWindow)
             {
-                cheatUtility = gameObject.AddComponent<CheatUtility>();
+                cheatUtility = gameObject.AddComponent<Cheat_Utility>();
                 canShowGUI = true;
             }
             
-            coroutineUtility = gameObject.AddComponent<CoroutineUtility>();
+            coroutineUtility = gameObject.AddComponent<Coroutine_Utility>();
             
-            timeUtility = new TimeUtility();
+            timeUtility = new Time_Utility();
             GetArchitecture().RegisterUtility(timeUtility);
         }
 

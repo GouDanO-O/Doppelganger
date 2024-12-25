@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameFrame
 {
-    public class TimeUtility : BasicToolUtility
+    public class Time_Utility : BasicTool_Utility
     {
         public override void InitUtility()
         {

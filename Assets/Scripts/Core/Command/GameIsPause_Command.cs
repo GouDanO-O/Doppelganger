@@ -1,19 +1,20 @@
-﻿using QFramework;
+﻿using GameFrame;
+using QFramework;
 
 namespace Command
 {
     public class GameIsPause_Command : AbstractCommand
     {
-        public bool isPasued = false;
+        public bool willPasue = false;
 
         public GameIsPause_Command(bool willPasue)
         {
-            isPasued = willPasue;
+            willPasue = willPasue;
         }
         
         protected override void OnExecute()
         {
-            
+            this.GetModel<GameData_Model>().ChangGamePasuing(willPasue);
         }
     }
 }

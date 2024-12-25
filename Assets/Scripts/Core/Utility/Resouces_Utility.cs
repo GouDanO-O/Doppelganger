@@ -8,7 +8,7 @@ using UnityEngine.U2D;
 
 namespace GameFrame
 {
-    public class ResoucesUtility : IUtility
+    public class Resouces_Utility : IUtility
     {
         private ResLoader resLoader;
 

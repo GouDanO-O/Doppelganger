@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 namespace GameFrame
 {
-    public class LogUtility : BasicToolUtility_Mono,IPointerDownHandler
+    public class Log_Utility : BasicTool_Utility_Mono,IPointerDownHandler
     {
         private List<LogMessage> logs = new List<LogMessage>(); // 存储所有日志
         

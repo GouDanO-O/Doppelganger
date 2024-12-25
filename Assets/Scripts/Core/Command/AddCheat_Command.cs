@@ -3,13 +3,13 @@ using QFramework;
 
 namespace GameFrame
 {
-    public class AddCheatCommand : AbstractCommand
+    public class AddCheat_Command : AbstractCommand
     {
         protected string Name;
 
         protected Action CheatAction;
 
-        public AddCheatCommand(string name, Action action)
+        public AddCheat_Command(string name, Action action)
         {
             Name = name;
             CheatAction = action;

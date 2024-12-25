@@ -7,7 +7,7 @@ using QFramework;
 
 namespace GameFrame
 {
-    public class CoroutineUtility : BasicToolUtility_Mono
+    public class Coroutine_Utility : BasicTool_Utility_Mono
     {
         protected override void InitUtility()
         {

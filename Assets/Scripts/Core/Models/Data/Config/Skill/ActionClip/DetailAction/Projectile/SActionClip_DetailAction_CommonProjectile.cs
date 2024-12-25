@@ -23,7 +23,6 @@ namespace GameFrame.Config
         {
             base.StartExecute();
             ShootProjectileCheck();
-
         }
 
         /// <summary>

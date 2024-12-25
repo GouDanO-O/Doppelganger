@@ -8,7 +8,7 @@ namespace GameFrame.UI
 	public class UI_MenuPanelData : UIPanelData
 	{
 	}
-	public partial class UI_MenuPanel : UIPanel
+	public partial class MenuPanel_View : UIPanel
 	{
 		protected Transform LocalModRoot;
 

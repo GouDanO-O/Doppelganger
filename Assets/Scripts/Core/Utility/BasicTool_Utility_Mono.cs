@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GameFrame
 {
-    public abstract class BasicToolUtility_Mono : MonoBehaviour,IUtility
+    public abstract class BasicTool_Utility_Mono : MonoBehaviour,IUtility
     {
         [HideInInspector]public bool isShowing;
         

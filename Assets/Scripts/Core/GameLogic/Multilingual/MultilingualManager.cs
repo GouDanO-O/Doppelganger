@@ -7,28 +7,37 @@ namespace  GameFrame.Multilingual
 {
     public enum ELanguageType : byte
     {
-        Zh,   // Simplified Chinese
-        En    // English
-    }
-    
-    /// <summary>
-    /// 当切换语言时,进行广播
-    /// </summary>
-    public struct SChangeMultingualEvent
-    {
+        SimplifiedChinese,   // Simplified Chinese
+        English    // English
     }
     
     public class MultilingualManager : AbstractSystem
     {
+        [System.Serializable]
+        private struct LanguageDataWrapper
+        {
+            public LanguageData[] languageData;
+        }
+        
+        [System.Serializable]
+        private struct LanguageData
+        {
+            public string Key;
+            
+            public string SimplifiedChinese;
+            
+            public string English;
+        }
+        
         public TextAsset LanguageFile;
         
-        public ELanguageType willChangeLanguageType = ELanguageType.Zh;
+        public ELanguageType willChangeLanguageType = ELanguageType.SimplifiedChinese;
         
         private Dictionary<string, Dictionary<ELanguageType, string>> translations = new Dictionary<string, Dictionary<ELanguageType, string>>();
 
         protected override void OnInit()
         {
-
+            
         }
 
         /// <summary>
@@ -46,10 +55,10 @@ namespace  GameFrame.Multilingual
                     var languageDictionary = new Dictionary<ELanguageType, string>
                     {
                         {
-                            ELanguageType.Zh, entry.SimplifiedChinese
+                            ELanguageType.SimplifiedChinese, entry.SimplifiedChinese
                         },
                         {
-                            ELanguageType.En, entry.English
+                            ELanguageType.English, entry.English
                         }
                     };
                     translations[entry.Key] = languageDictionary;
@@ -64,7 +73,7 @@ namespace  GameFrame.Multilingual
         public void ChangeLanguage(ELanguageType newLanguageType)
         {
             willChangeLanguageType = newLanguageType;
-            TypeEventSystem.Global.Send(new SChangeMultingualEvent());
+            TypeEventSystem.Global.Send(new SChangeMultingual_Event());
         }
 
         /// <summary>
@@ -92,7 +101,7 @@ namespace  GameFrame.Multilingual
         /// <returns></returns>
         public Sprite GetMultilingual_Sprite(string key)
         {
-            string folderName = willChangeLanguageType == ELanguageType.Zh ? "Zh" : "En";
+            string folderName = willChangeLanguageType.ToString();
             string path = $"Multilingual/{folderName}/{key}";
             Sprite sprite = Resources.Load<Sprite>(path);
             if (sprite == null) 
@@ -100,22 +109,6 @@ namespace  GameFrame.Multilingual
                 Debug.LogWarning($"Sprite not found at path: {path}");
             }
             return sprite;
-        }
-        
-        [System.Serializable]
-        private struct LanguageDataWrapper
-        {
-            public LanguageData[] languageData;
-        }
-        
-        [System.Serializable]
-        private struct LanguageData
-        {
-            public string Key;
-            
-            public string SimplifiedChinese;
-            
-            public string English;
         }
     }
 }

@@ -266,7 +266,7 @@ namespace GameFrame.World
                     else if (curJumpCount == 0)
                     {
                         Jump(jumpHeight);
-                        Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(DoubleJumpTimeCheck());
+                        Main.Interface.GetUtility<Coroutine_Utility>().StartRoutine(DoubleJumpTimeCheck());
                         owner.DoPlayAnimations(new SPlayAnimationEvent() { animationType = EAnimationType.StartJumping });
                     }
                 }
@@ -281,7 +281,7 @@ namespace GameFrame.World
                 else if (curJumpCount == 0)
                 {
                     Jump(jumpHeight);
-                    Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(DoubleJumpTimeCheck());
+                    Main.Interface.GetUtility<Coroutine_Utility>().StartRoutine(DoubleJumpTimeCheck());
                     owner.DoPlayAnimations(new SPlayAnimationEvent() { animationType = EAnimationType.StartJumping });
                 }
             }
@@ -320,11 +320,11 @@ namespace GameFrame.World
         {
             if (isInvincibleInDashing)
             {
-                Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(InvincibleDashTimeCheck());
+                Main.Interface.GetUtility<Coroutine_Utility>().StartRoutine(InvincibleDashTimeCheck());
             }
 
             // 启动冲刺协程，控制冲刺行为
-            Main.Interface.GetUtility<CoroutineUtility>().StartRoutine(DashCoroutine());
+            Main.Interface.GetUtility<Coroutine_Utility>().StartRoutine(DashCoroutine());
 
             // 播放冲刺动画
             owner.DoPlayAnimations(new SPlayAnimationEvent() { animationType = EAnimationType.Dashing });

@@ -14,9 +14,10 @@ namespace GameFrame.World
         
         public SkillExecuteManager skillExecuteManager { get; set; }
         
+        /// <summary>
+        /// 添加技能处理块
+        /// </summary>
         public UnityAction<OwnedSkillData_TemporalityPoolable> onAddSkillExecuter;
-        
-        public UnityAction<OwnedSkillData_TemporalityPoolable> onRemoveSkillExecuter;
 
         public override void OnSingletonInit()
         {
@@ -37,9 +38,7 @@ namespace GameFrame.World
             elementCaculateManager=new ElementCaculateManager();
             skillExecuteManager=new SkillExecuteManager();
             
-            
             onAddSkillExecuter += skillExecuteManager.AddSkillExecuter;
-            onRemoveSkillExecuter += skillExecuteManager.RemoveSkillExecuter;
         }
 
         /// <summary>
@@ -57,7 +56,7 @@ namespace GameFrame.World
         public void SetPlayer(WorldObj player)
         {
             this.players.Add(player);
-            this.SendCommand(new AddCheatCommand("使用技能树", (() =>
+            this.SendCommand(new AddCheat_Command("使用技能树", (() =>
             {
                 
             })));
