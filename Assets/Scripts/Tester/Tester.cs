@@ -12,19 +12,28 @@ namespace GameFrame.World
 
         private void Start()
         {
+            Check();
+        }
+
+        void Check()
+        {
             ActionKit.Repeat(-1).Delay(0.3f, () =>
             {
+                UnityEngine.Profiling.Profiler.BeginSample("TimeDelayCheck");
                 TimeDelayCheck();
+                UnityEngine.Profiling.Profiler.EndSample();
             }).StartGlobal();
         }
 
         private void TimeDelayCheck()
         {
+
             for (int i = 0; i < basicData.Count; i++)
             {
                 SkillActionClip_BasicData data = basicData[i];
                 data.InitExecution();
             }
+
         }
     }
 }
