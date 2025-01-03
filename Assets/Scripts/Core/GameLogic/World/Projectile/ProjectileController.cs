@@ -44,9 +44,8 @@ namespace GameFrame.World
             willRecycle = false;
             
             tempProjectileData = ProjectileTriggerDamageData_TemporalityPoolable.Allocate();
-            tempProjectileData.UpdateEnforcer(owner);
+            tempProjectileData.InitDamageData(owner,null,persistenceProjectileData.BaiscDamage);
             tempProjectileData.UpdateDamageAttenuationLevel(persistenceProjectileData.DamageAttenuationsList);
-            tempProjectileData.UpdateBasicDamage(persistenceProjectileData.BaiscDamage);
             tempProjectileData.UpdateFlySpeed(persistenceProjectileData.FlySpeed);
             tempProjectileData.UpdateMaxFlyDistance(persistenceProjectileData.MaxFlyDistance);
 

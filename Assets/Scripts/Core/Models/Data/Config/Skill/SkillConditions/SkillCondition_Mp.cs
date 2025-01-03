@@ -16,20 +16,7 @@ namespace GameFrame.Config
         
         public override void ExcuteCondition(WorldObj owner, int curSkillLevel = 1)
         {
-            float curHpCount = owner.healthyController.curHealthy.Value;
-            float curCost = GetLeveledDamage(curSkillLevel);
-            if (curHpCount >= curCost)
-            {
-                TriggerDamageData_TemporalityPoolable DamageData = TriggerDamageData_TemporalityPoolable.Allocate();
-                DamageData.UpdateEnforcer(owner);
-                DamageData.UpdateSufferer(owner);
-                DamageData.UpdateBasicDamage(curCost,EElementType.TrueInjury);
-                DamageData.HarmedSufferer();
-            }
-            else
-            {
-                Debug.Log("HP不足");
-            }
+
         }
     }
 }

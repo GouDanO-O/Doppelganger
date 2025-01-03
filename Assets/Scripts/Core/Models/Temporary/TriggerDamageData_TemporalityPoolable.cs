@@ -29,7 +29,7 @@ namespace GameFrame
         public bool willOverlayElementLevel { get; private set; }
         
         /// <summary>
-        /// 收到的伤害的元素类型
+        /// 收到的伤害类型
         /// </summary>
         public EElementType elementType { get; private set; }
         
@@ -37,6 +37,11 @@ namespace GameFrame
         /// 基础伤害(没有计算抗性和倍率)
         /// </summary>
         private float basicDamage;
+        
+        /// <summary>
+        /// 是否忽略护甲,直接造成血量伤害
+        /// </summary>
+        public bool willIngoreArmor { get;private set; }
 
         /// <summary>
         /// 从池子中进行分配
@@ -48,22 +53,80 @@ namespace GameFrame
         }
 
         /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="enforcer">施加者</param>
+        /// <param name="sufferer">受害者</param>
+        /// <param name="basicDamage">基础伤害</param>
+        /// <param name="elementType">元素伤害类型</param>
+        /// <param name="willIngoreArmor">是否忽略护甲从而直接削减血量</param>
+        public virtual void InitDamageData(WorldObj enforcer, WorldObj sufferer = null, float basicDamage=0,
+            EElementType elementType=EElementType.None, bool willIngoreArmor = false)
+        {
+            this.enforcer = enforcer;
+            this.sufferer = sufferer;
+            this.basicDamage = basicDamage;
+            this.elementType = elementType;
+            this.willIngoreArmor = willIngoreArmor;
+        }
+
+        /// <summary>
         /// 更新施加者
+        /// 比较两者谁基础伤害更高,更高者才会覆盖否则不会
         /// </summary>
         /// <param name="enforcer"></param>
         public virtual void UpdateEnforcer(WorldObj enforcer)
         {
-            this.enforcer = enforcer;
+            if (this.enforcer == null)
+            {
+                this.enforcer = enforcer;
+            }
+            else
+            {
+                if (CheckWhichEnforcerHasHighLevelDamage(enforcer))
+                {
+                    this.enforcer = enforcer;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 比较两者谁基础伤害更高,更高者才会覆盖否则不会
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckWhichEnforcerHasHighLevelDamage(WorldObj newEnforcer)
+        {
+            if (elementType == EElementType.None || elementType==EElementType.TrueInjury)
+            {
+                
+            }
+            else 
+            {
+                
+            }
+
+
+            return true;
+        }
+        
+        /// <summary>
+        /// 更新受害者
+        /// </summary>
+        /// <param name="sufferer"></param>
+        public virtual void UpdateSufferer(WorldObj sufferer)
+        {
+            this.sufferer = sufferer;
         }
 
         /// <summary>
         /// 更新伤害
         /// </summary>
         /// <param name="basicDamage"></param>
-        public virtual void UpdateBasicDamage(float basicDamage,EElementType elementType = EElementType.None)
+        public virtual void UpdateBasicDamage(float basicDamage,EElementType elementType = EElementType.None,bool willIngoreArmor = false)
         {
             this.basicDamage = basicDamage;
             this.elementType = elementType;
+            this.willIngoreArmor = willIngoreArmor;
         }
 
         /// <summary>
@@ -78,14 +141,7 @@ namespace GameFrame
             this.basicDamage = elementData.GetElementDamage(curLevel);
         }
 
-        /// <summary>
-        /// 更新受害者
-        /// </summary>
-        /// <param name="sufferer"></param>
-        public virtual void UpdateSufferer(WorldObj sufferer)
-        {
-            this.sufferer = sufferer;
-        }
+
 
         /// <summary>
         /// 更新元素类型和是否要进行叠加
@@ -164,6 +220,7 @@ namespace GameFrame
             elementType = EElementType.None;
             basicDamage = 0;
             willOverlayElementLevel = false;
+            willIngoreArmor = false;
         }
 
         public override void OnRecycled()

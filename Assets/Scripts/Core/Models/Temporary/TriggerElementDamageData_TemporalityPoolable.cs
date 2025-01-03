@@ -42,6 +42,7 @@ namespace GameFrame
         /// <param name="healthyController"></param>
         public void UpdateSuffererAndEnforcer(WorldObj enforcer,WorldObj sufferer,EElementType elementType)
         {
+            //如果当前受害者已经有这个元素伤害块,则更新这个元素伤害块的施加者(覆盖式伤害)
             if (elementDamageDataDict.TryGetValue(elementType,out TriggerDamageData_TemporalityPoolable curDamageData))
             { 
                 curDamageData = elementDamageDataDict[elementType];
@@ -50,9 +51,7 @@ namespace GameFrame
             else
             { 
                 curDamageData = TriggerDamageData_TemporalityPoolable.Allocate();
-                curDamageData.UpdateElementType(elementType);
-                curDamageData.UpdateSufferer(sufferer);
-                curDamageData.UpdateEnforcer(enforcer);
+                curDamageData.InitDamageData(enforcer,sufferer,0,elementType);
             }
             
             AddElement(elementType, enforcer);

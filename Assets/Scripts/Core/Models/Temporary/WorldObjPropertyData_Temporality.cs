@@ -51,6 +51,10 @@ namespace GameFrame
         /// </summary>
         public Dictionary<EElementType,SElementPropertyData> ElementPropertyDataDict=new Dictionary<EElementType, SElementPropertyData>();
 
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="dataConfig"></param>
         public void InitData(WorldObjData_Config dataConfig)
         {
             this.MaxHealth = dataConfig.HealthyData.maxHealth;
@@ -118,6 +122,11 @@ namespace GameFrame
             return null;
         }
 
+        /// <summary>
+        /// 获取元素伤害倍率
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
         private float GetElementBonusDamage(EElementType element)
         {
             if (ElementPropertyDataDict.ContainsKey(element))
@@ -128,6 +137,11 @@ namespace GameFrame
             return 1;
         }
 
+        /// <summary>
+        /// 获取元素伤害减免率
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
         private float GetElementReductionRatio(EElementType element)
         {
             if (ElementPropertyDataDict.ContainsKey(element))

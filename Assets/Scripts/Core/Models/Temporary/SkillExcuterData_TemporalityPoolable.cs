@@ -117,6 +117,11 @@ namespace GameFrame
         {
             hasStartExecuted = false;
             hasEndExecuted = false;
+            owner = null;
+            SkillActionClip = null;
+            lifeDuration = 0;
+            endTime = 0;
+            willExecuteTime = 0;
         }
 
         public override void OnRecycled()

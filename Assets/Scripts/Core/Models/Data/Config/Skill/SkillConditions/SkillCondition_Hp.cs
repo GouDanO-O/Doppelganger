@@ -13,6 +13,9 @@ namespace GameFrame.Config
     [LabelText("消耗HP")]
     public class SkillCondition_Hp : SkillCondition
     {
+        [LabelText("是否忽略护甲直接对玩家造成血量")]
+        public bool willIngoreArmor;
+        
         public override bool CheckCondition(WorldObj owner,int curSkillLevel = 1)
         {
             float curHpCount = owner.healthyController.curHealthy.Value;
@@ -27,9 +30,7 @@ namespace GameFrame.Config
             if (curHpCount >= curCost)
             {
                 TriggerDamageData_TemporalityPoolable DamageData = TriggerDamageData_TemporalityPoolable.Allocate();
-                DamageData.UpdateEnforcer(owner);
-                DamageData.UpdateSufferer(owner);
-                DamageData.UpdateBasicDamage(curCost,EElementType.TrueInjury);
+                DamageData.InitDamageData(owner,owner,curCost,EElementType.TrueInjury,willIngoreArmor);
                 DamageData.HarmedSufferer();
             }
             else

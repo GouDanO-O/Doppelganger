@@ -20,7 +20,20 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: SkillCondition
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[GameFrame.ISkillCondition, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   SkillID: 0
   SkillName: 
   SkillDescription: 
@@ -29,9 +42,7 @@ MonoBehaviour:
   SkillPointsCost: 140
   PrerequisiteSkills: []
   SkillCooldown: 1
-  MaxLevel: 5
+  MaxLevel: 0
   LevelUpSkills: []
-  SkillCondition: {fileID: 0}
   SkillTracks:
-  - {fileID: 11400000, guid: 99305f41280a3a245b2f8742bc297015, type: 2}
   - {fileID: 11400000, guid: 99305f41280a3a245b2f8742bc297015, type: 2}

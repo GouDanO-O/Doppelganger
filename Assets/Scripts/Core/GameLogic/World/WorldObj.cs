@@ -37,8 +37,6 @@ namespace GameFrame.World
         
         public SkillController skillController { get;protected set;}
         
-        public AttackController attackController { get;protected set; }
-        
         public AnimatorController animatorController { get;protected set; }
         
         public MoveController moveController { get;protected set; }
@@ -94,7 +92,6 @@ namespace GameFrame.World
             UnRegistEvent();
             healthyController.DeInitData();
             skillController.DeInitData();
-            attackController.DeInitData();
         }
 
         protected virtual void UnRegistEvent()

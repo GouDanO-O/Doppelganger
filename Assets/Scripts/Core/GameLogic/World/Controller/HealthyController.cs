@@ -107,34 +107,48 @@ namespace GameFrame.World
                 SufferElement(damageData.elementType,damageData.enforcer);
             }
 
-            ReduceHealthy(damageData.CaculateFinalDamage());
+            ReduceHealthy(damageData.CaculateFinalDamage(),damageData.willIngoreArmor);
             RecycleDamageData();
         }
 
         /// <summary>
         /// 减少生命状态
+        /// 看是否会忽略护甲(直接对玩家造成伤害)
         /// </summary>
         /// <param name="damage"></param>
-        public void ReduceHealthy(float damage)
+        private void ReduceHealthy(float damage,bool willIngoreArmor=false)
         {
-            float deepValue = curArmor.Value - damage;
-            if (deepValue >= 0)
+            if (willIngoreArmor)
             {
-                curArmor.Value -= deepValue;
-                if (curArmor.Value < 0)
+                curHealthy.Value -= damage;
+                if (curHealthy.Value <= 0)
                 {
-                    curArmor.SetValueWithoutEvent(0);
+                    Death();
                 }
             }
             else
             {
-                curHealthy.Value += damage;
-            }
+                float deepValue = curArmor.Value - damage;
+                if (deepValue >= 0)
+                {
+                    curArmor.Value -= deepValue;
+                    if (curArmor.Value < 0)
+                    {
+                        curArmor.SetValueWithoutEvent(0);
+                    }
+                }
+                else
+                {
+                    curArmor.Value = 0;
+                    curHealthy.Value += deepValue;
+                }
             
-            if (curHealthy.Value <= 0)
-            {
-                Death();
+                if (curHealthy.Value <= 0)
+                {
+                    Death();
+                }
             }
+
         }
 
         /// <summary>

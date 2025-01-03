@@ -160,7 +160,7 @@ namespace GameFrame
 
         public override void Recycle2Cache()
         {
-            
+            SafeObjectPool<OwnedSkillData_TemporalityPoolable>.Instance.Recycle(this);
         }
     }
 }
