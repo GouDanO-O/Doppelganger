@@ -2,6 +2,7 @@ using System;
 using QFramework;
 using System.Collections;
 using System.Collections.Generic;
+using GameFrame.Config;
 using GameFrame.Multilingual;
 using GameFrame.Net;
 using GameFrame.UI;
@@ -29,6 +30,8 @@ namespace GameFrame
         private WorldManager worldManager;
         
         protected Font customFont;
+        
+        public WorldObjData_Config testerWorldObjDataConfig;
 
         public IArchitecture GetArchitecture()
         {
@@ -153,7 +156,7 @@ namespace GameFrame
             {
                 GetArchitecture().GetSystem<ViewManager>().EnterMenu();
             }
-            else if(sceneName == ESceneName.GameScene)
+            else if(sceneName == ESceneName.GameScene || sceneName == ESceneName.TestScene)
             {
                 curGameState = EGameState.Playing;
                 GetArchitecture().GetSystem<ViewManager>().EnterGame();

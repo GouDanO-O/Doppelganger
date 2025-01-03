@@ -25,7 +25,7 @@ MonoBehaviour:
     IsLoadFromPool: 1
     ObjectPoolType: 0
     ObjectPrefab: {fileID: 7165454379647766587, guid: b764c26439433324db7b607c18be511b, type: 3}
-    FireCount: 3
+    FireCount: 1
     ElementType: 0
     BaiscDamage: 10
     FlySpeed: 10

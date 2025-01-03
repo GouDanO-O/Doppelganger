@@ -37,7 +37,6 @@ namespace GameFrame.Config
         /// </summary>
         protected virtual void ShootProjectileCheck()
         {
-
             for (int i = 0; i < persistenceProjectileData.FireCount; i++)
             {
                 float delayTime = persistenceProjectileData.FireDelayTime;
@@ -53,8 +52,6 @@ namespace GameFrame.Config
                     ShootProjectile();
                 }
             }
-            
-
         }
 
         /// <summary>
@@ -77,7 +74,7 @@ namespace GameFrame.Config
 
             projectile.Show();
             ProjectileController projectileController = projectile.GetComponent<ProjectileController>();
-            projectileController.InitData(persistenceProjectileData);
+            projectileController.InitData(persistenceProjectileData,owner);
         }
     }
 }

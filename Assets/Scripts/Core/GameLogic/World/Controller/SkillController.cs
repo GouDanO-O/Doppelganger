@@ -65,6 +65,7 @@ namespace GameFrame.World
             Skill_Inside.AddRange(skillTree.Skill_Inside);
             Skill_Outside.AddRange(skillTree.Skill_Outside);
 
+            SetInsideSkill();
             SetOutSideSkill();
         }
         
@@ -77,16 +78,24 @@ namespace GameFrame.World
         }
 
         /// <summary>
+        /// 设置局内技能
+        /// </summary>
+        protected virtual void SetInsideSkill()
+        {
+            for (int i = 0; i < Skill_Inside.Count; i++)
+            {
+                GetSkill(Skill_Inside[i]);
+            }
+        }
+
+        /// <summary>
         /// 设置局外技能
         /// </summary>
         protected virtual void SetOutSideSkill()
         {
             for (int i = 0; i < Skill_Outside.Count; i++)
             {
-                if (Skill_Outside[i])
-                {   
-                    GetSkill(Skill_Outside[i]);
-                }
+                GetSkill(Skill_Outside[i]);
             }
         }
 
@@ -131,18 +140,15 @@ namespace GameFrame.World
         public virtual void GetSkill(SkillNodeData_Config skillNode)
         {
             int skillIndex = CheckHasSkill(skillNode);
-            if (skillIndex!=-1)
+            if (skillIndex !=-1)
             {
-                if (curOwnedSkillNodes[skillIndex].CheckSkill(skillNode))
-                {
-                    curOwnedSkillNodes[skillIndex].LevelUp();
-                }
-                else
-                {
-                    OwnedSkillData_TemporalityPoolable newSkillData = OwnedSkillData_TemporalityPoolable.Allocate();
-                    newSkillData.InitData(owner,skillNode);
-                    curOwnedSkillNodes.Add(newSkillData);
-                }
+                curOwnedSkillNodes[skillIndex].LevelUp();
+            }
+            else
+            {
+                OwnedSkillData_TemporalityPoolable newSkillData = OwnedSkillData_TemporalityPoolable.Allocate();
+                newSkillData.InitData(owner,skillNode);
+                curOwnedSkillNodes.Add(newSkillData);
             }
         }
 
@@ -196,7 +202,7 @@ namespace GameFrame.World
             {
                 if (curOwnedSkillNodes[i].CheckSkill(skillNode))
                 {
-                    skills=i;
+                    skills = i;
                     break;
                 }
             }
@@ -212,11 +218,28 @@ namespace GameFrame.World
         {
             if (CheckHasSkill(skillData.skillNodeDataConfig) != -1)
             {
-                SkillCondition_Config formula=skillData.skillNodeDataConfig.SkillCondition;
-                if (formula == default)
+                List<ISkillCondition> formula=skillData.skillNodeDataConfig.SkillCondition;
+                if (formula == null || formula.Count == 0)
                     return true;
 
+                int curSatisfyCount = 0;
+                int maxSatisfyCount = formula.Count;
+                for (int i = 0; i < maxSatisfyCount; i++)
+                {
+                    if (formula[i].CheckCondition(owner, skillData.curLevel))
+                    {
+                        curSatisfyCount++;
+                    }
+                }
                 
+                if (curSatisfyCount == maxSatisfyCount)
+                {
+                    for (int i = 0; i < maxSatisfyCount; i++)
+                    {
+                        formula[i].ExcuteCondition(owner, skillData.curLevel);
+                    }
+                    return true;
+                }
             }
             return false;
         }
@@ -239,9 +262,9 @@ namespace GameFrame.World
         /// </summary>
         public virtual void UseSkill()
         {
-            for (int i = 0; i < Skill_Outside.Count; i++)
+            for (int i = 0; i < curOwnedSkillNodes.Count; i++)
             {
-                
+                UseSkill(curOwnedSkillNodes[i]);
             }
         }
     }

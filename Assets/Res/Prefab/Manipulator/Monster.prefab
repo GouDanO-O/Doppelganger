@@ -349,7 +349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2119139868
+  GlobalObjectIdHash: 3915355872
   InScenePlacedSourceGlobalObjectIdHash: 1945298232
   DeferredDespawnTick: 0
   Ownership: 1
@@ -429,14 +429,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   owner: {fileID: 0}
-  thisDataConfig: {fileID: 0}
-  worldObjPropertyDataTemporality:
-    MaxHealth: 0
-    MaxArmor: 0
-    DamageAddition: 0
-    DamageReductionRatio: 0
-    CriticalRate: 0
-    CriticalDamage: 0
+  thisDataConfig: {fileID: 11400000, guid: a0f59e33ccca2254a97a028381ae9e7b, type: 2}
   footRoot: {fileID: 0}
 --- !u!1 &7996683129357410315
 GameObject:

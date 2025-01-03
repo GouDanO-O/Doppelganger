@@ -50,7 +50,7 @@ namespace GameFrame.World
         /// 移动
         /// </summary>
         /// <param name="inputEvent_Move"></param>
-        public void Move(SInputEvent_Move inputEvent_Move)
+        public override void Move(SInputEvent_Move inputEvent_Move)
         {
             temSpeed = GetTemSpeed();
             Vector3 input = new Vector3(inputEvent_Move.movement.x, 0, inputEvent_Move.movement.y);
@@ -76,7 +76,7 @@ namespace GameFrame.World
         /// 奔跑中
         /// </summary>
         /// <param name="runData"></param>
-        public void Running(SInputEvent_Run runData)
+        public override void Running(SInputEvent_Run runData)
         {
             if (runData.runType == EInputType.Performed)
             {
@@ -92,7 +92,7 @@ namespace GameFrame.World
         /// 鼠标旋转
         /// </summary>
         /// <param name="inputEvent_Mouse"></param>
-        public void MouseRotate(SInputEvent_MouseDrag inputEvent_Mouse)
+        public override void MouseRotate(SInputEvent_MouseDrag inputEvent_Mouse)
         {
             Vector2 input = inputEvent_Mouse.mousePos;
             float mouseX = input.x * mouseSensitivity *  Time.deltaTime;
@@ -109,7 +109,7 @@ namespace GameFrame.World
         /// <summary>
         /// 蹲伏检测
         /// </summary>
-        public void CrouchCheck(SInputEvent_Crouch crouchData)
+        public override void CrouchCheck(SInputEvent_Crouch crouchData)
         {
             if (crouchData.crouchType == EInputType.Performed)
             {

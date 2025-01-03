@@ -24,7 +24,7 @@ namespace GameFrame.Config
         public float StartTime;
 
         [HorizontalGroup("Timing")]
-        [LabelText("生命周期"), LabelWidth(60)]
+        [LabelText("生命周期)"), LabelWidth(60)]
         public float Duration = 1f;
 
         [HorizontalGroup("Timing")]

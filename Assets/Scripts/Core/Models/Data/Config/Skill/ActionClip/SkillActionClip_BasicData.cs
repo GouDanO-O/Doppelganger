@@ -7,13 +7,21 @@ namespace GameFrame.Config
     [Serializable]
     public abstract class SkillActionClip_BasicData : SerializedScriptableObject,ITriggerLogic_NoTarget,ITriggerLogic_HasTarget
     {
-        public abstract void InitExecution();
+        protected WorldObj owner;
+
+        public virtual void InitExecution(WorldObj owner)
+        {
+            this.owner = owner;
+        }
 
         protected abstract void StartExecute();
 
         public abstract void EndExecute();
 
-        public abstract void ResetExecute();
+        public virtual void ResetExecute()
+        {
+            this.owner = null;
+        }
         
         public abstract void OnTriggerStart();
 

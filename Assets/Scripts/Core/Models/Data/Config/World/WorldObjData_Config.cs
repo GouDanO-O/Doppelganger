@@ -10,6 +10,8 @@ namespace GameFrame.Config
     [CreateAssetMenu(fileName = "WorldObj",menuName = "配置/世界/基础物体配置")]
     public class WorldObjData_Config : SerializedScriptableObject
     {
+        public EWorldObjType ThisObjType;
+        
         [Required(InfoMessageType.Error),LabelText("预制体")]
         public GameObject ThisPrefab;
         

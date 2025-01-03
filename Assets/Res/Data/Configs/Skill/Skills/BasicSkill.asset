@@ -25,14 +25,13 @@ MonoBehaviour:
   SkillName: 
   SkillDescription: 
   SkillNodeType: 1
-  SkillSpellType: 1
-  SkillTriggerConditionType: 2
   RequiredLevel: 32
   SkillPointsCost: 140
   PrerequisiteSkills: []
-  SkillCooldown: 0
-  MaxLevel: 0
+  SkillCooldown: 1
+  MaxLevel: 5
   LevelUpSkills: []
   SkillCondition: {fileID: 0}
   SkillTracks:
+  - {fileID: 11400000, guid: 99305f41280a3a245b2f8742bc297015, type: 2}
   - {fileID: 11400000, guid: 99305f41280a3a245b2f8742bc297015, type: 2}

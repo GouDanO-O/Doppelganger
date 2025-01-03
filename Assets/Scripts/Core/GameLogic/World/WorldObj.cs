@@ -91,11 +91,17 @@ namespace GameFrame.World
         public override void DeInitData()
         {
             this.UnRegisterAll();
+            UnRegistEvent();
             healthyController.DeInitData();
             skillController.DeInitData();
             attackController.DeInitData();
         }
 
+        protected virtual void UnRegistEvent()
+        {
+            this.onChangePlayerControllingEvent -= ChangePlayerControlling;
+        }
+        
         /// <summary>
         /// 初始化组件
         /// </summary>
@@ -134,7 +140,7 @@ namespace GameFrame.World
             if (thisDataConfig.Healthyable)
             {
                 healthyController = new HealthyController();
-                healthyController.InitData(owner);
+                healthyController.InitData(this);
             }
         }
         
@@ -144,7 +150,7 @@ namespace GameFrame.World
         protected virtual void InitAnimator()
         {
             animatorController = new AnimatorController();
-            animatorController.InitData(owner);
+            animatorController.InitData(this);
         }
         #region InitPlayer
 
@@ -173,10 +179,10 @@ namespace GameFrame.World
         /// </summary>
         protected virtual void InitSkill_Player()
         {
-            if (thisDataConfig.skillTree)
+            if (thisDataConfig.HasSkill)
             {
                 skillController = new SkillController();
-                skillController.InitData(owner);
+                skillController.InitData(this);
             }
         }
         
@@ -185,7 +191,7 @@ namespace GameFrame.World
             if (thisDataConfig.Moveable)
             {
                 moveController = new MoveController_Player();
-                moveController.InitData(owner);
+                moveController.InitData(this);
 
                 this.RegisterEvent<SInputEvent_Move>(moveData => { moveController.Move(moveData); })
                     .AddToUnregisterList(this);
@@ -267,7 +273,7 @@ namespace GameFrame.World
             if (thisDataConfig.Moveable)
             {
                 moveController = new MoveController_AI();
-                moveController.InitData(owner);
+                moveController.InitData(this);
             }
         }
 

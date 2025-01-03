@@ -54,7 +54,7 @@ namespace GameFrame.Config
         
         [BoxGroup("技能基本信息")]
         [LabelText("技能执行条件")]
-        public SkillCondition_Config SkillCondition;
+        public List<ISkillCondition> SkillCondition;
 
         #endregion
 

@@ -65,6 +65,7 @@ namespace GameFrame
             this.curLevel = 0;
             this.maxLevel = skillNodeDataConfig.MaxLevel;
             this.lastSkillUseTime = 0;
+            this.skillCooldown = skillNodeDataConfig.SkillCooldown;
         }
         
         /// <summary>
@@ -95,6 +96,7 @@ namespace GameFrame
                 lastSkillUseTime = Time.time;
                 willEndTime = lastSkillUseTime + skillCooldown;
                 ExcuateSkill();
+                Debug.Log("技能执行:"+lastSkillUseTime+"--"+willEndTime);
             }
             else
             {
@@ -136,19 +138,24 @@ namespace GameFrame
             //如果都通过了则可以执行
             return true;
         }
-
         
         /// <summary>
         /// 当回收时
         /// </summary>
         public override void DeInitData()
         {
-            
+            lastSkillUseTime = 0;
+            skillCooldown = 0;
+            owner = null;
+            skillNodeDataConfig = null;
+            curLevel = 0;
+            maxLevel = 0;
+            willEndTime = 0;
         }
 
         public override void OnRecycled()
         {
-            
+            DeInitData();
         }
 
         public override void Recycle2Cache()

@@ -60,9 +60,10 @@ namespace GameFrame
         /// 更新伤害
         /// </summary>
         /// <param name="basicDamage"></param>
-        public virtual void UpdateBasicDamage(float basicDamage)
+        public virtual void UpdateBasicDamage(float basicDamage,EElementType elementType = EElementType.None)
         {
             this.basicDamage = basicDamage;
+            this.elementType = elementType;
         }
 
         /// <summary>
@@ -115,6 +116,10 @@ namespace GameFrame
             {
                 return CaculateFinalDamage_Normal();
             }
+            else if (elementType == EElementType.TrueInjury)
+            {
+                return CaculateFinalDamage_TrueInjury();
+            }
             else
             {
                 return CaculateFinalDamage_Element();
@@ -130,6 +135,15 @@ namespace GameFrame
             float suffererElementResistance = sufferer.worldObjPropertyDataTemporality.GetDamageReductionRatio();
             float enforcerElementRatio= enforcer.worldObjPropertyDataTemporality.GetDamageAddition(); 
             return basicDamage * enforcerElementRatio / suffererElementResistance;
+        }
+
+        /// <summary>
+        /// 计算最终伤害--真实伤害
+        /// </summary>
+        /// <returns>基础伤害就是直接伤害,不计算伤害倍率和伤害抗性</returns>
+        protected virtual float CaculateFinalDamage_TrueInjury()
+        {
+            return basicDamage;
         }
 
         /// <summary>

@@ -10,11 +10,6 @@ namespace GameFrame.Config
     {
         [LabelText("特效预制体")]
         public GameObject ParticleEffectPrefab;
-        
-        public override void InitExecution()
-        {
-            
-        }
 
         protected override void StartExecute()
         {

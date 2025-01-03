@@ -26,5 +26,10 @@ MonoBehaviour:
   - ActionType: 0
     ActionDes: "\u91CA\u653E\u5F39\u4F53"
     StartTime: 0
-    Duration: 1
+    Duration: 0
+    Parameters: {fileID: 11400000, guid: a7d742952a99559458fd0a741fc5134f, type: 2}
+  - ActionType: 0
+    ActionDes: "\u91CA\u653E\u5F39\u4F53"
+    StartTime: 3
+    Duration: 0
     Parameters: {fileID: 11400000, guid: a7d742952a99559458fd0a741fc5134f, type: 2}

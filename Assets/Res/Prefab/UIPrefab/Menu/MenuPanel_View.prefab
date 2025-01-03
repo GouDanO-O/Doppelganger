@@ -1612,7 +1612,7 @@ GameObject:
   - component: {fileID: 6920027367257734374}
   - component: {fileID: -2803746805002058020}
   m_Layer: 5
-  m_Name: UI_MenuPanel
+  m_Name: MenuPanel_View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

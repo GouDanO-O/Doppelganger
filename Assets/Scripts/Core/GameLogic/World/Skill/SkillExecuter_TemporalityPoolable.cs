@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using GameFrame.Config;
 using QFramework;
+using UnityEngine;
 
 namespace GameFrame.World
 {
@@ -17,6 +18,8 @@ namespace GameFrame.World
         
         private OwnedSkillData_TemporalityPoolable _skillDataTemporalityPoolable;
 
+        private WorldObj owner;
+
         private List<SkillExcuterData_TemporalityPoolable> curWillExecuteActions = new List<SkillExcuterData_TemporalityPoolable>();
         
         private float curExecuteTime = 0;
@@ -29,6 +32,7 @@ namespace GameFrame.World
         public void InitData(SkillExecuteManager skillExecuteManager,OwnedSkillData_TemporalityPoolable skillDataTemporalityPoolable)
         {
             this._skillDataTemporalityPoolable = skillDataTemporalityPoolable;
+            this.owner = skillDataTemporalityPoolable.owner;
             this.skillExecuteManager = skillExecuteManager;
             ExtuateSkillCheck();
         }
@@ -60,8 +64,9 @@ namespace GameFrame.World
         private void AddAction(SkillActionClip actionClip)
         {
             SkillExcuterData_TemporalityPoolable skillData = SkillExcuterData_TemporalityPoolable.Allocate();
-            skillData.InitData(actionClip);
+            skillData.InitData(actionClip,owner);
             curWillExecuteActions.Add(skillData);
+            Debug.Log("添加技能行为");
         }
 
         /// <summary>
@@ -78,6 +83,10 @@ namespace GameFrame.World
                 if (curData.CheckTime(curExecuteTime))
                 {
                     curData.StartExecute();
+                }
+
+                if (curData.HasExecute())
+                {
                     curEndCount++;
                 }
             }
@@ -90,22 +99,22 @@ namespace GameFrame.World
         
         public override void DeInitData()
         {
-            
-        }
-
-        public override void OnRecycled()
-        {
-            
-        }
-
-        public override void Recycle2Cache()
-        {
             for (int i = 0; i < curWillExecuteActions.Count; i++)
             {
                 curWillExecuteActions[i].Recycle2Cache();
             }
             curWillExecuteActions.Clear();
             skillExecuteManager.RemoveSkillExecuter(this);
+        }
+
+        public override void OnRecycled()
+        {
+            DeInitData();
+        }
+
+        public override void Recycle2Cache()
+        {
+
         }
     }
 }

@@ -26,10 +26,11 @@ namespace GameFrame.World
         /// </summary>
         /// <param name="owner"></param>
         /// <param name="persistenceProjectileData"></param>
-        public void InitData(CommonProjectileData_Persistence persistenceProjectileData)
+        public void InitData(CommonProjectileData_Persistence persistenceProjectileData,WorldObj owner)
         {
-            
             this.persistenceProjectileData = persistenceProjectileData;
+            this.owner = owner; 
+            transform.position=owner.transform.position;
             SetTemData();
             OnCreate();
         }

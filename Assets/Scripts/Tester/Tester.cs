@@ -28,12 +28,6 @@ namespace GameFrame.World
         private void TimeDelayCheck()
         {
 
-            for (int i = 0; i < basicData.Count; i++)
-            {
-                SkillActionClip_BasicData data = basicData[i];
-                data.InitExecution();
-            }
-
         }
     }
 }

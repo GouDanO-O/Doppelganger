@@ -12,8 +12,9 @@ namespace GameFrame.Config
     [Serializable]
     public class SkillActionClip_DetailAction_Basic : SkillActionClip_BasicData
     {
-        public override void InitExecution()
+        public override void InitExecution(WorldObj owner)
         {
+            base.InitExecution(owner);
             StartExecute();
         }
 

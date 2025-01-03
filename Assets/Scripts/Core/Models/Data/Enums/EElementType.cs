@@ -7,6 +7,8 @@ namespace GameFrame
     {
         [LabelText("无特殊属性")]
         None,
+        [LabelText("真实伤害")]
+        TrueInjury,
         [LabelText("火属性--灼伤")]
         Fire,
         [LabelText("冰属性--减速")]

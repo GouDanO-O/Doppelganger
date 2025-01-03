@@ -19,11 +19,6 @@ namespace GameFrame.Config
         
         [LabelText("播放次数(如果为-1,就代表循环播放)")]
         public int PlayCount = 1;
-        
-        public override void InitExecution()
-        {
-            
-        }
 
         protected override void StartExecute()
         {
