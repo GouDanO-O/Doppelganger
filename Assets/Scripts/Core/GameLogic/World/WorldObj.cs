@@ -58,7 +58,7 @@ namespace GameFrame.World
             InitData();
         }
 
-        #region Init
+        #region 初始化
 
         /// <summary>
         /// 初始化
@@ -94,6 +94,9 @@ namespace GameFrame.World
             skillController.DeInitData();
         }
 
+        /// <summary>
+        /// 注销事件
+        /// </summary>
         protected virtual void UnRegistEvent()
         {
             this.onChangePlayerControllingEvent -= ChangePlayerControlling;
@@ -149,7 +152,7 @@ namespace GameFrame.World
             animatorController = new AnimatorController();
             animatorController.InitData(this);
         }
-        #region InitPlayer
+        #region 初始化玩家(每次有玩家接管都会初始化一遍)
 
         /// <summary>
         /// 初始化玩家
@@ -244,7 +247,7 @@ namespace GameFrame.World
         }
         #endregion
 
-        #region InitAI
+        #region 初始化AI(非玩家控制)
         
         protected virtual void InitAI()
         {
@@ -417,7 +420,7 @@ namespace GameFrame.World
 
         #endregion
 
-        #region Tick
+        #region Tick检测
 
         /// <summary>
         /// 短tick逻辑

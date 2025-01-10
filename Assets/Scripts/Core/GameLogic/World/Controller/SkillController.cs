@@ -53,7 +53,9 @@ namespace GameFrame.World
         /// 如果仅获得技能,但是没有放进被动列表中,则不会添加进列表
         /// </summary>
         public BindableList<OwnedSkillData_TemporalityPoolable> curOwnedSkills_Passive { get;protected set; } = new BindableList<OwnedSkillData_TemporalityPoolable>();
-        
+
+        #region  初始化
+
         /// <summary>
         /// 初始化
         /// </summary>
@@ -99,6 +101,9 @@ namespace GameFrame.World
             }
         }
 
+        #endregion
+
+        
         /// <summary>
         /// 升级
         /// </summary>
@@ -136,6 +141,9 @@ namespace GameFrame.World
         
         /// <summary>
         /// 获取技能
+        /// 首先检测是否拥有该技能
+        /// 如果已经拥有,那么升级该技能
+        /// 否则添加该技能数据块
         /// </summary>
         public virtual void GetSkill(SkillNodeData_Config skillNode)
         {

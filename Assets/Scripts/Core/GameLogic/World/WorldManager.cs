@@ -97,6 +97,10 @@ namespace GameFrame.World
         
         #endregion
 
+        /// <summary>
+        /// 添加一名玩家
+        /// </summary>
+        /// <param name="newPlayer"></param>
         public void AddPlayer(WorldObj newPlayer)
         {
             this.players.Add(newPlayer);

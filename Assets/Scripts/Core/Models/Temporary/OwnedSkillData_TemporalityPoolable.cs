@@ -70,6 +70,7 @@ namespace GameFrame
         
         /// <summary>
         /// 升级
+        /// 当达到最大等级时则不会继续升级,而是更换为其他奖励(后续添加)
         /// </summary>
         public void LevelUp()
         {
